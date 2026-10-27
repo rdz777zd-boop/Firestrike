@@ -7383,15 +7383,32 @@ const $=id=>document.getElementById(id);
 let ws=null,myid=null,open=false,un=0,lastSend=0,tries=0,rt=0,ready=false;
 const MAXM=60,ROOM='chat-global';
 /* ID do DONO: crie sua conta, abra seu PERFIL, copie o ID e cole aqui entre as aspas. Vazio = ninguém é dono. */
-const OWNER_ID='';
+const OWNER_ID='33044471';
+const GAME_URL='https://firestrike.rdz777zd.workers.dev';
 const isOwner=()=>!!OWNER_ID&&String(window.ARR_UID||'')===OWNER_ID;
 async function sha(t){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){let h=5381;for(const c of t)h=(h*33^c.charCodeAt(0))>>>0;return'x'+h.toString(16)}}
 function addAn(t){if(!msgs)return;const d=document.createElement('div');d.className='an';const b=document.createElement('b');b.textContent='ANÚNCIO: ';d.appendChild(b);d.appendChild(document.createTextNode(t));msgs.appendChild(d);while(msgs.children.length>MAXM)msgs.removeChild(msgs.firstChild);msgs.scrollTop=msgs.scrollHeight}
 async function announce(t){if(!ws||ws.readyState!==1||!ready){add('','Sem conexão. Tente de novo.',0,1);connect();return}
 const ts=Date.now(),sg=await sha(OWNER_ID+':'+ts+':'+t);ws.send(JSON.stringify({k:'e',m:{t:'gc',a:1,x:t,ts,sg}}));addAn(t)}
+let attT=0,attBox=null;
+function attStop(){clearInterval(attT);attT=0;if(attBox){attBox.remove();attBox=null}}
+function doUpdate(){try{if(navigator.serviceWorker)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()))}catch(e){}
+try{if(window.caches)caches.keys().then(k=>k.forEach(x=>caches.delete(x)))}catch(e){}
+setTimeout(()=>{location.replace(GAME_URL+'/?v='+Date.now())},500)}
+function attStart(){attStop();let n=10;attBox=document.createElement('div');
+attBox.style.cssText='position:fixed;left:50%;top:max(14px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;background:#171311ee;border:3px solid #ff6600;border-radius:14px;padding:10px 22px;color:#fff;font:900 clamp(16px,4.5vw,26px) "Trebuchet MS",Arial,sans-serif;text-align:center;box-shadow:0 0 24px #ff660088;pointer-events:none;white-space:nowrap';
+const draw=()=>{attBox.textContent='ATUALIZAÇÃO EM ( '+n+'s )'};draw();document.body.appendChild(attBox);
+attT=setInterval(()=>{n--;if(n>0){draw();return}clearInterval(attT);attT=0;attBox.textContent='ATUALIZANDO...';doUpdate()},1000)}
+async function ownerCast(u){if(!ws||ws.readyState!==1||!ready){add('','Sem conexão. Tente de novo.',0,1);connect();return false}
+const ts=Date.now(),sg=await sha(OWNER_ID+':'+ts+':u'+u);ws.send(JSON.stringify({k:'e',m:{t:'gc',u,ts,sg}}));return true}
 function runCmd(x){const p=x.slice(1).trim().split(/\s+/),c=(p.shift()||'').toLowerCase(),a=p.join(' ').trim();
+if(c==='ajuda'||c==='help'||c==='?'){add('','Comandos: /ajuda, /limpar'+(isOwner()?', /anuncio msg, /att, /att cancelar':''),0,1);return}
+if(c==='limpar'||c==='clear'){if(msgs)msgs.innerHTML='';add('','Chat limpo.',0,1);return}
 if(c==='anuncio'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}if(!a){add('','Uso: /anuncio mensagem',0,1);return}announce(a.slice(0,120));return}
-add('','Comando desconhecido.',0,1)}
+if(c==='att'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}
+if(a.toLowerCase()==='cancelar'){ownerCast(2).then(ok=>{if(ok){attStop();add('','Atualização cancelada.',0,1)}});return}
+ownerCast(1).then(ok=>{if(ok){attStart();add('','Atualização iniciada para todos.',0,1)}});return}
+add('','Comando desconhecido. Use /ajuda',0,1)}
 function wsUrl(){let U='';try{U=(typeof ARR_WS_URL!=='undefined'?ARR_WS_URL:'')||localStorage.getItem('arr_ws')||''}catch(e){}U=String(U).replace(/\/+$/,'');return/^wss:\/\//.test(U)?U+'/room/'+ROOM:''}
 function myName(){try{return String(PN||'Voce').slice(0,14)}catch(e){return 'Voce'}}
 let box,msgs,inp,st,btn;
@@ -7399,20 +7416,21 @@ function add(n,t,me,sys){if(!msgs)return;const d=document.createElement('div');i
 msgs.appendChild(d);while(msgs.children.length>MAXM)msgs.removeChild(msgs.firstChild);msgs.scrollTop=msgs.scrollHeight}
 function setSt(t,ok){if(st){st.textContent=t;st.className=ok?'ok':''}}
 function badge(){if(!btn)return;const e=btn.querySelector('em');e.textContent=un>9?'9+':un;btn.classList.toggle('un',un>0)}
-function connect(){const u=wsUrl();if(!u){setSt('offline');add('','Chat indisponível aqui. Só funciona online.',0,1);return}
+function connect(q){const u=wsUrl();if(!u){setSt('offline');if(!q)add('','Chat indisponível aqui. Só funciona online.',0,1);return}
 if(ws&&ws.readyState<2)return;clearTimeout(rt);setSt('conectando...');
 let w;try{w=ws=new WebSocket(u)}catch(e){setSt('offline');return}
 w.onmessage=e=>{let d;try{d=JSON.parse(e.data)}catch(x){return}
  if(d.k==='hi'){myid=d.id;ready=true;tries=0;setSt('online',1);return}
+ if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid&&d.m.u){const m=d.m;if(!OWNER_ID||Math.abs(Date.now()-(+m.ts||0))>300000)return;sha(OWNER_ID+':'+m.ts+':u'+m.u).then(h=>{if(h!==m.sg)return;if(m.u===1)attStart();else if(m.u===2)attStop()});return}
  if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid&&d.m.a){const m=d.m,x=String(m.x||'').slice(0,120);if(!OWNER_ID||!x||Math.abs(Date.now()-(+m.ts||0))>300000)return;sha(OWNER_ID+':'+m.ts+':'+x).then(h=>{if(h!==m.sg)return;addAn(x);try{soon('ANÚNCIO: '+x)}catch(e){}if(!open){un++;badge()}});return}
  if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid){const n=String(d.m.n||'?').slice(0,14),x=String(d.m.x||'').slice(0,120);if(!x)return;add(n,x,0);if(!open){un++;badge()}}};
-w.onclose=()=>{ready=false;if(ws===w)ws=null;setSt('desconectado');if(open&&tries<6){tries++;rt=setTimeout(connect,2000*tries)}};
+w.onclose=()=>{ready=false;if(ws===w)ws=null;setSt('desconectado');if(wsUrl()&&tries<20){tries++;rt=setTimeout(()=>connect(1),Math.min(30000,2000*tries))}};
 w.onerror=()=>{try{w.close()}catch(e){}}}
 function send(){const x=inp.value.replace(/\s+/g,' ').trim().slice(0,120);if(!x)return;if(x.charAt(0)==='/'){inp.value='';runCmd(x);return}
 const now=Date.now();if(now-lastSend<1200){return}
 if(!ws||ws.readyState!==1||!ready){add('','Sem conexão. Tentando reconectar...',0,1);connect();return}
 lastSend=now;ws.send(JSON.stringify({k:'e',m:{t:'gc',n:myName(),x}}));add(myName(),x,1);inp.value=''}
-function place(){const r=btn.getBoundingClientRect(),vw=innerWidth,vh=innerHeight;const w=Math.max(220,Math.min(300,Math.max(r.width,220)));let l=Math.min(Math.max(4,r.left),vw-w-4),t=r.bottom+6,h=Math.min(260,vh-t-6);if(h<130){h=Math.min(260,vh-12);t=Math.max(6,r.top-h-6)}
+function place(){const r=btn.getBoundingClientRect(),vw=innerWidth,vh=(window.visualViewport?Math.min(innerHeight,visualViewport.height):innerHeight);const w=Math.max(220,Math.min(300,Math.max(r.width,220)));let l=Math.min(Math.max(4,r.left),vw-w-4),t=r.bottom+6,h=Math.min(260,vh-t-6);if(h<130){h=Math.min(260,vh-12);t=Math.max(6,r.top-h-6)}
 box.style.left=l+'px';box.style.top=t+'px';box.style.width=w+'px';box.style.height=h+'px'}
 function toggle(f){open=f===undefined?!open:f;if(open){place();box.classList.add('on');un=0;badge();if(!ws)connect();setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(e){}},50)}else box.classList.remove('on')}
 function init(){if(btn||!$('sqi'))return false;
@@ -7421,10 +7439,11 @@ box=$('gchp');msgs=$('gcm');inp=$('gcin');st=$('gcst');
 btn=document.createElement('button');btn.type='button';btn.id='gchb';btn.innerHTML='CHAT <em>0</em>';$('sqi').insertAdjacentElement('afterend',btn);
 btn.onclick=()=>toggle();$('gcx').onclick=()=>toggle(false);$('gcs').onclick=send;
 inp.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();send()}});inp.addEventListener('keyup',e=>e.stopPropagation());
-add('','Chat global: converse com quem está online.',0,1);
+add('','Chat global: converse com quem está online. /ajuda p/ comandos.',0,1);connect(1);
 const pl=$('play');if(pl)pl.addEventListener('click',()=>toggle(false),true);
-setInterval(()=>{const m=$('menu');if(open&&m&&(m.offsetParent===null||getComputedStyle(m).display==='none'))toggle(false)},800);
+setInterval(()=>{const m=$('menu');if(open&&m&&(m.classList.contains('hide')||getComputedStyle(m).display==='none'))toggle(false)},800);
 addEventListener('resize',()=>{if(open)place()});
+try{if(window.visualViewport)visualViewport.addEventListener('resize',()=>{if(open)place()})}catch(e){}
 return true}
 const iv=setInterval(()=>{try{if(init())clearInterval(iv)}catch(e){}},400);
 })();
