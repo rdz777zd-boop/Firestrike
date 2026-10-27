@@ -7375,7 +7375,7 @@ setInterval(sync,1500);apply();
 (function(){
 const $=id=>document.getElementById(id);
 let ws=null,myid=null,open=false,un=0,lastSend=0,tries=0,rt=0,ready=false;
-const MAXM=5,ROOM='chat-global';
+const MAXM=5,ROOMS=['chat-global','chatglobal','sala0'];let ri=0,gotHi=0,ct=0,why='';
 /* ID do DONO: crie sua conta, abra seu PERFIL, copie o ID e cole aqui entre as aspas. Vazio = ninguém é dono. */
 const OWNER_ID='33044471';
 const GAME_URL='https://firestrike.rdz777zd.workers.dev';
@@ -7403,22 +7403,24 @@ if(c==='att'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);retu
 if(a.toLowerCase()==='cancelar'){ownerCast(2).then(ok=>{if(ok){attStop();add('','Atualização cancelada.',0,1)}});return}
 ownerCast(1).then(ok=>{if(ok){attStart();add('','Atualização iniciada para todos.',0,1)}});return}
 add('','Comando desconhecido. Use /ajuda',0,1)}
-function wsUrl(){let U='';try{U=(typeof ARR_WS_URL!=='undefined'?ARR_WS_URL:'')||localStorage.getItem('arr_ws')||''}catch(e){}if(!U)U='wss://armada-relay.rdz777zd.workers.dev';U=String(U).replace(/\/+$/,'');return/^wss:\/\//.test(U)?U+'/room/'+ROOM:''}
+function wsUrl(){let U='';try{U=(typeof ARR_WS_URL!=='undefined'?ARR_WS_URL:'')||localStorage.getItem('arr_ws')||''}catch(e){}if(!U)U='wss://armada-relay.rdz777zd.workers.dev';U=String(U).replace(/\/+$/,'');return/^wss:\/\//.test(U)?U+'/room/'+ROOMS[ri]:''}
 function myName(){try{return String(PN||'Voce').slice(0,14)}catch(e){return 'Voce'}}
 let box,msgs,inp,st,btn;
 function add(n,t,me,sys){if(!msgs)return;const d=document.createElement('div');if(sys){d.textContent=t}else{const b=document.createElement('b');b.textContent=n+': ';d.appendChild(b);d.appendChild(document.createTextNode(t))}
 msgs.appendChild(d);while(msgs.children.length>MAXM)msgs.removeChild(msgs.firstChild);msgs.scrollTop=msgs.scrollHeight}
-function setSt(t,ok){if(st){st.textContent=t;st.className=ok?'ok':''}}
+function setSt(t,ok){if(st){st.textContent=t?'chat: '+t:'';st.style.cssText='font:800 11px Arial;text-shadow:0 1px 3px #000;color:'+(ok?'#7dff9a':'#ffba7d')}}
 function badge(){if(!btn)return;const e=btn.querySelector('em');e.textContent=un>9?'9+':un;btn.classList.toggle('un',un>0)}
 function connect(q){const u=wsUrl();if(!u){setSt('offline');if(!q)add('','Chat indisponível aqui. Só funciona online.',0,1);return}
-if(ws&&ws.readyState<2)return;clearTimeout(rt);setSt('conectando...');
-let w;try{w=ws=new WebSocket(u)}catch(e){setSt('offline');return}
+if(ws&&ws.readyState<2)return;clearTimeout(rt);setSt('conectando...');gotHi=0;why='';
+let w;try{w=ws=new WebSocket(u)}catch(e){setSt('offline ('+e.message+')');return}
+clearTimeout(ct);ct=setTimeout(()=>{if(ws===w&&!gotHi){why='servidor não respondeu';try{w.close()}catch(e){}}},8000);
 w.onmessage=e=>{let d;try{d=JSON.parse(e.data)}catch(x){return}
- if(d.k==='hi'){myid=d.id;ready=true;tries=0;setSt('online',1);return}
+ if(d.k==='hi'){myid=d.id;ready=true;gotHi=1;tries=0;clearTimeout(ct);setSt('online',1);return}
  if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid&&d.m.u){const m=d.m;if(!OWNER_ID||Math.abs(Date.now()-(+m.ts||0))>300000)return;sha(OWNER_ID+':'+m.ts+':u'+m.u).then(h=>{if(h!==m.sg)return;if(m.u===1)attStart();else if(m.u===2)attStop()});return}
  if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid&&d.m.a){const m=d.m,x=String(m.x||'').slice(0,120);if(!OWNER_ID||!x||Math.abs(Date.now()-(+m.ts||0))>300000)return;sha(OWNER_ID+':'+m.ts+':'+x).then(h=>{if(h!==m.sg)return;addAn(x);try{soon('ANÚNCIO: '+x)}catch(e){}if(!open){un++;badge()}});return}
  if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid){const n=String(d.m.n||'?').slice(0,14),x=String(d.m.x||'').slice(0,120);if(!x)return;add(n,x,0);if(!open){un++;badge()}}};
-w.onclose=()=>{ready=false;if(ws===w)ws=null;setSt('desconectado');if(wsUrl()&&tries<20){tries++;rt=setTimeout(()=>connect(1),Math.min(30000,2000*tries))}};
+w.onclose=e=>{ready=false;clearTimeout(ct);if(ws===w)ws=null;if(!gotHi){ri=(ri+1)%ROOMS.length;why=why||('código '+(e&&e.code||'?'))}
+setSt((gotHi?'desconectado':'sem conexão ('+why+')')+' - tentando de novo...');if(wsUrl()){tries++;rt=setTimeout(()=>connect(1),Math.min(15000,1500*Math.min(tries,10)))}};
 w.onerror=()=>{try{w.close()}catch(e){}}}
 function send(){const x=inp.value.replace(/\s+/g,' ').trim().slice(0,120);if(!x)return;if(x.charAt(0)==='/'){inp.value='';runCmd(x);return}
 const now=Date.now();if(now-lastSend<1200){return}
@@ -7428,11 +7430,12 @@ function place(){const vv=window.visualViewport,kb=vv?Math.max(0,Math.round(inne
 function toggle(f){open=f===undefined?!open:f;if(open){place();box.classList.add('on');un=0;badge();if(!ws)connect();setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(e){}},50)}else box.classList.remove('on')}
 function init(){if(btn||!$('sqi'))return false;
 document.body.insertAdjacentHTML('beforeend','<div id="gchp"><div class="gm" id="gcm"></div><div class="gi"><input id="gcin" maxlength="120" placeholder="Conversar..." autocomplete="off"><button type="button" id="gcs">ENVIAR</button></div></div>');
-box=$('gchp');msgs=$('gcm');inp=$('gcin');st=null;
+box=$('gchp');msgs=$('gcm');inp=$('gcin');st=document.createElement('div');msgs.insertAdjacentElement('beforebegin',st);
 btn=document.createElement('button');btn.type='button';btn.id='gchb';btn.innerHTML='CHAT <em>0</em>';$('sqi').insertAdjacentElement('afterend',btn);
 btn.onclick=()=>toggle();$('gcs').onclick=send;
 inp.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();send()}});inp.addEventListener('keyup',e=>e.stopPropagation());
 add('','Chat global: converse com quem está online. /ajuda p/ comandos.',0,1);connect(1);
+addEventListener('online',()=>{tries=0;if(!ws)connect(1)});document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!ws){tries=0;connect(1)}});
 const pl=$('play');if(pl)pl.addEventListener('click',()=>toggle(false),true);
 setInterval(()=>{const m=$('menu');if(open&&m&&(m.classList.contains('hide')||getComputedStyle(m).display==='none'))toggle(false)},800);
 addEventListener('resize',()=>{if(open)place()});
