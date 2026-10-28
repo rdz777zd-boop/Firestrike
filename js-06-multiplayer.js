@@ -65,6 +65,7 @@ function ev(m){const b=MP.bus;if(b)b.send(m)}
 function owns(from,i){const f=G.f[i];if(!f)return false;return f.hum?MP.slots[from]===i:from===MP.hpid}
 function onEv(from,m){if(!m||typeof m!=='object')return;if(m.t==='chat'){if(window.ARR_CHAT)window.ARR_CHAT(from,m);return}if(m.t==='cd'){if(window.ARR_CD)window.ARR_CD(from,m);return}if(m.t==='pos'){if(window.ARR_POS)window.ARR_POS(from,m);return}if(m.t==='kk'){if(window.ARR_KK)window.ARR_KK(from,m);return}if(m.t==='sb'){if(window.ARR_SB)window.ARR_SB(from,m);return}
  switch(m.t){
+ case 'ic':{if(!MP.on||!G)break;const f=G.f[m.i];if(!f||!f.mx||!owns(from,m.i))break;const x=+m.x,y=+m.y,a=+m.a;if(!isFinite(x)||!isFinite(y)||!isFinite(a)||typeof iceMake!=='function')break;if(!G.iw)G.iw=[];if(!G.ig)G.ig=[];MP.icr=1;try{iceMake({tx:x,ty:y,a,o:f,tm:f.tm})}catch(e){}MP.icr=0;break}
  case 'go':begin(m,from);break;
  case 'sh':if(!MP.on||!G||!Array.isArray(m.a))break;for(const e of m.a){const f=G.f[e[0]];if(!f||!f.mx||f.dead||!owns(from,e[0]))continue;
    const aimMe=!MP.host&&!f.hum&&e[5]===MP.me&&G.p&&!G.p.dead;if(!aimMe){f.x=e[3];f.y=e[4]}
@@ -72,8 +73,6 @@ function onEv(from,m){if(!m||typeof m!=='object')return;if(m.t==='chat'){if(wind
  case 'sn':if(!MP.on||!G||MP.host||from!==MP.hpid)break;snap(m);break;
  case 'ht':{if(!MP.on||!G||!MP.host)break;const si=MP.slots[from];if(si==null)break;const sf=G.f[si],t=G.f[m.v];
    if(!sf||!t||sf.dead||t.dead||t.mx||t.isP||t.hum||t.st!='ground'||sf.tm===t.tm)break;const d=+m.d;if(!(d>0)||d>400)break;
-   /* valida o acerto: alcance da arma, atirador dentro de parede e linha de tiro (parede/gelo no caminho) */
-   {const w0=WP[sf.ws[0]||0]||{},dx0=sf.x-t.x,dy0=sf.y-t.y,mr=(w0.rg||0)*1.6+250;if(w0.rg&&dx0*dx0+dy0*dy0>mr*mr)break;if(inWall(sf.x,sf.y))break;try{if(typeof los==='function'&&!los(sf,t))break}catch(x){}}
    MP.ht=1;_crit=m.c?1:0;try{hurt(t,d,sf)}catch(x){console.error(x)}_crit=0;MP.ht=0;break}
  case 'hh':{if(!MP.on||!G||!G.p||G.p.mx)break;const si=MP.slots[from];if(si==null)break;const sf=G.f[si],t=G.f[m.v];
    if(!sf||!t||t!==G.p||sf.dead||t.dead||t.st!='ground'||sf.tm===t.tm)break;const d=+m.d;if(!(d>0)||d>400)break;
