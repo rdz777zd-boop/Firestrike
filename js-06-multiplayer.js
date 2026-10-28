@@ -61,6 +61,7 @@ if(typeof iceMake==='function'){const ic0=iceMake;iceMake=function(q){const r=ic
 const z0=zupd;zupd=function(dt){if(MP.on&&!MP.host)return;return z0(dt)};
 ['infApply','ytApply','frApply'].forEach(n=>{const o=window[n];if(typeof o!='function')return;window[n]=function(){if(MP.on)return;return o.apply(this,arguments)}});
 /* ---------- anti-cheat v159 (um unico bloco: envolve MPT e onEv) ---------- */
+const inWall=(x,y)=>{try{return typeof wallAt==='function'&&!!(wallAt(x,y)&&wallAt(x+12,y)&&wallAt(x-12,y)&&wallAt(x,y+12)&&wallAt(x,y-12))}catch(e){return false}};
 {const mpt0=window.MPT;window.MPT=function(f,dt){try{if(MP.on&&f.mx&&f.hum){const t=MP.st[f.i];if(t&&t.st==='ground'&&inWall(t.x,t.y)){t.x=f.x;t.y=f.y;t.vx=0;t.vy=0}}}catch(e){}return mpt0.apply(this,arguments)}}
 {const onEv0=onEv;onEv=function(from,m){try{
  if(m&&typeof m==='object'&&MP.on&&G){
