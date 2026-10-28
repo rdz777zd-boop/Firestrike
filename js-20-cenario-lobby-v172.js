@@ -31,7 +31,7 @@ const paths=async u=>['/accounts/'+u,'/inbox/ac'+(await sha('acc:'+u)).slice(0,2
 /* ---- ID unico da conta (8 digitos, indice /ids/<id> checado antes de gravar) ---- */
 const idp=i=>['/ids/'+i,'/inbox/id'+i],PUTH={method:'PUT',headers:{'Content-Type':'application/json'}};
 /* verificado permanente (dado pelo dono via ID): /verified/<id> */
-const namesOfId=async id=>{for(const p of['/ids/'+id,'/inbox/id'+id]){try{const v=await J(p),u=v&&typeof v.u=='string'?v.u:'';if(/^[A-Za-z0-9_.-]{3,20}$/.test(u)){const o=[u];try{const ac=await getAcc(u.toLowerCase());if(ac&&ac.nk)o.push(ac.nk)}catch(e){}return o}}catch(e){}}return[]};
+const namesOfId=async id=>{for(const p of['/ids/'+id,'/inbox/id'+id]){try{const v=await J(p),u=v&&typeof v.u=='string'?v.u:'';if(/^[A-Za-z0-9_]{3,12}$/.test(u)){const o=[u];try{const ac=await getAcc(u.toLowerCase());if(ac&&ac.nk)o.push(ac.nk)}catch(e){}return o}}catch(e){}}return[]};
 const nickOfId=async id=>{for(const p of['/ids/'+id,'/inbox/id'+id]){try{const v=await J(p),u=v&&typeof v.u=='string'?v.u:'';if(/^[A-Za-z0-9_]{3,12}$/.test(u)){let nk=u;try{const ac=await getAcc(u.toLowerCase());if(ac&&ac.nk)nk=ac.nk}catch(e){}return nk}}catch(e){}}return''};
 const vcp=i=>['/vclaim/'+i,'/inbox/vc'+i];
 async function vcGet(id){for(const p of vcp(id)){try{const v=await J(p);if(v)return v}catch(e){}}return null}
@@ -85,7 +85,8 @@ window.arrVerSet=async(id,on)=>{id=String(id||'').trim();if(String(window.ARR_UI
  await VL();return{n}};
 const rid=()=>{let n;try{n=crypto.getRandomValues(new Uint32Array(1))[0]}catch(e){n=Math.floor(Math.random()*4294967295)}return String(10000000+n%90000000)};
 async function newId(k){for(let t=0;t<10;t++){const i=rid();let taken=0;for(const p of idp(i)){try{const v=await J(p);if(v){taken=1;break}await J(p,Object.assign({body:JSON.stringify({u:k})},PUTH));return i}catch(e){}}if(!taken)return''}return''}
-async function ensureId(k,a){if(a&&a.i)return String(a.i);try{const f=await getAcc(k);if(f&&f.i)return String(f.i)}catch(e){}const i=await newId(k);if(!i)return'';const rec=Object.assign({},a,{i});for(const q of await paths(k)){try{await J(q,Object.assign({body:JSON.stringify(rec)},PUTH));try{const v=await getAcc(k);if(v&&v.i)return String(v.i)}catch(e){}return i}catch(e){}}return''}
+async function idFix(i,k){try{let ok=0;for(const p of idp(i)){try{const v=await J(p);ok=1;if(v&&v.u)return}catch(e){}}if(!ok)return;for(const p of idp(i)){try{await J(p,Object.assign({body:JSON.stringify({u:k})},PUTH));return}catch(e){}}}catch(e){}}
+async function ensureId(k,a){if(a&&a.i){idFix(String(a.i),k);return String(a.i)}try{const f=await getAcc(k);if(f&&f.i){idFix(String(f.i),k);return String(f.i)}}catch(e){}const i=await newId(k);if(!i)return'';const rec=Object.assign({},a,{i});for(const q of await paths(k)){try{await J(q,Object.assign({body:JSON.stringify(rec)},PUTH));try{const v=await getAcc(k);if(v&&v.i)return String(v.i)}catch(e){}return i}catch(e){}}return''}
 const LK='arr_acc:';
 const lAcc=k=>{try{const v=JSON.parse(localStorage.getItem(LK+k)||'null');return v&&v.h&&String(v.u||'').toLowerCase()===k?v:null}catch(e){return null}};
 const lSave=(k,r)=>{try{localStorage.setItem(LK+k,JSON.stringify(r))}catch(e){}};
