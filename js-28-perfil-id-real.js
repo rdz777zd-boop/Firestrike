@@ -8,20 +8,8 @@ const o0=ppOpen;let tok=0,timer=0;
 const num=(v,m)=>{v=Math.floor(+v);return v>0?Math.min(v,m):0};
 const sn=(v,n)=>String(v==null?'':v).replace(/[^\p{L}\p{N} _.-]/gu,'').replace(/\s+/g,' ').trim().slice(0,n);
 const colr=v=>/^#[0-9a-f]{6}$/i.test(String(v))?v:'#8b9bb2';
-const IDRE=/^\d{6,10}$/;
-async function getJ(p){const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);
- try{const r=await fetch(DB+p+'.json',{signal:c.signal,cache:'no-store'});if(!r.ok)return null;return await r.json()}catch(e){return null}finally{clearTimeout(t)}}
-const fetchRec=uid=>getJ('/players/'+uid).then(v=>v&&typeof v=='object'?v:null);
-async function sha(s){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return''}}
-const VC={};
-/* confere o ID que o proprio jogador publicou: tem que existir no indice de IDs e, se a conta tiver nick, o nick tem que bater */
-async function verifyAid(aid,nick){const k=aid+'|'+nick.toLowerCase(),c=VC[k];if(c&&Date.now()-c.t<300000)return c.v;
- let ok=false;
- try{let ix=null;for(const p of['/ids/'+aid,'/inbox/id'+aid]){const v=await getJ(p);if(v&&typeof v.u=='string'){ix=v;break}}
-  if(ix&&/^[A-Za-z0-9_]{3,12}$/.test(ix.u)){ok=true;const u=ix.u.toLowerCase(),h=await sha('acc:'+u);
-   if(h){for(const p of['/accounts/'+u,'/inbox/ac'+h.slice(0,20)]){const a=await getJ(p);if(a&&a.h&&String(a.u||'').toLowerCase()===u){const nk=String(a.nk||'').toLowerCase();if(nk&&nk!==nick.toLowerCase())ok=false;break}}}}}catch(e){}
- VC[k]={v:ok,t:Date.now()};return ok}
-const ago=t=>{const s=Math.max(0,(Date.now()-t)/1000);return s<90?'agora':s<5400?'há '+Math.round(s/60)+' min':s<129600?'há '+Math.round(s/3600)+' h':'há '+Math.round(s/86400)+' d'};
+async function fetchRec(uid){const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);
+ try{const r=await fetch(DB+'/players/'+uid+'.json',{signal:c.signal,cache:'no-store'});if(!r.ok)return null;const v=await r.json();return v&&typeof v=='object'?v:null}catch(e){return null}finally{clearTimeout(t)}}
 function uidOf(d){if(UIDRE.test(String(d.key||'')))return d.key;try{const p=window.arrPlayerByName&&window.arrPlayerByName(d.n);if(p&&UIDRE.test(String(p.key||'')))return p.key}catch(e){}return''}
 const sig=d=>[d.n,d.k,d.w,d.g,d.rp,d.rg,d.rw,d.rt,d.ch,d.tj,JSON.stringify(d.eq||0),d.ep,d.er,d.c?d.c.tag+'|'+d.c.n+'|'+d.c.col:''].join('~');
 function merge(d,r){
@@ -38,14 +26,23 @@ function merge(d,r){
    try{if(typeof PC!=='undefined'&&PC&&PC.tag===tag&&PC.n===nm)id=PC.id}catch(e){}
    d.c={id,n:nm,tag,col,sym:(sy>=0&&sy<sl)?sy:0}}}
  else d.c=null}
-function showId(id){const h=document.querySelector('#ppg .hero .hsub');if(!h)return;let e=h.querySelector('.pid');
- if(!id){if(e)e.remove();return}
- if(!e){e=document.createElement('span');e.className='pid';h.appendChild(e)}
- e.title='ID da conta';e.textContent='ID '+id}
-function live(d){const my=++tok;clearTimeout(timer);let id='',tried=0;
+async function lookupId(d,rec){let v='';
+ try{const a=rec&&String(rec.aid||'');if(a&&IDRE.test(a)&&await verifyAid(a,d.n))v=a}catch(e){}
+ if(!v&&window.arrIdOfNick){try{v=(await window.arrIdOfNick(d.n))||''}catch(e){}}
+ return v}
+/* etiquetas no perfil: ID da conta e "dados de ha X" (mostra por que um jogador antigo nao muda) */
+function badges(S){const h=document.querySelector('#ppg .hero .hsub');if(!h)return;
+ let e=h.querySelector('.pidx'),f=h.querySelector('.pidf');
+ if(!e){e=document.createElement('span');e.className='pid pidx';h.appendChild(e)}
+ e.textContent=S.id?'ID '+S.id:(S.done?'ID: sem conta':'ID …');
+ e.title=S.id?'ID da conta':'Sem ID de conta: o jogador nunca entrou com conta ou o ID ainda não foi confirmado';
+ const t=S.rec?(+S.rec.t||0):0;
+ const txt=S.rec?(t?'dados de '+ago(t):'dados do servidor'):(S.done?'sem registro online':'');
+ if(txt){if(!f){f=document.createElement('span');f.className='pid pidf';f.style.opacity='.7';h.appendChild(f)}f.textContent=txt;f.title='Última vez que o servidor recebeu mudanças deste jogador'}else if(f)f.remove()}
+function live(d){const my=++tok;clearTimeout(timer);const S={id:'',done:0,rec:null};let tried=0,ln='';
  const alive=()=>my===tok&&q('ppf')&&!q('ppf').classList.contains('hide');
- const idp=()=>{if(!window.arrIdOfNick)return;const n=d.n;window.arrIdOfNick(n).then(v=>{if(!alive()||n!==d.n)return;id=v||'';showId(id)}).catch(()=>{})};
- idp();
+ const paint=()=>{try{badges(S)}catch(e){}};
+ paint();
  const step=async()=>{
   if(!alive())return;
   let uid=uidOf(d);
@@ -53,8 +50,13 @@ function live(d){const my=++tok;clearTimeout(timer);let id='',tried=0;
   if(!alive())return;
   const rec=uid?await fetchRec(uid):null;
   if(!alive())return;
-  if(rec){const s0=sig(d),n0=d.n;merge(d,rec);
-   if(sig(d)!==s0){o0.call(null,d);showId(id);if(d.n!==n0){id='';idp()}}}
+  S.rec=rec;
+  if(rec){const s0=sig(d);merge(d,rec);
+   if(sig(d)!==s0){const P=q('ppf'),sc=P.scrollTop;o0.call(null,d);P.scrollTop=sc}}
+  paint();
+  const key=d.n.toLowerCase()+'|'+String(rec&&rec.aid||'');
+  if(!S.id||key!==ln){ln=key;const v=await lookupId(d,rec);if(!alive())return;S.id=v;S.done=1;paint()}
+  else S.done=1;
   timer=setTimeout(step,10000)};
  step()}
 ppOpen=function(d){const r=o0.apply(this,arguments);try{if(d&&!d.me)live(d);else tok++}catch(e){}return r};
