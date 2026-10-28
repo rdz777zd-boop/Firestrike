@@ -4825,7 +4825,7 @@ if(!Array.isArray(QXN)){const t=Date.now();QXN=[{t,m:'Bem-vindo ao Armada Royale
 function qxBadge(){const n=QXN.filter(x=>!x.r).length,e=$('ntfn');e.textContent=n>9?'9+':n;e.style.display=n?'':'none'}
 function qxAdd(m){QXN.unshift({t:Date.now(),m,r:0});if(QXN.length>50)QXN.length=50;qxSv('arr_nt',QXN);qxBadge();if(!$('qxnp').classList.contains('hide')){QXN.forEach(n=>n.r=1);qxNtR()}}
 function qxAgo(t){const s=(Date.now()-t)/1000;return s<60?'agora':s<3600?Math.floor(s/60)+' min':s<86400?Math.floor(s/3600)+' h':Math.floor(s/86400)+' d'}
-function qxNtR(){const g=$('qxnt');g.innerHTML='';if(!QXN.length){g.innerHTML='<div class="qxe">Nenhuma notificação</div>';return}for(const n of QXN){const d=document.createElement('div');d.className='qxr'+(n.r?'':' new');d.innerHTML='<div class="qxt">'+esc(n.m)+'</div><small>'+qxAgo(n.t)+'</small>';if(n.rw){const b=document.createElement('button');b.className='btn'+(n.cl?' sec':'');b.textContent=n.cl?'COLETADO':'COLETAR';b.disabled=!!n.cl;b.onclick=e=>{e.stopPropagation();clClaim(n)};d.appendChild(b)}g.appendChild(d)}}
+function qxNtR(){const g=$('qxnt');g.innerHTML='';if(!QXN.length){g.innerHTML='<div class="qxe">Nenhuma notificação</div>';return}for(const n of QXN){const d=document.createElement('div');d.className='qxr'+(n.r?'':' new');d.innerHTML='<div class="qxt">'+esc(n.m)+'</div><small>'+qxAgo(n.t)+'</small>';if(n.rw){const b=document.createElement('button');b.className='btn'+(n.cl?' sec':'');b.textContent=n.cl?'COLETADO':'COLETAR';b.disabled=!!n.cl;b.onclick=e=>{e.stopPropagation();clClaim(n)};d.appendChild(b)}else if(n.act){const b=document.createElement('button');b.className='btn'+(n.cl?' sec':'');b.textContent=n.cl?(n.act=='ver'?'COLETADO':'LIDO'):(n.al||'ABRIR');b.disabled=!!(n.cl&&n.act=='ver');b.onclick=e=>{e.stopPropagation();try{window.qxAct&&window.qxAct(n,b)}catch(x){}};d.appendChild(b)}g.appendChild(d)}}
 {const pop=clNotify;clNotify=function(m){qxAdd(m);pop(m)};
 const QXMS=['Bora jogar?','Alguém pra squad?','GG pessoal!','Vamos treinar pra guerra de clãs?','Cheguei! Quem vem?','Boa partida ontem!'];
 function chat(){try{if(mode=='menu'&&PC){const L=clRoster(PC).filter(n=>n!==PN&&String(n).toLowerCase()!='voce');if(L.length){const m=L[Math.random()*L.length|0]+' ['+PC.tag+']: '+QXMS[Math.random()*QXMS.length|0];qxAdd(m);pop(m)}}}catch(e){}setTimeout(chat,30000+Math.random()*50000)}
@@ -4836,7 +4836,7 @@ $('misb').onclick=()=>{qxMsR();$('qxmp').classList.remove('hide')};
 $('dlyb').onclick=()=>{qxDlR();$('qxdp').classList.remove('hide')};
 $('qxdk').onclick=qxClaimD;
 $('ntfb').onclick=()=>{qxNtR();$('qxnp').classList.remove('hide');QXN.forEach(n=>n.r=1);qxSv('arr_nt',QXN);qxBadge()};
-$('qxnc').onclick=()=>{QXN=QXN.filter(n=>n.rw&&!n.cl);qxSv('arr_nt',QXN);qxNtR();qxBadge()};
+$('qxnc').onclick=()=>{QXN=QXN.filter(n=>(n.rw||n.act=='ver')&&!n.cl);qxSv('arr_nt',QXN);qxNtR();qxBadge()};
 
 if(qxDl().can&&qxLd('arr_ntd','')!==qxTd()){qxSv('arr_ntd',qxTd());qxAdd('Seu prêmio DAILY de hoje está disponível!')}
 qxPend();
@@ -5891,6 +5891,11 @@ let UID=ls('arr_uid');
 if(!UIDRE.test(UID||'')){UID=Array.from(crypto.getRandomValues(new Uint8Array(10)),b=>(b%36).toString(36)).join('')+Date.now().toString(36);try{localStorage.setItem('arr_uid',UID)}catch(e){}}
 
 const myKey=()=>PC?(PC.own?UID+'_'+PC.id:PC.id):null;
+/* clã desfeito pelo dono do jogo: marca em /clandead/<key> (ou /inbox/cd<key>) para o líder não recriar */
+const DEAD=new Set(),DCH={};
+async function deadChk(k){if(DEAD.has(k))return 1;if(DCH[k]&&Date.now()-DCH[k]<60000)return 0;DCH[k]=Date.now();
+ for(const q of['/clandead/'+k,'/inbox/cd'+k]){try{const v=await J(q+'.json');if(v){DEAD.add(k);return 1}}catch(e){}}return 0}
+async function ownDead(){if(!(PC&&PC.own)||!ON)return 0;const k=myKey();if(k&&await deadChk(k)){PC=null;try{svPC();clBtn();mref();soon('O dono do jogo desfez o seu clã')}catch(e){}return 1}return 0}
 const lid=key=>(PC&&myKey()===key)?PC.id:key;
 
 /* ---------- HTTP ---------- */
@@ -5904,6 +5909,7 @@ let lastP='',lastC='',lastS='',busy=0;
 async function publish(force){
  if(!ON||busy||window.__arrDead)return;busy=1;
  try{
+  await ownDead();
   const m=PRS.me||{},ck=myKey();
   const rec={n:sn(PN,12)||'Jogador',k:num(m.k,1e7),w:num(m.w,1e7),g:num(m.g,1e7),rp:num(m.rp,1e6),rg:num(m.rg,1e7),rw:num(m.rw,1e7),rt:num(m.rt,1e7)};
   try{const cq=Math.floor(+CH);if(cq>=0&&cq<100)rec.ch=cq;const tq=trajeOf(CH);if(tq)rec.tj=tq;const qe={};let qn=0;for(const k in EQ){const a=Math.floor(+k),b=Math.floor(+EQ[k]);if(a>0&&a<100&&b>0&&b<1000&&qn<40){qe[a]=b;qn++}}if(qn)rec.eq=qe;if(EQP>0&&EQP<1000)rec.ep=Math.floor(EQP);if(EQR>0&&EQR<1000)rec.er=Math.floor(EQR)}catch(e){}
@@ -5934,7 +5940,7 @@ async function pull(){
   const q=f=>J('/players.json?orderBy=%22'+f+'%22&limitToLast=60');
   const [a,b,c,cl,st,rq,ib]=await Promise.all([q('k'),q('w'),q('rp'),J('/clans.json'),J('/clanstats.json'),J('/requests.json').catch(()=>null),J('/inbox/'+UID+'.json').catch(()=>null)]);
   REM.raw={P:Object.assign({},REM.extra,a,b,c),C:cl||{},S:st||{},R:rq||{}};REM.ok=Date.now();REM.err=0;REM.loaded=1;
-  rebuild();const jn=await inboxHandle(ib);try{await friendInbox(ib)}catch(e){}if(jn){rebuild();publish(1)}checkMyClan();notifyReq();
+  rebuild();const jn=await inboxHandle(ib);try{await friendInbox(ib)}catch(e){}if(jn){rebuild();publish(1)}checkMyClan();notifyReq();try{await ownDead()}catch(e){}
  }catch(e){REM.err=1}
  refreshUI();
 }
@@ -6091,6 +6097,26 @@ clRandWin=function(){const L=allCl().filter(c=>!(PC&&c.id==PC.id));if(!L.length)
 /* ganchos: sincroniza ao fim das partidas, ao abrir os menus e periodicamente */
 const sync=async f=>{await publish(f);await pull()};
 window.arrPub=()=>{busy=0;return sync(1)};
+window.arrClans=()=>{const C=REM.raw.C||{},o=[];for(const k in C){if(!KEYRE.test(k)||!C[k]||typeof C[k]!='object')continue;const r=C[k];o.push({key:k,n:sn(r.n,20)||'Clã',tag:tagc(r.tg),on:sn(r.on,12)||'?'})}return o};
+window.arrClanKill=async q=>{if(!ON)return{e:'Servidor de clãs indisponível.'};if(!(window.arrIsOwner&&window.arrIsOwner()))return{e:'Só o dono pode usar esse comando.'};
+ q=String(q||'').trim().toLowerCase().replace(/^\[|\]$/g,'');if(!q)return{e:'Informe a TAG ou o nome do clã.'};
+ try{await pull()}catch(e){}
+ const L=window.arrClans();let m=L.filter(c=>c.key.toLowerCase()===q);
+ if(!m.length)m=L.filter(c=>c.tag.toLowerCase()===q);
+ if(!m.length)m=L.filter(c=>c.n.toLowerCase()===q);
+ if(!m.length)m=L.filter(c=>c.n.toLowerCase().indexOf(q)>=0);
+ if(!m.length)return{e:'Clã "'+q+'" não encontrado. Use /clas para ver a lista.'};
+ if(m.length>1)return{e:'Mais de um clã: '+m.slice(0,5).map(c=>'['+c.tag+'] '+c.n+' (dono @'+c.on+')').join(', ')+'. Use o nome completo.'};
+ const c=m[0],k=c.key;let tomb=0;
+ for(const t of['/clandead/'+k,'/inbox/cd'+k]){try{await put(t,{t:Date.now()});tomb=1;break}catch(e){}}
+ let del1=0;
+ try{await del('/clans/'+k);del1=1}catch(e){}
+ try{await del('/clanstats/'+k)}catch(e){}try{await del('/requests/'+k)}catch(e){}
+ if(!del1&&!tomb)return{e:'Falha ao desfazer (servidor recusou).'};
+ DEAD.add(k);
+ if(PC&&myKey()===k){PC=null;try{svPC();clBtn();mref()}catch(e){}}
+ try{await pull()}catch(e){}
+ return{ok:1,n:c.n,tag:c.tag,on:c.on,tomb}};
 window.arrWipe=async()=>{window.__arrDead=1;
  const R=REM.raw.R||{},ks=new Set([ls('arr_lck'),myKey()]);
  for(const k of Object.keys(R))if(R[k]&&R[k][UID])ks.add(k);
@@ -6966,9 +6992,6 @@ ui()
 })();
 </script>
 <style>
-#upb{position:fixed;z-index:60;top:max(8px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);font:900 12px 'Trebuchet MS',Arial,sans-serif;letter-spacing:1px;color:#ff6600;background:#171311;border:1.5px solid #ff6600;border-radius:999px;padding:6px 14px;cursor:pointer;box-shadow:0 0 8px #ff660055}
-#upb i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#00ff88;margin-right:6px;vertical-align:1px}
-#menu.hide~#upb,#upb.hide{display:none}
 #upn{position:fixed;inset:0;z-index:99990;display:flex;align-items:center;justify-content:center;padding:max(10px,env(safe-area-inset-top)) 12px max(10px,env(safe-area-inset-bottom));box-sizing:border-box;background:rgba(10,9,8,.92);font-family:'Trebuchet MS',Arial,sans-serif;color:#ffefe0;touch-action:pan-y}
 #upn.hide{display:none}
 #upn .bx{width:min(560px,100%);max-height:100%;display:flex;flex-direction:column;background:#171311;border:2px solid #ff6600;border-radius:16px;box-shadow:0 0 18px #ff660044;overflow:hidden}
@@ -6987,45 +7010,78 @@ ui()
 #upn .ok{font:900 18px 'Trebuchet MS',Arial,sans-serif;color:#15100d;background:linear-gradient(#ff6600,#b54800);border:2px solid #0e0d0c;border-radius:12px;padding:10px 40px;box-shadow:0 4px 0 #4d392b;cursor:pointer}
 #upn .ok:active{transform:translateY(3px);box-shadow:0 1px 0 #4d392b}
 </style>
-<button id="upb" type="button"><i></i>NOVIDADES</button>
 <div id="upn" class="hide" role="dialog" aria-modal="true" aria-label="Notas de atualização">
  <div class="bx">
-  <div class="hd"><small>v152 · LITE</small><h2>NOTAS DE ATUALIZAÇÃO</h2></div>
-  <div class="bd">
-   <h3>NOVO</h3>
-   <ul>
-    <li><b>Atualização automática.</b> Quando uma versão nova do jogo for publicada, ele detecta sozinho e recarrega. Se você estiver em partida, espera terminar.</li>
-   </ul>
-   <h3>MAIS LEVE</h3>
-   <ul>
-    <li><b>Gravação de replay desligada.</b> Ela gravava a partida inteira em vídeo enquanto você jogava e era a maior causa de lag e travadas.</li>
-    <li><b>Qualidade gráfica otimizada.</b> Resolução, distância de visão e quantidade de partículas foram reduzidas nos 3 níveis. Bordas suaves só no nível Alta.</li>
-    <li><b>HUD sem brilhos pesados.</b> Os efeitos de sombra/brilho desenhados em tempo real nos textos e botões da partida foram removidos.</li>
-    <li><b>Menus mais rápidos.</b> Removidos o desfoque de fundo, as sombras em imagens e as animações de brilho infinitas dos ícones.</li>
-    <li><b>Carregamento menor.</b> A imagem da tela de carregamento foi comprimida, e a prévia das skins usa menos resolução.</li>
-   </ul>
-   <h3 class=\"r\">REMOVIDO</h3>
-   <ul>
-    <li>Botão e cartão de <b>Replay</b> na tela de resultado.</li>
-   </ul>
-   <div class="tip">Dica: se ainda estiver pesado, abra as configurações e escolha a qualidade <b>Baixa</b> e 30 FPS. O ajuste automático de resolução continua ativo.</div>
-  </div>
+  <div class="hd"><small id="upv"></small><h2>NOTAS DE ATUALIZAÇÃO</h2></div>
+  <div class="bd" id="upbd"></div>
   <div class="ft"><button id="upok" class="ok" type="button">ENTENDI</button></div>
  </div>
 </div>
 <script>
+/* ===== NOTAS DE ATUALIZAÇÃO (aparecem em AVISOS) =====
+   COMO USAR: a cada mudança no jogo, adicione UMA entrada NO TOPO da lista ARR_NOTAS
+   com v = número seguinte. Todo jogador recebe um aviso novo em AVISOS automaticamente.
+   Tipos: NOVO, CORRIGIDO, MELHORADO, REMOVIDO. */
+var ARR_NOTAS=[
+ {v:154,d:'27/10/2026',t:'Selo corrigido, chat em janela e comando de clã',i:[
+  ['CORRIGIDO','<b>Selo VERIFICADO e cor do nome</b> agora aparecem no seu perfil logo após coletar (antes o nome não casava com o nick).'],
+  ['MELHORADO','<b>Chat global em janela pequena</b> com botão X para fechar, e histórico que rola.'],
+  ['NOVO','<b>Comandos do dono:</b> /clas lista os clãs e /desfazercla TAG desfaz um clã. Os membros saem automaticamente.']]},
+ {v:153,d:'27/10/2026',t:'Verificado por coleta + avisos',i:[
+  ['NOVO','<b>Selo VERIFICADO agora é entregue em AVISOS.</b> Quando o dono concede, o jogador recebe um aviso e precisa tocar em COLETAR para ativar o selo.'],
+  ['NOVO','<b>Notas de atualização em AVISOS.</b> Cada versão nova gera um aviso com botão LER. O botão flutuante NOVIDADES saiu.'],
+  ['CORRIGIDO','<b>Botão que ficava em cima do menu.</b> Removido da barra superior.'],
+  ['CORRIGIDO','<b>Comando /verificar</b> não dá mais "Falha ao salvar" quando o servidor bloqueia o caminho principal.']]},
+ {v:152,d:'',t:'Versão LITE',i:[
+  ['NOVO','<b>Atualização automática.</b> Quando uma versão nova do jogo for publicada, ele detecta sozinho e recarrega. Se você estiver em partida, espera terminar.'],
+  ['MELHORADO','<b>Gravação de replay desligada.</b> Ela gravava a partida inteira em vídeo e era a maior causa de lag.'],
+  ['MELHORADO','<b>Qualidade gráfica otimizada.</b> Resolução, distância de visão e partículas reduzidas nos 3 níveis.'],
+  ['MELHORADO','<b>HUD, menus e carregamento mais leves.</b> Sem brilhos pesados, sem desfoque de fundo e com imagens menores.'],
+  ['REMOVIDO','Botão e cartão de <b>Replay</b> na tela de resultado.']]}
+];
 (function(){
- var V='152',K='arr_upn_seen',n=document.getElementById('upn'),b=document.getElementById('upb'),m=document.getElementById('menu');
- function seen(){try{return localStorage.getItem(K)===V}catch(e){return false}}
- function mark(){try{localStorage.setItem(K,V)}catch(e){}}
- function open(){n.classList.remove('hide')}
- function close(){n.classList.add('hide');mark()}
- b.onclick=open;
+ var K='arr_cl_seen',n=document.getElementById('upn'),bd=document.getElementById('upbd'),vt=document.getElementById('upv');
+ var COR={NOVO:'#00ff88',CORRIGIDO:'#4db8ff',MELHORADO:'#ffc400',REMOVIDO:'#ff6b6b'};
+ function esc(t){return String(t).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+ function render(v){
+  var e=ARR_NOTAS.filter(function(x){return x.v===v})[0]||ARR_NOTAS[0];if(!e)return;
+  vt.textContent='v'+e.v+(e.d?' · '+e.d:'');
+  var h='<h3 style="color:#ffefe0;font-size:15px;margin:4px 0 8px">'+esc(e.t)+'</h3><ul>';
+  e.i.forEach(function(it){h+='<li><span style="font-weight:900;font-size:11px;letter-spacing:1px;color:'+(COR[it[0]]||'#00ff88')+'">'+it[0]+'</span><br>'+it[1]+'</li>'});
+  bd.innerHTML=h+'</ul>';bd.scrollTop=0
+ }
+ function open(v){render(v);n.classList.remove('hide')}
+ function close(){n.classList.add('hide')}
  document.getElementById('upok').onclick=close;
  n.addEventListener('click',function(e){if(e.target===n)close()});
  addEventListener('keydown',function(e){if(e.key==='Escape'&&!n.classList.contains('hide'))close()});
- if(m)m.parentNode.insertBefore(b,m.nextSibling);
- if(!seen()){var t=setInterval(function(){var l=document.getElementById('ldr');if(!l||l.classList.contains('hid')||l.classList.contains('out')||!document.body.contains(l)){clearInterval(t);setTimeout(open,350)}},300);setTimeout(function(){clearInterval(t)},20000)}
+ /* acao dos botoes de AVISOS (LER nota / COLETAR selo) */
+ window.qxAct=function(nt,btn){
+  if(nt.act==='upn'){open(nt.v);nt.cl=1;try{qxSv('arr_nt',QXN)}catch(e){}if(btn){btn.textContent='LIDO'}return}
+  if(nt.act==='ver'){
+   if(!window.arrVerClaim){soon('Indisponível agora');return}
+   if(btn){btn.disabled=true;btn.textContent='...'}
+   window.arrVerClaim().then(function(r){
+    if(r&&r.ok){nt.cl=1;nt.m='Selo VERIFICADO coletado e ativo!';try{qxSv('arr_nt',QXN);qxNtR();qxBadge()}catch(e){}soon('Selo VERIFICADO ativado!')}
+    else{if(btn){btn.disabled=false;btn.textContent='COLETAR'}soon((r&&r.e)||'Falha ao coletar')}
+   }).catch(function(){if(btn){btn.disabled=false;btn.textContent='COLETAR'}soon('Falha ao coletar')})
+  }
+ };
+ /* gera os avisos das versoes ainda nao vistas (jogador novo: so a mais recente) */
+ function push(){
+  try{
+   if(typeof QXN==='undefined'||typeof qxAdd!=='function'||!ARR_NOTAS.length)return;
+   var seen=parseInt(localStorage.getItem(K),10),top=ARR_NOTAS[0].v;
+   if(isNaN(seen))seen=top-1;
+   if(seen>=top)return;
+   ARR_NOTAS.slice().reverse().forEach(function(e){
+    if(e.v<=seen)return;
+    qxAdd('Atualização v'+e.v+': '+e.t);var q=QXN[0];q.act='upn';q.al='LER';q.v=e.v
+   });
+   localStorage.setItem(K,String(top));qxSv('arr_nt',QXN);qxBadge()
+  }catch(e){}
+ }
+ push();
 })();
 </script>
 
@@ -7281,15 +7337,32 @@ const paths=async u=>['/accounts/'+u,'/inbox/ac'+(await sha('acc:'+u)).slice(0,2
 /* ---- ID unico da conta (8 digitos, indice /ids/<id> checado antes de gravar) ---- */
 const idp=i=>['/ids/'+i,'/inbox/id'+i],PUTH={method:'PUT',headers:{'Content-Type':'application/json'}};
 /* verificado permanente (dado pelo dono via ID): /verified/<id> */
+const namesOfId=async id=>{for(const p of['/ids/'+id,'/inbox/id'+id]){try{const v=await J(p),u=v&&typeof v.u=='string'?v.u:'';if(/^[A-Za-z0-9_]{3,12}$/.test(u)){const o=[u];try{const ac=await getAcc(u.toLowerCase());if(ac&&ac.nk)o.push(ac.nk)}catch(e){}return o}}catch(e){}}return[]};
 const nickOfId=async id=>{for(const p of['/ids/'+id,'/inbox/id'+id]){try{const v=await J(p),u=v&&typeof v.u=='string'?v.u:'';if(/^[A-Za-z0-9_]{3,12}$/.test(u)){let nk=u;try{const ac=await getAcc(u.toLowerCase());if(ac&&ac.nk)nk=ac.nk}catch(e){}return nk}}catch(e){}}return''};
-async function VL(){try{let v=null,v2=null;try{v=await J('/verified')}catch(e){}try{v2=await J('/inbox/verlist')}catch(e){}if(v2&&typeof v2=='object')v=Object.assign({},v2,v||{});const ns=new Set();if(v&&typeof v=='object')for(const id in v){if(!/^\d{6,10}$/.test(id))continue;const r=v[id];let n=await nickOfId(id);if(!n&&r&&typeof r.n=='string')n=r.n;n=String(n||'').replace(/[^A-Za-z0-9_]/g,'').slice(0,12).toLowerCase();if(n)ns.add(n)}
+const vcp=i=>['/vclaim/'+i,'/inbox/vc'+i];
+async function vcGet(id){for(const p of vcp(id)){try{const v=await J(p);if(v)return v}catch(e){}}return null}
+async function VL(){try{let v=null,v2=null,ok=0;try{v=await J('/verified');ok=1}catch(e){}try{v2=await J('/inbox/verlist');ok=1}catch(e){}if(!ok)return;
+ const G={};if(v2&&typeof v2=='object')Object.assign(G,v2);if(v&&typeof v=='object')Object.assign(G,v);
+ const ns=new Set(),me=String(window.ARR_UID||'');
+ for(const id in G){if(!/^\d{6,10}$/.test(id))continue;const r=G[id]||{},cl=await vcGet(id),got=!!(cl&&(!r.t||cl.t===r.t));
+  if(id===me){window.ARR_VGRANT={id,t:r.t||0,got};if(!got)vgNotify(id,r.t||0)}
+  if(!got)continue;
+  const L=await namesOfId(id);if(typeof r.n=='string')L.push(r.n);if(id===me){try{if(window.ARR_USER)L.push(window.ARR_USER)}catch(e){}try{if(typeof PN!=='undefined')L.push(PN)}catch(e){}}
+  L.forEach(x=>{x=String(x||'').replace(/^\*/,'').trim().toLowerCase();if(x)ns.add(x)})}
+ if(window.ARR_VGRANT&&!G[window.ARR_VGRANT.id])window.ARR_VGRANT=null;
  VERS.clear();ns.forEach(n=>VERS.add(n));try{localStorage.setItem('arr_vers',JSON.stringify([...ns]))}catch(e){}}catch(e){}}
+/* aviso "Voce recebeu o VERIFICADO" (uma vez por concessao) */
+function vgNotify(id,t){try{if(typeof QXN==='undefined'||typeof qxAdd!=='function')return;if(QXN.some(n=>n.act=='ver'&&n.vt===t))return;qxAdd('Você recebeu o selo VERIFICADO! Toque em COLETAR para ativar.');const n=QXN[0];n.act='ver';n.al='COLETAR';n.vt=t;if(typeof qxSv=='function')qxSv('arr_nt',QXN);if(typeof qxBadge=='function')qxBadge();if(typeof soon=='function')soon('Novo aviso: selo VERIFICADO')}catch(e){}}
+window.arrVerClaim=async()=>{const g=window.ARR_VGRANT;if(!g)return{e:'Nenhum selo para coletar.'};const body=JSON.stringify({t:g.t,c:Date.now()});let err='';
+ for(const p of vcp(g.id)){try{await J(p,Object.assign({body},PUTH));err='';break}catch(e){err=String(e)}}
+ if(err)return{e:'Falha ao coletar ('+err+'). Tente de novo.'};await VL();return{ok:1}};
 VL();setInterval(VL,60000);
 window.arrVerSet=async(id,on)=>{id=String(id||'').trim();if(String(window.ARR_UID||'')!==OWNER_ID)return{e:'Só o dono pode usar esse comando.'};if(!/^\d{6,10}$/.test(id))return{e:'ID inválido. Use o ID de 8 dígitos do jogador.'};
  const n=await nickOfId(id);if(!n)return{e:'Nenhum jogador com o ID '+id+'.'};
- let err='';
- try{if(on)await J('/verified/'+id,Object.assign({body:JSON.stringify({n,t:Date.now()})},PUTH));else await J('/verified/'+id,{method:'DELETE'})}catch(e){err=String(e)}
- if(err){try{let L=null;try{L=await J('/inbox/verlist')}catch(e){}if(!L||typeof L!='object')L={};if(on)L[id]={n,t:Date.now()};else delete L[id];await J('/inbox/verlist',Object.assign({body:JSON.stringify(L)},PUTH));err=''}catch(e2){return{e:'Falha ao salvar ('+err+' / '+String(e2)+'). Tente de novo.'}}}
+ let err='';const GT=Date.now();
+ try{if(on)await J('/verified/'+id,Object.assign({body:JSON.stringify({n,t:GT})},PUTH));else await J('/verified/'+id,{method:'DELETE'})}catch(e){err=String(e)}
+ if(err){try{let L=null;try{L=await J('/inbox/verlist')}catch(e){}if(!L||typeof L!='object')L={};if(on)L[id]={n,t:GT};else delete L[id];await J('/inbox/verlist',Object.assign({body:JSON.stringify(L)},PUTH));err=''}catch(e2){return{e:'Falha ao salvar ('+err+' / '+String(e2)+'). Tente de novo.'}}}
+ if(!on){for(const p of vcp(id)){try{await J(p,{method:'DELETE'})}catch(e){}}}
  await VL();return{n}};
 const rid=()=>{let n;try{n=crypto.getRandomValues(new Uint32Array(1))[0]}catch(e){n=Math.floor(Math.random()*4294967295)}return String(10000000+n%90000000)};
 async function newId(k){for(let t=0;t<10;t++){const i=rid();let taken=0;for(const p of idp(i)){try{const v=await J(p);if(v){taken=1;break}await J(p,Object.assign({body:JSON.stringify({u:k})},PUTH));return i}catch(e){}}if(!taken)return''}return''}
@@ -7679,16 +7752,19 @@ setInterval(sync,1500);apply();
 #menu #gchb{display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*12);width:100%;height:calc(var(--u)*64);margin:calc(var(--u)*10) 0 0;padding:0;background:#2d241e;border:calc(var(--u)*3) solid #ff6600;color:#fff;border-radius:calc(var(--u)*10);font:900 calc(var(--u)*30) 'Trebuchet MS',Arial,sans-serif;cursor:pointer;position:relative;box-shadow:0 0 calc(var(--u)*12) #ff660066}
 #menu #gchb em{display:none;min-width:calc(var(--u)*34);height:calc(var(--u)*34);line-height:calc(var(--u)*34);border-radius:calc(var(--u)*17);background:#e53935;color:#fff;font:900 calc(var(--u)*22) Arial;font-style:normal;text-align:center;padding:0 calc(var(--u)*6)}
 #menu #gchb.un em{display:inline-block}
-#gchp{position:fixed;left:8px;right:8px;bottom:8px;z-index:30000;display:none;flex-direction:column;gap:4px;font-family:'Trebuchet MS',Arial,sans-serif;color:#fff;pointer-events:none}
+#gchp{position:fixed;left:8px;bottom:8px;width:min(300px,calc(100vw - 16px));z-index:30000;display:none;flex-direction:column;gap:0;font-family:'Trebuchet MS',Arial,sans-serif;color:#fff;background:#171311f2;border:2px solid #ff6600;border-radius:12px;box-shadow:0 4px 18px #000a;overflow:hidden}
 #gchp.on{display:flex}
 .pid{margin-top:4px;font:800 12px 'Trebuchet MS',Arial,sans-serif;letter-spacing:1px;color:#ffba7d;user-select:all;-webkit-user-select:all;cursor:text}
-#gchp .gm{width:min(80vw,360px);font-size:13px;text-shadow:0 1px 3px #000;pointer-events:none}
+#gchp .gh{display:flex;align-items:center;justify-content:space-between;padding:4px 6px 4px 10px;background:#25211e;border-bottom:1px solid #ff660055;font:900 12px 'Trebuchet MS',Arial,sans-serif;letter-spacing:1px;color:#ff6600}
+#gchp .gh button{width:26px;height:26px;padding:0;font:900 15px/1 Arial;color:#fff;background:#e53935;border:0;border-radius:8px;cursor:pointer;touch-action:manipulation}
+#gchp .gs{padding:2px 8px 0;min-height:14px}
+#gchp .gm{height:clamp(90px,28vh,150px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 8px;font-size:12px;line-height:1.35;pointer-events:auto;touch-action:pan-y}
 #gchp .gm div{margin:0 0 2px;word-break:break-word}
 #gchp .gm b{color:#ffba7d}
 #gchp .gm .an{background:#ff660033;border-left:3px solid #ff6600;padding:3px 6px;border-radius:4px;color:#ffe92e;font-weight:800}
 #gchp .gm .an b{color:#ff6600}
-#gchp .gi{display:flex;gap:4px;pointer-events:auto}
-#gchp .gi input{flex:1;min-width:0;padding:9px;border-radius:8px;border:2px solid #2f251f;background:#000a;color:#fff;font:700 14px Arial;user-select:text;-webkit-user-select:text;outline:none}
+#gchp .gi{display:flex;gap:4px;padding:5px;pointer-events:auto;border-top:1px solid #ff660033}
+#gchp .gi input{flex:1;min-width:0;padding:7px 9px;border-radius:8px;border:2px solid #2f251f;background:#000a;color:#fff;font:700 14px Arial;user-select:text;-webkit-user-select:text;outline:none}
 #gchp .gi button{font:900 12px 'Trebuchet MS',Arial;color:#fff;background:#35312fcc;border:0;border-radius:8px;padding:7px 10px;cursor:pointer}
 </style>
 
@@ -7697,11 +7773,12 @@ setInterval(sync,1500);apply();
 (function(){
 const $=id=>document.getElementById(id);
 let ws=null,myid=null,open=false,un=0,lastSend=0,tries=0,rt=0,ready=false;
-const MAXM=5,ROOMS=['chat-global','chatglobal','sala0'];let ri=0,gotHi=0,ct=0,why='';
+const MAXM=40,ROOMS=['chat-global','chatglobal','sala0'];let ri=0,gotHi=0,ct=0,why='';
 /* ID do DONO: crie sua conta, abra seu PERFIL, copie o ID e cole aqui entre as aspas. Vazio = ninguém é dono. */
 const OWNER_ID='33044471';
 const GAME_URL='https://firestrike.rdz777zd.workers.dev';
 const isOwner=()=>!!OWNER_ID&&String(window.ARR_UID||'')===OWNER_ID;
+window.arrIsOwner=isOwner;
 async function sha(t){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){let h=5381;for(const c of t)h=(h*33^c.charCodeAt(0))>>>0;return'x'+h.toString(16)}}
 function addAn(t){if(!msgs)return;const d=document.createElement('div');d.className='an';const b=document.createElement('b');b.textContent='ANÚNCIO: ';d.appendChild(b);d.appendChild(document.createTextNode(t));msgs.appendChild(d);while(msgs.children.length>MAXM)msgs.removeChild(msgs.firstChild);msgs.scrollTop=msgs.scrollHeight}
 async function announce(t){if(!ws||ws.readyState!==1||!ready){add('','Sem conexão. Tente de novo.',0,1);connect();return}
@@ -7718,14 +7795,17 @@ attT=setInterval(()=>{n--;if(n>0){draw();return}clearInterval(attT);attT=0;attBo
 async function ownerCast(u){if(!ws||ws.readyState!==1||!ready){add('','Sem conexão. Tente de novo.',0,1);connect();return false}
 const ts=Date.now(),sg=await sha(OWNER_ID+':'+ts+':u'+u);ws.send(JSON.stringify({k:'e',m:{t:'gc',u,ts,sg}}));return true}
 function runCmd(x){const p=x.slice(1).trim().split(/\s+/),c=(p.shift()||'').toLowerCase(),a=p.join(' ').trim();
-if(c==='ajuda'||c==='help'||c==='?'){add('','Comandos: /ajuda, /limpar'+(isOwner()?', /anuncio msg, /att, /att cancelar, /verificar ID, /desverificar ID':''),0,1);return}
+if(c==='ajuda'||c==='help'||c==='?'){add('','Comandos: /ajuda, /limpar'+(isOwner()?', /anuncio msg, /att, /att cancelar, /verificar ID, /desverificar ID, /clas, /desfazercla TAG':''),0,1);return}
 if(c==='limpar'||c==='clear'){if(msgs)msgs.innerHTML='';add('','Chat limpo.',0,1);return}
 if(c==='anuncio'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}if(!a){add('','Uso: /anuncio mensagem',0,1);return}announce(a.slice(0,120));return}
 if(c==='att'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}
 if(a.toLowerCase()==='cancelar'){ownerCast(2).then(ok=>{if(ok){attStop();add('','Atualização cancelada.',0,1)}});return}
 ownerCast(1).then(ok=>{if(ok){attStart();add('','Atualização iniciada para todos.',0,1)}});return}
 if(c==='verificar'||c==='verify'||c==='desverificar'||c==='unverify'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}const on=c==='verificar'||c==='verify';if(!a){add('','Uso: /'+(on?'verificar':'desverificar')+' ID',0,1);return}
-if(!window.arrVerSet){add('','Indisponível agora.',0,1);return}window.arrVerSet(a.split(/\s+/)[0],on).then(r=>add('',r.e?r.e:(on?'@'+r.n+' agora é verificado permanente.':'@'+r.n+' não é mais verificado.'),0,1));return}
+if(!window.arrVerSet){add('','Indisponível agora.',0,1);return}window.arrVerSet(a.split(/\s+/)[0],on).then(r=>add('',r.e?r.e:(on?'@'+r.n+' recebeu o VERIFICADO. Ele precisa coletar em AVISOS para ativar.':'@'+r.n+' não é mais verificado.'),0,1));return}
+if(c==='clas'||c==='clans'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}const L=window.arrClans?window.arrClans():[];add('',L.length?'Clãs: '+L.slice(0,12).map(x=>'['+x.tag+'] '+x.n+' (@'+x.on+')').join(' • ')+(L.length>12?' … +'+(L.length-12):''):'Nenhum clã publicado.',0,1);return}
+if(c==='desfazercla'||c==='excluircla'||c==='deletarcla'||c==='disband'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}if(!a){add('','Uso: /desfazercla TAG (ou nome do clã). Veja a lista com /clas',0,1);return}
+if(!window.arrClanKill){add('','Indisponível agora.',0,1);return}window.arrClanKill(a).then(r=>add('',r.e?r.e:'Clã ['+r.tag+'] '+r.n+' (dono @'+r.on+') foi desfeito. Os membros saem automaticamente.',0,1));return}
 add('','Comando desconhecido. Use /ajuda',0,1)}
 function wsUrl(){let U='';try{U=(typeof ARR_WS_URL!=='undefined'?ARR_WS_URL:'')||localStorage.getItem('arr_ws')||''}catch(e){}if(!U)U='wss://armada-relay.rdz777zd.workers.dev';U=String(U).replace(/\/+$/,'');return/^wss:\/\//.test(U)?U+'/room/'+ROOMS[ri]:''}
 function myName(){try{return String(PN||'Voce').slice(0,14)}catch(e){return 'Voce'}}
@@ -7753,10 +7833,10 @@ lastSend=now;ws.send(JSON.stringify({k:'e',m:{t:'gc',n:myName(),x}}));add(myName
 function place(){const vv=window.visualViewport,kb=vv?Math.max(0,Math.round(innerHeight-vv.height-vv.offsetTop)):0;box.style.bottom=(8+kb)+'px'}
 function toggle(f){open=f===undefined?!open:f;if(open){place();box.classList.add('on');un=0;badge();if(!ws)connect();setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(e){}},50)}else box.classList.remove('on')}
 function init(){if(btn||!$('sqi'))return false;
-document.body.insertAdjacentHTML('beforeend','<div id="gchp"><div class="gm" id="gcm"></div><div class="gi"><input id="gcin" maxlength="120" placeholder="Conversar..." autocomplete="off"><button type="button" id="gcs">ENVIAR</button></div></div>');
-box=$('gchp');msgs=$('gcm');inp=$('gcin');st=document.createElement('div');msgs.insertAdjacentElement('beforebegin',st);
+document.body.insertAdjacentHTML('beforeend','<div id="gchp"><div class="gh"><span>CHAT GLOBAL</span><button type="button" id="gcx" aria-label="Fechar chat">\u2715</button></div><div class="gs" id="gcst"></div><div class="gm" id="gcm"></div><div class="gi"><input id="gcin" maxlength="120" placeholder="Conversar..." autocomplete="off"><button type="button" id="gcs">ENVIAR</button></div></div>');
+box=$('gchp');msgs=$('gcm');inp=$('gcin');st=$('gcst');
 btn=document.createElement('button');btn.type='button';btn.id='gchb';btn.innerHTML='CHAT <em>0</em>';$('sqi').insertAdjacentElement('afterend',btn);
-btn.onclick=()=>toggle();$('gcs').onclick=send;
+btn.onclick=()=>toggle();$('gcs').onclick=send;$('gcx').onclick=e=>{e.stopPropagation();toggle(false)};
 inp.addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();send()}});inp.addEventListener('keyup',e=>e.stopPropagation());
 add('','Chat global: converse com quem está online. /ajuda p/ comandos.',0,1);connect(1);
 addEventListener('online',()=>{tries=0;if(!ws)connect(1)});document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!ws){tries=0;connect(1)}});
