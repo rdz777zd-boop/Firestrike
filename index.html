@@ -1629,7 +1629,7 @@ const iv=setInterval(()=>{const n=performance.now()-t0,m=M.filter(x=>v>=x[0]).po
 <div class="pill" id="pcoin"><div class="coin"></div><b id="coins">12.450</b></div>
 <div class="pill" id="pgem"><span class="gem"><svg class="ic"><use href="#i-gem"/></svg></span><b id="gemv">980</b></div>
 <div id="fpsb"></div><div id="rec"></div>
-<button class="lvl" id="prof"><small><svg class="ic"><use href="#i-user"/></svg></small><b id="pfn">Voce</b></button>
+<button class="lvl" id="prof"><small><svg class="ic"><use href="#i-user"/></svg></small><b id="pfn">Voce</b><span id="pfx"></span></button>
 <button class="ib soon" id="gear"><svg class="ic"><use href="#i-gear"/></svg></button>
 
 <button class="ib" id="ntfb"><svg class="ic"><use href="#i-bell"/></svg><em id="ntfn">3</em></button>
@@ -5921,7 +5921,9 @@ async function publish(force){
    await del('/clanstats/'+lck+'/'+UID);
    if(lck.indexOf(UID+'_')===0)await del('/clans/'+lck);
    try{localStorage.removeItem('arr_lck')}catch(e){}lastC='';lastS=''}
-  if(force||sig!==lastP){rec.t=Date.now();await put('/players/'+UID,rec);lastP=sig}
+  if(force||sig!==lastP){rec.t=Date.now();
+   try{await put('/players/'+UID,rec)}catch(e1){if(rec.av||rec.bn){const r2=Object.assign({},rec);delete r2.av;delete r2.bn;await put('/players/'+UID,r2);REM.imgFail=1}else throw e1}
+   lastP=sig}
   if(PC&&ck&&KEYRE.test(ck)){
    if(PC.own){const cr={n:sn(PC.n,20),tg:tagc(PC.tag),c:colr(PC.col),s:symc(PC.sym),o:UID,on:sn(PN,12)||'Jogador'},cs=JSON.stringify(cr);
     if(force||cs!==lastC){await put('/clans/'+ck,cr);lastC=cs}}
@@ -6992,29 +6994,40 @@ ui()
 })();
 </script>
 <style>
-#upn{position:fixed;inset:0;z-index:99990;display:flex;align-items:center;justify-content:center;padding:max(10px,env(safe-area-inset-top)) 12px max(10px,env(safe-area-inset-bottom));box-sizing:border-box;background:rgba(10,9,8,.92);font-family:'Trebuchet MS',Arial,sans-serif;color:#ffefe0;touch-action:pan-y}
+#upn{position:fixed;inset:0;z-index:99990;display:flex;align-items:center;justify-content:center;padding:max(10px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));box-sizing:border-box;background:rgba(6,5,4,.9);font-family:'Trebuchet MS',Arial,sans-serif;color:#ffefe0;touch-action:pan-y}
 #upn.hide{display:none}
-#upn .bx{width:min(560px,100%);max-height:100%;display:flex;flex-direction:column;background:#171311;border:2px solid #ff6600;border-radius:16px;box-shadow:0 0 18px #ff660044;overflow:hidden}
-#upn .hd{padding:14px 16px 10px;border-bottom:1px solid #ff660033;background:linear-gradient(#1f1b19,#171311)}
-#upn .hd small{display:inline-block;font-weight:900;font-size:11px;letter-spacing:1.5px;color:#15100d;background:#ff6600;border-radius:6px;padding:2px 8px}
-#upn h2{margin:6px 0 0;font-size:clamp(20px,5.5vw,26px);font-weight:900;letter-spacing:1px;color:#ff6600}
-#upn .bd{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 16px 6px}
-#upn h3{margin:12px 0 6px;font-size:13px;letter-spacing:1px;color:#00ff88}
-#upn h3.r{color:#ffc400}
-#upn ul{margin:0;padding:0;list-style:none}
-#upn li{position:relative;margin:0 0 7px;padding:8px 10px 8px 26px;font-size:13px;line-height:1.4;background:#25211e;border-radius:9px}
-#upn li:before{content:'';position:absolute;left:10px;top:14px;width:7px;height:7px;border-radius:2px;background:#ff6600}
-#upn li b{color:#fff}
-#upn .tip{margin:10px 0 6px;padding:9px 11px;font-size:12px;line-height:1.45;border:1px dashed #ff660066;border-radius:9px;color:#eed2b9}
-#upn .ft{padding:10px 16px 14px;text-align:center;border-top:1px solid #ff660033}
-#upn .ok{font:900 18px 'Trebuchet MS',Arial,sans-serif;color:#15100d;background:linear-gradient(#ff6600,#b54800);border:2px solid #0e0d0c;border-radius:12px;padding:10px 40px;box-shadow:0 4px 0 #4d392b;cursor:pointer}
-#upn .ok:active{transform:translateY(3px);box-shadow:0 1px 0 #4d392b}
+#upn .bx{position:relative;width:min(780px,100%);height:min(360px,100%);display:flex;background:#14100d;border:2px solid #ff6600;border-radius:18px;box-shadow:0 0 28px #ff660055;overflow:hidden}
+#upn #upx{position:absolute;top:8px;right:8px;z-index:3;width:30px;height:30px;padding:0;font:900 16px/1 Arial;color:#fff;background:#e53935;border:0;border-radius:9px;cursor:pointer;touch-action:manipulation}
+#upn .side{flex:0 0 31%;max-width:230px;display:flex;flex-direction:column;background:#1b1612;border-right:1px solid #ff660040}
+#upn .sh{padding:12px 12px 8px;font-weight:900;font-size:11px;letter-spacing:2px;color:#ff6600}
+#upn #upl{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 8px 8px}
+#upn #upl button{display:block;width:100%;text-align:left;margin:0 0 6px;padding:8px 10px;font:700 12px 'Trebuchet MS',Arial,sans-serif;color:#d9c3b0;background:#241d18;border:1px solid #ffffff10;border-radius:10px;cursor:pointer}
+#upn #upl button b{display:block;font-size:14px;color:#fff}
+#upn #upl button small{display:block;opacity:.7;margin-top:1px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#upn #upl button.on{background:linear-gradient(#ff6600,#b54800);border-color:#ffb066;color:#2a1608}
+#upn #upl button.on b{color:#1a0d04}
+#upn .main{flex:1;min-width:0;display:flex;flex-direction:column}
+#upn .hd{padding:14px 48px 10px 16px;border-bottom:1px solid #ff660030}
+#upn .hd small{font-weight:900;font-size:11px;letter-spacing:1.5px;color:#ffba7d}
+#upn h2{margin:3px 0 0;font-size:clamp(17px,4.4vw,22px);font-weight:900;color:#fff}
+#upn .ubd{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 14px}
+#upn .it{margin:0 0 8px;padding:8px 10px;font-size:13px;line-height:1.4;background:#211a15;border-left:4px solid var(--c,#00ff88);border-radius:4px 10px 10px 4px}
+#upn .it em{display:inline-block;margin-bottom:3px;padding:1px 7px;font:900 10px 'Trebuchet MS',Arial,sans-serif;font-style:normal;letter-spacing:1px;color:#120a04;background:var(--c,#00ff88);border-radius:6px}
+#upn .it b{color:#fff}
+#upn .ft{padding:8px 14px 12px;text-align:right;border-top:1px solid #ff660030}
+#upn .ok{font:900 15px 'Trebuchet MS',Arial,sans-serif;color:#15100d;background:linear-gradient(#ff6600,#b54800);border:2px solid #0e0d0c;border-radius:11px;padding:8px 30px;box-shadow:0 3px 0 #4d392b;cursor:pointer}
+#upn .ok:active{transform:translateY(2px);box-shadow:0 1px 0 #4d392b}
+@media (max-width:560px) and (orientation:portrait){#upn .bx{flex-direction:column;height:min(560px,100%)}#upn .side{flex:0 0 auto;max-width:none;border-right:0;border-bottom:1px solid #ff660040}#upn #upl{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding-bottom:8px}#upn #upl button{flex:0 0 auto;width:auto;margin:0}}
 </style>
 <div id="upn" class="hide" role="dialog" aria-modal="true" aria-label="Notas de atualização">
  <div class="bx">
-  <div class="hd"><small id="upv"></small><h2>NOTAS DE ATUALIZAÇÃO</h2></div>
-  <div class="bd" id="upbd"></div>
-  <div class="ft"><button id="upok" class="ok" type="button">ENTENDI</button></div>
+  <button id="upx" type="button" aria-label="Fechar">&#10005;</button>
+  <div class="side"><div class="sh">ATUALIZAÇÕES</div><div id="upl"></div></div>
+  <div class="main">
+   <div class="hd"><small id="upv"></small><h2 id="upt"></h2></div>
+   <div class="ubd" id="upbd"></div>
+   <div class="ft"><button id="upok" class="ok" type="button">ENTENDI</button></div>
+  </div>
  </div>
 </div>
 <script>
@@ -7023,6 +7036,14 @@ ui()
    com v = número seguinte. Todo jogador recebe um aviso novo em AVISOS automaticamente.
    Tipos: NOVO, CORRIGIDO, MELHORADO, REMOVIDO. */
 var ARR_NOTAS=[
+ {v:156,d:'27/10/2026',t:'Emblema no cartão e menu Personagens',i:[
+  ['NOVO','<b>Emblema no cartão do menu.</b> Seu nome aparece com o emblema ao lado (dono ou verificado) e a cor do nome muda conforme o emblema.'],
+  ['CORRIGIDO','<b>Menu de Personagens</b> não fica mais em tela preta.']]},
+ {v:155,d:'27/10/2026',t:'Cartão do menu, banimento e nova tela de notas',i:[
+  ['NOVO','<b>Cartão do jogador no menu</b> agora mostra [TAG] do clã, o nome e o emblema. O emblema muda a cor do nome.'],
+  ['NOVO','<b>Comandos do dono:</b> /banir ID motivo, /desbanir ID e /banidos.'],
+  ['MELHORADO','<b>Nova tela de notas de atualização</b>, com lista de versões e botão X.'],
+  ['CORRIGIDO','<b>Foto de perfil e banner dos outros jogadores:</b> imagens menores e mais confiáveis para enviar ao servidor. Cada jogador precisa abrir o jogo uma vez para reenviar as suas.']]},
  {v:154,d:'27/10/2026',t:'Selo corrigido, chat em janela e comando de clã',i:[
   ['CORRIGIDO','<b>Selo VERIFICADO e cor do nome</b> agora aparecem no seu perfil logo após coletar (antes o nome não casava com o nick).'],
   ['MELHORADO','<b>Chat global em janela pequena</b> com botão X para fechar, e histórico que rola.'],
@@ -7045,14 +7066,15 @@ var ARR_NOTAS=[
  function esc(t){return String(t).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
  function render(v){
   var e=ARR_NOTAS.filter(function(x){return x.v===v})[0]||ARR_NOTAS[0];if(!e)return;
-  vt.textContent='v'+e.v+(e.d?' · '+e.d:'');
-  var h='<h3 style="color:#ffefe0;font-size:15px;margin:4px 0 8px">'+esc(e.t)+'</h3><ul>';
-  e.i.forEach(function(it){h+='<li><span style="font-weight:900;font-size:11px;letter-spacing:1px;color:'+(COR[it[0]]||'#00ff88')+'">'+it[0]+'</span><br>'+it[1]+'</li>'});
-  bd.innerHTML=h+'</ul>';bd.scrollTop=0
+  vt.textContent='VERSÃO '+e.v+(e.d?' · '+e.d:'');document.getElementById('upt').textContent=e.t;
+  var h='';e.i.forEach(function(it){h+='<div class="it" style="--c:'+(COR[it[0]]||'#00ff88')+'"><em>'+it[0]+'</em><br>'+it[1]+'</div>'});
+  bd.innerHTML=h;bd.scrollTop=0;
+  var L=document.getElementById('upl');L.innerHTML='';
+  ARR_NOTAS.forEach(function(x){var b=document.createElement('button');b.type='button';b.className=x.v===e.v?'on':'';b.innerHTML='<b>v'+x.v+'</b><small>'+esc(x.t)+'</small>';b.onclick=function(){render(x.v)};L.appendChild(b)})
  }
  function open(v){render(v);n.classList.remove('hide')}
  function close(){n.classList.add('hide')}
- document.getElementById('upok').onclick=close;
+ document.getElementById('upok').onclick=close;document.getElementById('upx').onclick=close;
  n.addEventListener('click',function(e){if(e.target===n)close()});
  addEventListener('keydown',function(e){if(e.key==='Escape'&&!n.classList.contains('hide'))close()});
  /* acao dos botoes de AVISOS (LER nota / COLETAR selo) */
@@ -7357,6 +7379,31 @@ window.arrVerClaim=async()=>{const g=window.ARR_VGRANT;if(!g)return{e:'Nenhum se
  for(const p of vcp(g.id)){try{await J(p,Object.assign({body},PUTH));err='';break}catch(e){err=String(e)}}
  if(err)return{e:'Falha ao coletar ('+err+'). Tente de novo.'};await VL();return{ok:1}};
 VL();setInterval(VL,60000);
+/* ---- BANIMENTO por ID: /banned/<id> (ou lista /inbox/banlist). Checado no login e a cada 30s ---- */
+async function bnRead(){let a=null,b=null,ok=0;try{a=await J('/banned');ok=1}catch(e){}try{b=await J('/inbox/banlist');ok=1}catch(e){}if(!ok)return null;const G={};if(b&&typeof b=='object')Object.assign(G,b);if(a&&typeof a=='object')Object.assign(G,a);return G}
+window.arrBanSet=async(id,on,reason)=>{id=String(id||'').trim();if(String(window.ARR_UID||'')!==OWNER_ID)return{e:'Só o dono pode usar esse comando.'};
+ if(!/^\d{6,10}$/.test(id))return{e:'ID inválido. Use o ID de 8 dígitos do jogador.'};
+ if(id===OWNER_ID)return{e:'Você não pode banir o dono.'};
+ const nm=await namesOfId(id);let n=nm.length?nm[nm.length-1]:'';
+ const G=await bnRead();if(on&&!n)return{e:'Nenhum jogador com o ID '+id+'.'};if(!on&&!n&&G&&G[id]&&G[id].n)n=G[id].n;if(!on&&!(G&&G[id]))return{e:'O ID '+id+' não está banido.'};
+ const rec={n:n||'?',t:Date.now(),r:String(reason||'').slice(0,60)};let err='';
+ try{if(on)await J('/banned/'+id,Object.assign({body:JSON.stringify(rec)},PUTH));else await J('/banned/'+id,{method:'DELETE'})}catch(e){err=String(e)}
+ if(err||!on){try{let L=null;try{L=await J('/inbox/banlist')}catch(e){}if(!L||typeof L!='object')L={};if(on)L[id]=rec;else delete L[id];await J('/inbox/banlist',Object.assign({body:JSON.stringify(L)},PUTH));err=''}catch(e2){if(err||on)return{e:'Falha ao salvar ('+err+' / '+String(e2)+'). Tente de novo.'}}}
+ setTimeout(BL,200);return{n:n||'?',id}};
+window.arrBanList=async()=>{const G=await bnRead();if(!G)return null;return Object.keys(G).filter(k=>/^\d{6,10}$/.test(k)).map(k=>({id:k,n:String((G[k]||{}).n||'?'),r:String((G[k]||{}).r||'')}))};
+function banLock(r,id){if(window.__banned)return;window.__banned=1;try{localStorage.setItem('arr_ban',id||'1')}catch(e){}
+ try{const n=N();if(n){try{n.leave()}catch(e){}try{n.lbClose()}catch(e){}}}catch(e){}
+ try{hide('lo')}catch(e){}
+ const d=document.createElement('div');d.id='banov';d.style.cssText='position:fixed;inset:0;z-index:2147483000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;box-sizing:border-box;background:#0a0807;color:#fff;font-family:Trebuchet MS,Arial,sans-serif;text-align:center;touch-action:none;user-select:none';
+ const h=document.createElement('div');h.textContent='VOCÊ FOI BANIDO';h.style.cssText='font:900 clamp(26px,7vw,44px) Trebuchet MS,Arial;color:#ff3b30;letter-spacing:2px';
+ const p=document.createElement('div');p.textContent='Sua conta (ID '+(id||'?')+') foi banida pelo dono do jogo.'+(r&&r.r?' Motivo: '+r.r:'');p.style.cssText='font-size:15px;max-width:460px;line-height:1.5;opacity:.9';
+ d.appendChild(h);d.appendChild(p);['pointerdown','touchstart','keydown','click'].forEach(t=>d.addEventListener(t,e=>{e.stopPropagation()},true));document.body.appendChild(d)}
+async function BL(){try{const G=await bnRead();if(!G)return;window.ARR_BANS=G;const me=String(window.ARR_UID||'');
+ let dev='';try{dev=localStorage.getItem('arr_ban')||''}catch(e){}
+ if(me&&me!==OWNER_ID&&G[me]){banLock(G[me],me);return}
+ if(dev&&me&&dev===me&&!G[me]){try{localStorage.removeItem('arr_ban')}catch(e){}}
+ else if(dev&&me&&dev!==me&&me!==OWNER_ID&&G[dev]){banLock(G[dev],dev)}}catch(e){}}
+setInterval(BL,30000);setTimeout(BL,1500);
 window.arrVerSet=async(id,on)=>{id=String(id||'').trim();if(String(window.ARR_UID||'')!==OWNER_ID)return{e:'Só o dono pode usar esse comando.'};if(!/^\d{6,10}$/.test(id))return{e:'ID inválido. Use o ID de 8 dígitos do jogador.'};
  const n=await nickOfId(id);if(!n)return{e:'Nenhum jogador com o ID '+id+'.'};
  let err='';const GT=Date.now();
@@ -7407,6 +7454,7 @@ function enter(u,aid,nk){user=u;window.ARR_USER=u;const k=u.toLowerCase(),ik='ar
  try{localStorage.setItem('arr_sess',u);localStorage.setItem('arr_pn',nk);localStorage.setItem('arr_nk:'+k,nk)}catch(e){}
  if(String(aid||'')===OWNER_ID){OWNERS.length=0;OWNERS.push(nk)}
  try{PN=nk;if(typeof pfShow==='function')pfShow()}catch(e){}
+ setTimeout(()=>{try{BL()}catch(e){}},600);setTimeout(()=>{try{BL()}catch(e){}},4000);
  $('au_p').value='';$('au_n').value='';am('');hide('au');try{window.arrFrLogin&&window.arrFrLogin(u)}catch(e){}const n=N();if(n){n.lbOpen();n.lbSend({k:'hi',n:PN,s:1})}
  getAcc(k).then(a=>{const m=a&&a.nk;if(m&&m!==PN){try{applyNick(m)}catch(e){}try{N()&&N().lbSend({k:'hi',n:PN,s:1})}catch(e){}try{window.arrPub&&window.arrPub()}catch(e){}}}).catch(()=>{})}
 $('au_l').onclick=()=>auth(0);$('au_r').onclick=()=>auth(1);
@@ -7680,7 +7728,16 @@ const get=k=>{try{return localStorage.getItem(k)||''}catch(e){return ''}};
 const say=t=>{const m=q('pfmsg');if(m)m.textContent=t;try{soon(t)}catch(e){}};
 const st=q('stage'),pr=q('prof');
 if(st&&pr){const c=document.createElement('div');c.id='pcard';c.innerHTML='<span class="nm" id="pcn"></span><span class="sb" id="pcs"></span>';st.insertBefore(c,pr)}
-function sync(){const n=q('pfn'),r=q('rec'),a=q('pcn'),b=q('pcs');if(a&&n)a.textContent=n.textContent;if(b&&r)b.textContent=r.textContent}
+const E=t=>String(t).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+{const cs=document.createElement('style');cs.textContent='#menu#menu #pcard .nm{font-size:calc(var(--u)*36)}#menu#menu #pcard .nm .ptg{font-weight:900;margin-right:.15em;text-shadow:0 2px 6px #000}#menu#menu #pcard .nm .ytb{width:1.15em;height:1.15em;vertical-align:-.25em;margin-left:.25em}';document.head.appendChild(cs)}
+let pcK='';
+function sync(){const n=q('pfn'),r=q('rec'),a=q('pcn'),b=q('pcs');
+ if(a&&n){const nm=n.textContent||'';let tg='',col='#ffba7d',bd='';
+  try{if(typeof PC!=='undefined'&&PC&&PC.tag){tg=String(PC.tag).replace(/[^A-Za-z0-9]/g,'').slice(0,3);col=/^#[0-9a-f]{6}$/i.test(PC.col)?PC.col:'#ffba7d'}}catch(e){}
+  try{if(typeof ytB==='function'&&nm)bd=ytB(nm)}catch(e){}
+  const k=nm+'|'+tg+'|'+col+'|'+(bd?(bd.indexOf('owb')>=0?'o':'v'):'');
+  if(k!==pcK){pcK=k;a.innerHTML=(tg?'<span class="ptg" style="color:'+col+'">['+E(tg)+']</span> ':'')+E(nm)+bd}}
+ if(b&&r)b.textContent=r.textContent}
 function apply(){
  const a=get(K.a),b=get(K.b),m=q('menu');
  if(m)m.style.setProperty('--fsav',a?'url("'+a+'")':'none');
@@ -7704,11 +7761,11 @@ function pick(kind){
  i.click();
 }
 /* versoes pequenas (vao para o ranking online) */
-const KS={a:'fs_pav_s',b:'fs_pbn_s'},tried={};
+const KS={a:'fs_pav_t',b:'fs_pbn_t'},tried={};
 const pubN=()=>{try{window.arrPub&&window.arrPub()}catch(e){}};
 function mkS(kind,src){if(tried[kind])return;tried[kind]=1;const im=new Image();
- im.onload=()=>{const W=kind=='a'?56:200,H=kind=='a'?56:60,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d'),s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;x.drawImage(im,(W-w)/2,(H-h)/2,w,h);
-  try{localStorage.setItem(KS[kind],c.toDataURL('image/jpeg',.5))}catch(e){}pubN()};
+ im.onload=()=>{const W=kind=='a'?48:160,H=kind=='a'?48:48,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d'),s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;x.drawImage(im,(W-w)/2,(H-h)/2,w,h);
+  try{localStorage.setItem(KS[kind],c.toDataURL('image/jpeg',.45))}catch(e){}pubN()};
  im.src=src}
 window.fsSmall=function(){const a=get(K.a),b=get(K.b),r={a:'',b:''};
  if(a){r.a=get(KS.a);if(!r.a)mkS('a',a)}else{try{localStorage.removeItem(KS.a)}catch(e){}}
@@ -7730,7 +7787,7 @@ if(pfp&&av){
  ed.innerHTML='<div class="fsr"><button type="button" class="btn sec" id="fsa">TROCAR FOTO</button><button type="button" class="btn sec" id="fsb">TROCAR BANNER</button></div><button type="button" class="btn sec" id="fsx">REMOVER FOTOS</button>';
  av.after(ed);
  q('fsa').onclick=()=>pick('a');q('fsb').onclick=()=>pick('b');
- q('fsx').onclick=()=>{try{localStorage.removeItem(K.a);localStorage.removeItem(K.b);localStorage.removeItem('fs_pav_s');localStorage.removeItem('fs_pbn_s')}catch(e){}apply();inject();say('Fotos removidas');pubN()};
+ q('fsx').onclick=()=>{try{localStorage.removeItem(K.a);localStorage.removeItem(K.b);localStorage.removeItem('fs_pav_s');localStorage.removeItem('fs_pbn_s');localStorage.removeItem('fs_pav_t');localStorage.removeItem('fs_pbn_t')}catch(e){}apply();inject();say('Fotos removidas');pubN()};
 }
 /* perfil do jogador (so o proprio) */
 function inject(){
@@ -7795,7 +7852,7 @@ attT=setInterval(()=>{n--;if(n>0){draw();return}clearInterval(attT);attT=0;attBo
 async function ownerCast(u){if(!ws||ws.readyState!==1||!ready){add('','Sem conexão. Tente de novo.',0,1);connect();return false}
 const ts=Date.now(),sg=await sha(OWNER_ID+':'+ts+':u'+u);ws.send(JSON.stringify({k:'e',m:{t:'gc',u,ts,sg}}));return true}
 function runCmd(x){const p=x.slice(1).trim().split(/\s+/),c=(p.shift()||'').toLowerCase(),a=p.join(' ').trim();
-if(c==='ajuda'||c==='help'||c==='?'){add('','Comandos: /ajuda, /limpar'+(isOwner()?', /anuncio msg, /att, /att cancelar, /verificar ID, /desverificar ID, /clas, /desfazercla TAG':''),0,1);return}
+if(c==='ajuda'||c==='help'||c==='?'){add('','Comandos: /ajuda, /limpar'+(isOwner()?', /anuncio msg, /att, /att cancelar, /verificar ID, /desverificar ID, /clas, /desfazercla TAG, /banir ID motivo, /desbanir ID, /banidos':''),0,1);return}
 if(c==='limpar'||c==='clear'){if(msgs)msgs.innerHTML='';add('','Chat limpo.',0,1);return}
 if(c==='anuncio'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}if(!a){add('','Uso: /anuncio mensagem',0,1);return}announce(a.slice(0,120));return}
 if(c==='att'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}
@@ -7803,6 +7860,9 @@ if(a.toLowerCase()==='cancelar'){ownerCast(2).then(ok=>{if(ok){attStop();add('',
 ownerCast(1).then(ok=>{if(ok){attStart();add('','Atualização iniciada para todos.',0,1)}});return}
 if(c==='verificar'||c==='verify'||c==='desverificar'||c==='unverify'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}const on=c==='verificar'||c==='verify';if(!a){add('','Uso: /'+(on?'verificar':'desverificar')+' ID',0,1);return}
 if(!window.arrVerSet){add('','Indisponível agora.',0,1);return}window.arrVerSet(a.split(/\s+/)[0],on).then(r=>add('',r.e?r.e:(on?'@'+r.n+' recebeu o VERIFICADO. Ele precisa coletar em AVISOS para ativar.':'@'+r.n+' não é mais verificado.'),0,1));return}
+if(c==='banir'||c==='ban'||c==='desbanir'||c==='unban'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}const on=c==='banir'||c==='ban';const w=a.split(/\s+/);const id=w.shift()||'';if(!id){add('','Uso: /'+(on?'banir ID motivo':'desbanir ID'),0,1);return}
+if(!window.arrBanSet){add('','Indisponível agora.',0,1);return}window.arrBanSet(id,on,w.join(' ')).then(r=>add('',r.e?r.e:(on?'@'+r.n+' (ID '+r.id+') foi BANIDO.':'@'+r.n+' (ID '+r.id+') foi desbanido.'),0,1));return}
+if(c==='banidos'||c==='bans'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}if(!window.arrBanList){add('','Indisponível agora.',0,1);return}window.arrBanList().then(L=>add('',L===null?'Servidor indisponível.':L.length?'Banidos: '+L.slice(0,10).map(x=>'@'+x.n+' ('+x.id+')'+(x.r?' - '+x.r:'')).join(' • ')+(L.length>10?' … +'+(L.length-10):''):'Nenhum jogador banido.',0,1));return}
 if(c==='clas'||c==='clans'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}const L=window.arrClans?window.arrClans():[];add('',L.length?'Clãs: '+L.slice(0,12).map(x=>'['+x.tag+'] '+x.n+' (@'+x.on+')').join(' • ')+(L.length>12?' … +'+(L.length-12):''):'Nenhum clã publicado.',0,1);return}
 if(c==='desfazercla'||c==='excluircla'||c==='deletarcla'||c==='disband'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}if(!a){add('','Uso: /desfazercla TAG (ou nome do clã). Veja a lista com /clas',0,1);return}
 if(!window.arrClanKill){add('','Indisponível agora.',0,1);return}window.arrClanKill(a).then(r=>add('',r.e?r.e:'Clã ['+r.tag+'] '+r.n+' (dono @'+r.on+') foi desfeito. Os membros saem automaticamente.',0,1));return}
@@ -8199,5 +8259,44 @@ body:has(.pn:not(.hide)) #upb,body:has(#set:not(.hide)) #upb,body:has(#ppf:not(.
 #ppf .pbn{font-size:11px!important;padding:8px!important;border-radius:10px!important;border-width:1px!important;border-bottom-width:3px!important}
 @media(max-height:480px){#ppf .hb{height:56px}#ppf .hrow{margin-top:-26px;padding-bottom:6px}#ppf .hav{width:58px;height:58px}#ppf .sb1{padding:5px 4px}#ppf .sb1 b{font-size:18px}}
 </style>
+<style id="v156css">
+/* v156: Personagens com altura definida (o height:auto zerava a lista -> tela preta) */
+#chr .bx.chx{height:min(560px,calc(100dvh - 16px))!important;min-height:min(300px,calc(100dvh - 16px))!important;max-height:calc(100dvh - 8px)!important}
+#chr .cxl:not(.hide),#chr .cxs:not(.hide){min-height:100px}
+#chr .cxg{min-height:100px}
+/* v156: cartao do jogador: [TAG] nome + emblema, nome muda de cor */
+#menu#menu#menu #prof #pfn{position:absolute!important;visibility:hidden!important;pointer-events:none!important;width:1px!important;height:1px!important;overflow:hidden!important}
+#menu#menu #prof #pfx{position:absolute;left:calc(var(--v)*100);top:calc(var(--v)*12);max-width:calc(var(--v)*212);display:flex;align-items:center;gap:calc(var(--v)*8);font-size:calc(var(--v)*32);font-weight:900;line-height:1.15;white-space:nowrap;text-align:left;z-index:4;color:#fff;text-shadow:0 2px 6px #000}
+#pfx .pxn{min-width:0;overflow:hidden;text-overflow:ellipsis}
+#pfx .ptg{flex:none;font-weight:900}
+#pfx .ytb{flex:none;width:1.2em!important;height:1.2em!important;margin:0!important;vertical-align:baseline!important}
+#pfx.vf .pxn{color:#ffb81f;text-shadow:1px 1px 0 #7a4300,-1px -1px 0 #3a2000,0 0 8px rgba(255,170,30,.85);animation:vnmG 1.4s ease-in-out infinite alternate}
+#pfx.ow .pxn{color:#050505;text-shadow:-1px -1px 0 #ff1a1a,1px -1px 0 #ff1a1a,-1px 1px 0 #ff1a1a,1px 1px 0 #ff1a1a,0 0 8px #ff1a1a,0 0 14px #ff1a1a;animation:v156ow 1.2s ease-in-out infinite alternate}
+@keyframes v156ow{from{text-shadow:-1px -1px 0 #ff1a1a,1px -1px 0 #ff1a1a,-1px 1px 0 #ff1a1a,1px 1px 0 #ff1a1a,0 0 5px #ff1a1a}to{text-shadow:-1px -1px 0 #ff4d4d,1px -1px 0 #ff4d4d,-1px 1px 0 #ff4d4d,1px 1px 0 #ff4d4d,0 0 14px #ff1a1a,0 0 22px #ff1a1a}}
+</style>
+<script>
+(function(){
+const q=id=>document.getElementById(id);
+const E=t=>String(t).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+let k0='';
+function px(){
+ try{
+  const n=q('pfn'),p=q('prof');if(!n||!p)return;
+  let x=q('pfx');if(!x){x=document.createElement('span');x.id='pfx';p.appendChild(x)}
+  const nm=(n.textContent||'').trim();
+  let tg='',col='#ffba7d',bd='';
+  try{if(typeof PC!=='undefined'&&PC&&PC.tag){tg=String(PC.tag).replace(/[^A-Za-z0-9]/g,'').slice(0,3);col=/^#[0-9a-f]{6}$/i.test(PC.col)?PC.col:'#ffba7d'}}catch(e){}
+  try{if(typeof ytB==='function'&&nm)bd=ytB(nm)||''}catch(e){}
+  const cls=bd?(bd.indexOf('owb')>=0?'ow':'vf'):'';
+  const k=nm+'|'+tg+'|'+col+'|'+cls;
+  if(k===k0)return;k0=k;
+  x.className=cls;
+  x.innerHTML=(tg?'<span class="ptg" style="color:'+col+'">['+E(tg)+']</span>':'')+'<span class="pxn">'+E(nm)+'</span>'+bd;
+ }catch(e){}
+}
+try{const n=q('pfn');if(n)new MutationObserver(px).observe(n,{childList:true,characterData:true,subtree:true})}catch(e){}
+setInterval(px,1000);px();
+})();
+</script>
 </body></html>
 
