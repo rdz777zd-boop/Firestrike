@@ -14,11 +14,12 @@ function addAn(t){if(!msgs)return;const d=document.createElement('div');d.classN
 async function announce(t){if(!ws||ws.readyState!==1||!ready){add('','Sem conexão. Tente de novo.',0,1);connect();return}
 const ts=Date.now(),sg=await sha(OWNER_ID+':'+ts+':'+t);ws.send(JSON.stringify({k:'e',m:{t:'gc',a:1,x:t,ts,sg}}));addAn(t)}
 let attT=0,attBox=null;
+function fsAtt(){attStop();if(window.fsUpdScreen){window.fsUpdScreen({url:GAME_URL+'/'});return}attStart()}
 function attStop(){try{window.fsUpdCancel&&window.fsUpdCancel()}catch(e){}clearInterval(attT);attT=0;if(attBox){attBox.remove();attBox=null}}
 function doUpdate(){try{if(navigator.serviceWorker)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()))}catch(e){}
 try{if(window.caches)caches.keys().then(k=>k.forEach(x=>caches.delete(x)))}catch(e){}
 setTimeout(()=>{location.replace(GAME_URL+'/?v='+Date.now())},500)}
-function attStart(){attStop();if(window.fsUpdScreen){window.fsUpdScreen({url:GAME_URL+'/'});return}let n=10;attBox=document.createElement('div');
+function attStart(){attStop();let n=10;attBox=document.createElement('div');
 attBox.style.cssText='position:fixed;left:50%;top:max(14px,env(safe-area-inset-top));transform:translateX(-50%);z-index:99999;background:#171311ee;border:3px solid #ff6600;border-radius:14px;padding:10px 22px;color:#fff;font:900 clamp(16px,4.5vw,26px) "Trebuchet MS",Arial,sans-serif;text-align:center;box-shadow:0 0 24px #ff660088;pointer-events:none;white-space:nowrap';
 const draw=()=>{attBox.textContent='ATUALIZAÇÃO EM ( '+n+'s )'};draw();document.body.appendChild(attBox);
 attT=setInterval(()=>{n--;if(n>0){draw();return}clearInterval(attT);attT=0;attBox.textContent='ATUALIZANDO...';doUpdate()},1000)}
