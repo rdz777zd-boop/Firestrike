@@ -22,7 +22,7 @@ function sha256js(s){const K=[],H=[];let p=0;const isP=n=>{for(let f=2;f*f<=n;f+
  return h.map(v=>(v>>>0).toString(16).padStart(8,'0')).join('')}
 const shaOld=s=>{let h=5381;for(const c of s)h=(h*33^c.charCodeAt(0))>>>0;return'x'+h.toString(16)};
 async function sha(s){try{if(window.crypto&&crypto.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}}catch(e){}return sha256js(s)}
-async function J(p,o){let last;for(let t=0;t<2;t++){const c=new AbortController(),tm=setTimeout(()=>c.abort(),15000);try{const r=await fetch(DB+p+'.json',Object.assign({signal:c.signal,cache:'no-store'},o));if(!r.ok)throw('http'+r.status);return await r.json()}catch(e){last=e;J.last=String(e&&e.name==='AbortError'?'tempo esgotado':e);if(e==='http400'&&/^(accounts|ids|nicks|verified|banned|vclaim)$/.test(tp)){DEAD[tp]=1;break}}finally{clearTimeout(tm)}await new Promise(r=>setTimeout(r,500))}throw last}
+async function J(p,o){let last;for(let t=0;t<2;t++){const c=new AbortController(),tm=setTimeout(()=>c.abort(),15000);try{const r=await fetch(DB+p+'.json',Object.assign({signal:c.signal,cache:'no-store'},o));if(!r.ok)throw('http'+r.status);return await r.json()}catch(e){last=e;J.last=String(e&&e.name==='AbortError'?'tempo esgotado':e)}finally{clearTimeout(tm)}await new Promise(r=>setTimeout(r,500))}throw last}
 /* dono do jogo: descobre o usuario dono do ID 33044471 pelo indice de IDs (nao da pra falsificar pelo perfil) */
 (()=>{const OJ=async()=>{for(const p of['/ids/'+OWNER_ID,'/inbox/id'+OWNER_ID]){try{const v=await J(p);let u=v&&typeof v.u=='string'?v.u:'',nk='';if(!/^[A-Za-z0-9_]{3,12}$/.test(u)){if(p.indexOf('/players/')===0&&v&&typeof v.n=='string'&&/^[A-Za-z0-9_]{2,12}$/.test(v.n)){nk=v.n}else continue}else{nk=u;try{const ac=await getAcc(u.toLowerCase());if(ac&&ac.nk)nk=ac.nk}catch(e){}}
 if(String(window.ARR_UID||'')===OWNER_ID)return 1;OWNERS.length=0;OWNERS.push(nk);try{localStorage.setItem('arr_owner',nk)}catch(e){}return 1}catch(e){}}return 0};
@@ -131,7 +131,7 @@ async function auth1(reg){let u=$('au_u').value.trim();const p=$('au_p').value;
    else await freeNick(nk,k)}
   lSave(k,rec);
   if(!ok){try{soon('Servidor indisponível: conta salva só neste aparelho')}catch(e){}}
-  enter(u,aid,nk)}catch(e){am('Erro ao conectar, tente de novo')}}
+  enter(u,aid,nk)}catch(e){am('Erro ao conectar ('+(J.last||(e&&e.message)||e)+'), tente de novo')}}
 /* ---- LOGIN COM GOOGLE (Google Identity Services) ---- */
 const gParse=cred=>{let pl=null;try{pl=JSON.parse(decodeURIComponent(escape(atob(String(cred).split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))))}catch(e){}return pl&&pl.sub&&pl.aud===GOOGLE_CLIENT_ID?pl:null};
 const setOpen=()=>{const e=$('set');return !!e&&!e.classList.contains('hide')};
