@@ -293,7 +293,7 @@ function search(){if(L.s)return;L.rm=0;show('sb');$('sbp').style.display='';$('s
  L.s=setInterval(()=>{const r=D-(Date.now()-t0);if(party()&&window.MP.bus&&Date.now()-(L.sbs||0)>=900){L.sbs=Date.now();try{window.MP.bus.send({t:'sb',on:1,r:Math.max(0,r),d:D})}catch(e){}}$('sbt').textContent=Date.now()<L.ne?L.nt:'BUSCANDO PARTIDA... '+Math.max(0,Math.ceil(r/1000))+'s';$('sbp').firstChild.style.width=Math.min(100,(Date.now()-t0)/D*100)+'%';tm();
   if(r<=0){stopS(1);if(L.lob)openLobby();else if(window.MP.bus&&N().amHost()&&hum()>0)N().hostGo();else{N().leave();orig()}}},200)}
 function stopS(k){clearInterval(L.s);L.s=0;hide('sb');if(party()&&window.MP.bus){try{window.MP.bus.send({t:'sb',on:0})}catch(e){}}if(!k&&!party())N().leave()}
-$('sbc').onclick=()=>{L.rm=0;stopS()};
+$('sbc').onclick=()=>{const pub=L.rm||L.jr;L.rm=0;L.jr=0;stopS();if(pub){try{N().lbSend({k:'rc'})}catch(e){}try{N().leave()}catch(e){}}};
 window.ARR_REAL=async n=>{try{if(!user)throw 0;if(!window.MP.bus||!party())await N().connect('p'+Math.random().toString(36).slice(2,7).padEnd(5,'0'));
  N().lbOpen();N().lbSend({k:'iv',to:n,r:window.MP.code});const t0=Date.now(),cn=String(n).replace(/[<>&"'`]/g,'').slice(0,12),w=setInterval(()=>{const M=window.MP;
   if(Object.keys(M.pr).some(k=>M.pr[k]&&M.pr[k].s==='l'&&String(M.pr[k].n)===cn)){clearInterval(w);window.frJoin(n)}else if(Date.now()-t0>25000){clearInterval(w);window.frNo(n)}},700)}catch(e){window.frNo(n)}};
@@ -305,9 +305,7 @@ window.ARR_SB=(f,m)=>{if(!party()||N().amHost()||L.s)return;if(!m.on){gsStop();r
   L.gs=setInterval(()=>{const M=window.MP;if(M.arm||M.on||Date.now()>L.gu||L.s){gsStop();return}const e=Date.now()-L.gt,rm=L.gd-e;$('sbt').textContent='BUSCANDO PARTIDA... '+Math.max(0,Math.ceil(rm/1000))+'s';$('sbp').firstChild.style.width=Math.min(100,e/L.gd*100)+'%'},200)}};
 window.ARR_KK=(f,m)=>{if(m.n===String(PN).replace(/[<>&"'`]/g,'').slice(0,12)&&!N().amHost())N().leave()};
 window.ARR_SALA=()=>{if(!user||L.s)return;const c='p'+Math.random().toString(36).slice(2,7).padEnd(5,'0');L.tb=0;L.lob=0;
- N().connect(c).then(()=>{if(!window.MP.bus){say('Online indispon\u00edvel agora');return}L.rm=1;L.rt=0;L.jr=0;show('sb');$('sbp').style.display='none';$('sbc').textContent='FECHAR'})};
-window.ARR_JOIN=c=>{c=String(c||'').toLowerCase();if(!user||L.s||!/^[a-z0-9]{3,8}$/.test(c))return;L.tb=0;L.lob=0;L.rm=0;
- N().connect(c).then(()=>{if(!window.MP.bus){say('N\u00e3o foi poss\u00edvel entrar na sala');return}L.jr=1;show('sb');$('sbp').style.display='none';$('sbc').textContent='SAIR'})};
+ N().connect(c).then(()=>{L.rm=1;show('sb');$('sbp').style.display='none';$('sbc').textContent='FECHAR'})};
 window.ARR_INV=f=>{say('Você entrou na equipe de @'+f);try{window.frJoin(f)}catch(e){}};
 setInterval(()=>{if(!L.rm)return;const M=window.MP;if(M.arm||M.on){L.rm=0;hide('sb');return}$('sbt').textContent=Date.now()<L.ne?L.nt:'SALA PRIVADA • código '+String(M.code||'').slice(1).toUpperCase();tm()},300);
 async function joinRoom(i){const n=N();Object.assign(L,{i,end:Date.now()+TL,go:0,ls:0});
