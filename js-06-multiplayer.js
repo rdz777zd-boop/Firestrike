@@ -251,6 +251,7 @@ function lbOpen(){let U='';try{U=(ARR_WS_URL||localStorage.getItem('arr_ws')||''
  w.onopen=()=>lbSend({k:'hi',n:clean(PN),s:1});
  w.onmessage=e=>{let d;try{d=JSON.parse(e.data)}catch(x){return}
   if(d.k==='ro')window.ARR_LB=new Map(d.l);
+  else if(d.k==='rl'){window.ARR_RL=Array.isArray(d.l)?d.l:[];try{window.ARR_RLU&&window.ARR_RLU()}catch(e){}}
   else if(d.k==='iv'){if(!MP.on)invPop(d.from,()=>connect(d.c).then(()=>{window.ARR_INV&&window.ARR_INV(d.from)}))}
   else if(d.k==='ivr')setMsg(d.ok?'Convite enviado':'Jogador não está online');
   };
