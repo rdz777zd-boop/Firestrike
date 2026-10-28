@@ -13,7 +13,7 @@ function toast(t){let d=$('mpt');if(!d){d=document.createElement('div');d.id='mp
 /* ---------- mapa identico para todos: sementes ---------- */
 window.MPS=k=>{if(MP.on)window.__mpR=mul(MP.sd+k*7919)};
 window.MPH=function(){window.__mpR=null;if(!MP.on)return;const f=G.f,nm=names(MP.sd);
- f.forEach((o,i)=>{o.name=nm[i%nm.length];o.bn=o.name;o.ctg=undefined;o.cl=null;o.bf=0;o.fr=0;o.mx=MP.host?0:1});
+ f.forEach((o,i)=>{if(!G.sala){o.name=nm[i%nm.length];o.bn=o.name;o.ctg=undefined;o.cl=null;o.bf=0}o.fr=0;o.mx=MP.host?0:1});
  for(const k in MP.slots){const idx=MP.slots[k],o=f[idx];if(!o)continue;const d=MP.pl[idx]||['Jogador',0];o.name=d[0];o.bn=d[0];o.ch=d[1];o.hum=1;o.al=0;o.mx=idx===MP.me?0:1}
  const me=f[MP.me];if(!me)return;
  if(MP.me!==0){f[0].isP=0;if(f[0].col==='#ffd93b'){f[0].col=me.col;me.col='#ffd93b'}}
