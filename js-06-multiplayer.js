@@ -62,6 +62,17 @@ const sh0=shoot;shoot=function(f,a){if(!MP.on||MP.rp)return sh0.apply(this,argum
 if(typeof iceMake==='function'){const ic0=iceMake;iceMake=function(q){const r=ic0.apply(this,arguments);try{const o=q&&q.o;if(MP.on&&!MP.icr&&MP.bus&&o&&!o.mx&&(o.isP||(MP.host&&!o.hum)))ev({t:'ic',i:o.i,x:Math.round(q.tx),y:Math.round(q.ty),a:+(+q.a).toFixed(3)})}catch(e){}return r}}
 const z0=zupd;zupd=function(dt){if(MP.on&&!MP.host)return;return z0(dt)};
 ['infApply','ytApply','frApply'].forEach(n=>{const o=window[n];if(typeof o!='function')return;window[n]=function(){if(MP.on)return;return o.apply(this,arguments)}});
+/* ---------- anti-cheat v159 (um unico bloco: envolve MPT e onEv) ---------- */
+{const mpt0=window.MPT;window.MPT=function(f,dt){try{if(MP.on&&f.mx&&f.hum){const t=MP.st[f.i];if(t&&t.st==='ground'&&inWall(t.x,t.y)){t.x=f.x;t.y=f.y;t.vx=0;t.vy=0}}}catch(e){}return mpt0.apply(this,arguments)}}
+{const onEv0=onEv;onEv=function(from,m){try{
+ if(m&&typeof m==='object'&&MP.on&&G){
+  if(m.t==='ic'){const f=G.f[m.i];if(!f||!f.mx||!owns(from,m.i))return;const x=+m.x,y=+m.y,a=+m.a;if(!isFinite(x)||!isFinite(y)||!isFinite(a)||typeof iceMake!=='function')return;if(!G.iw)G.iw=[];if(!G.ig)G.ig=[];MP.icr=1;try{iceMake({tx:x,ty:y,a,o:f,tm:f.tm})}catch(e){}MP.icr=0;return}
+  if(m.t==='sh'&&Array.isArray(m.a))m.a=m.a.filter(e=>{const f=G.f[e[0]];return!(f&&f.hum&&inWall(e[3],e[4]))});
+  if(m.t==='ht'&&MP.host){const si=MP.slots[from],sf=G.f[si],t=G.f[m.v];
+   if(sf&&t){const w0=WP[sf.ws[0]||0]||{},dx0=sf.x-t.x,dy0=sf.y-t.y,mr=(w0.rg||0)*1.6+250;
+    if(w0.rg&&dx0*dx0+dy0*dy0>mr*mr)return;if(inWall(sf.x,sf.y))return;if(typeof los==='function'&&!los(sf,t))return}}}
+ }catch(e){console.warn(e)}
+ return onEv0.apply(this,arguments)}}
 const st1=start;start=function(){if(MP.arm){MP.arm=0;MP.on=1}else MP.on=0;return st1.apply(this,arguments)};
 
 /* ---------- eventos ---------- */
