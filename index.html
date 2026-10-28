@@ -7272,7 +7272,7 @@ root.innerHTML='<div id="au" class="hide"><div class="abx"><h2>ARMADA ROYALE</h2
 document.body.appendChild(root);
 const show=id=>$(id).classList.remove('hide'),hide=id=>$(id).classList.add('hide'),am=t=>$('au_m').textContent=t||'';
 async function sha(s){if(window.crypto&&crypto.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}let h=5381;for(const c of s)h=(h*33^c.charCodeAt(0))>>>0;return'x'+h.toString(16)}
-async function J(p,o){const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);try{const r=await fetch(DB+p+'.json',Object.assign({signal:c.signal,cache:'no-store'},o));if(!r.ok)throw 0;return await r.json()}finally{clearTimeout(t)}}
+async function J(p,o){const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);try{const r=await fetch(DB+p+'.json',Object.assign({signal:c.signal,cache:'no-store'},o));if(!r.ok)throw('http'+r.status);return await r.json()}finally{clearTimeout(t)}}
 /* dono do jogo: descobre o usuario dono do ID 33044471 pelo indice de IDs (nao da pra falsificar pelo perfil) */
 (()=>{const OJ=async()=>{for(const p of['/ids/'+OWNER_ID,'/inbox/id'+OWNER_ID]){try{const v=await J(p);let u=v&&typeof v.u=='string'?v.u:'',nk='';if(!/^[A-Za-z0-9_]{3,12}$/.test(u)){if(p.indexOf('/players/')===0&&v&&typeof v.n=='string'&&/^[A-Za-z0-9_]{2,12}$/.test(v.n)){nk=v.n}else continue}else{nk=u;try{const ac=await getAcc(u.toLowerCase());if(ac&&ac.nk)nk=ac.nk}catch(e){}}
 if(String(window.ARR_UID||'')===OWNER_ID)return 1;OWNERS.length=0;OWNERS.push(nk);try{localStorage.setItem('arr_owner',nk)}catch(e){}return 1}catch(e){}}return 0};
@@ -7282,12 +7282,14 @@ const paths=async u=>['/accounts/'+u,'/inbox/ac'+(await sha('acc:'+u)).slice(0,2
 const idp=i=>['/ids/'+i,'/inbox/id'+i],PUTH={method:'PUT',headers:{'Content-Type':'application/json'}};
 /* verificado permanente (dado pelo dono via ID): /verified/<id> */
 const nickOfId=async id=>{for(const p of['/ids/'+id,'/inbox/id'+id]){try{const v=await J(p),u=v&&typeof v.u=='string'?v.u:'';if(/^[A-Za-z0-9_]{3,12}$/.test(u)){let nk=u;try{const ac=await getAcc(u.toLowerCase());if(ac&&ac.nk)nk=ac.nk}catch(e){}return nk}}catch(e){}}return''};
-async function VL(){try{const v=await J('/verified');const ns=new Set();if(v&&typeof v=='object')for(const id in v){if(!/^\d{6,10}$/.test(id))continue;const r=v[id];let n=await nickOfId(id);if(!n&&r&&typeof r.n=='string')n=r.n;n=String(n||'').replace(/[^A-Za-z0-9_]/g,'').slice(0,12).toLowerCase();if(n)ns.add(n)}
+async function VL(){try{let v=null,v2=null;try{v=await J('/verified')}catch(e){}try{v2=await J('/inbox/verlist')}catch(e){}if(v2&&typeof v2=='object')v=Object.assign({},v2,v||{});const ns=new Set();if(v&&typeof v=='object')for(const id in v){if(!/^\d{6,10}$/.test(id))continue;const r=v[id];let n=await nickOfId(id);if(!n&&r&&typeof r.n=='string')n=r.n;n=String(n||'').replace(/[^A-Za-z0-9_]/g,'').slice(0,12).toLowerCase();if(n)ns.add(n)}
  VERS.clear();ns.forEach(n=>VERS.add(n));try{localStorage.setItem('arr_vers',JSON.stringify([...ns]))}catch(e){}}catch(e){}}
 VL();setInterval(VL,60000);
 window.arrVerSet=async(id,on)=>{id=String(id||'').trim();if(String(window.ARR_UID||'')!==OWNER_ID)return{e:'Só o dono pode usar esse comando.'};if(!/^\d{6,10}$/.test(id))return{e:'ID inválido. Use o ID de 8 dígitos do jogador.'};
  const n=await nickOfId(id);if(!n)return{e:'Nenhum jogador com o ID '+id+'.'};
- try{if(on)await J('/verified/'+id,Object.assign({body:JSON.stringify({n,t:Date.now()})},PUTH));else await J('/verified/'+id,{method:'DELETE'})}catch(e){return{e:'Falha ao salvar. Tente de novo.'}}
+ let err='';
+ try{if(on)await J('/verified/'+id,Object.assign({body:JSON.stringify({n,t:Date.now()})},PUTH));else await J('/verified/'+id,{method:'DELETE'})}catch(e){err=String(e)}
+ if(err){try{let L=null;try{L=await J('/inbox/verlist')}catch(e){}if(!L||typeof L!='object')L={};if(on)L[id]={n,t:Date.now()};else delete L[id];await J('/inbox/verlist',Object.assign({body:JSON.stringify(L)},PUTH));err=''}catch(e2){return{e:'Falha ao salvar ('+err+' / '+String(e2)+'). Tente de novo.'}}}
  await VL();return{n}};
 const rid=()=>{let n;try{n=crypto.getRandomValues(new Uint32Array(1))[0]}catch(e){n=Math.floor(Math.random()*4294967295)}return String(10000000+n%90000000)};
 async function newId(k){for(let t=0;t<10;t++){const i=rid();let taken=0;for(const p of idp(i)){try{const v=await J(p);if(v){taken=1;break}await J(p,Object.assign({body:JSON.stringify({u:k})},PUTH));return i}catch(e){}}if(!taken)return''}return''}
