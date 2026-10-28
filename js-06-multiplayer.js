@@ -27,7 +27,6 @@ window.MPT=function(f,dt){if(!MP.on||!f.mx)return false;
  else{if(!f.mi){f.mi=1;f.x=t.x;f.y=t.y}
   let tx=t.x,ty=t.y;
   if(t._t&&t.st==='ground'){const lat=Math.min(.12,((MP.bus&&MP.bus.ping)||0)/2000),ag=Math.min(.25,Math.max(0,(performance.now()-t._t)/1000)+lat);tx+=(t.vx||0)*ag;ty+=(t.vy||0)*ag}
-  if(f.hum&&t.st==='ground'&&inWall(tx,ty)){tx=f.x;ty=f.y}
   const ex=tx-f.x,ey=ty-f.y;if(ex*ex+ey*ey>90000){f.x=tx;f.y=ty}
   const k=Math.min(1,dt*22),nx=f.x+(tx-f.x)*k,ny=f.y+(ty-f.y)*k;if(dt>.001){f.vx=(nx-f.x)/dt;f.vy=(ny-f.y)/dt}f.x=nx;f.y=ny}
  f.ang+=wr(t.a-f.ang)*Math.min(1,dt*14);f.hp=t.hp;f.ar=t.ar||0;f.st=t.st;f.dn=t.dn;
@@ -67,12 +66,14 @@ function owns(from,i){const f=G.f[i];if(!f)return false;return f.hum?MP.slots[fr
 function onEv(from,m){if(!m||typeof m!=='object')return;if(m.t==='chat'){if(window.ARR_CHAT)window.ARR_CHAT(from,m);return}if(m.t==='cd'){if(window.ARR_CD)window.ARR_CD(from,m);return}if(m.t==='pos'){if(window.ARR_POS)window.ARR_POS(from,m);return}if(m.t==='kk'){if(window.ARR_KK)window.ARR_KK(from,m);return}if(m.t==='sb'){if(window.ARR_SB)window.ARR_SB(from,m);return}
  switch(m.t){
  case 'go':begin(m,from);break;
- case 'sh':if(!MP.on||!G||!Array.isArray(m.a))break;for(const e of m.a){const f=G.f[e[0]];if(!f||!f.mx||f.dead||!owns(from,e[0]))continue;if(f.hum&&inWall(e[3],e[4]))continue;
+ case 'sh':if(!MP.on||!G||!Array.isArray(m.a))break;for(const e of m.a){const f=G.f[e[0]];if(!f||!f.mx||f.dead||!owns(from,e[0]))continue;
    const aimMe=!MP.host&&!f.hum&&e[5]===MP.me&&G.p&&!G.p.dead;if(!aimMe){f.x=e[3];f.y=e[4]}
    f.st='ground';f.ws[0]=e[1];f.cur=0;f.mg[0]=99;f.cd=0;f.rl=0;f.dn=0;f.pf=0;f.lgh=0;f.hl=null;MP.rp=1;try{shoot(f,aimMe?aimG(f):e[2])}catch(x){}MP.rp=0}break;
  case 'sn':if(!MP.on||!G||MP.host||from!==MP.hpid)break;snap(m);break;
  case 'ht':{if(!MP.on||!G||!MP.host)break;const si=MP.slots[from];if(si==null)break;const sf=G.f[si],t=G.f[m.v];
    if(!sf||!t||sf.dead||t.dead||t.mx||t.isP||t.hum||t.st!='ground'||sf.tm===t.tm)break;const d=+m.d;if(!(d>0)||d>400)break;
+   /* valida o acerto: alcance da arma, atirador dentro de parede e linha de tiro (parede/gelo no caminho) */
+   {const w0=WP[sf.ws[0]||0]||{},dx0=sf.x-t.x,dy0=sf.y-t.y,mr=(w0.rg||0)*1.6+250;if(w0.rg&&dx0*dx0+dy0*dy0>mr*mr)break;if(inWall(sf.x,sf.y))break;try{if(typeof los==='function'&&!los(sf,t))break}catch(x){}}
    MP.ht=1;_crit=m.c?1:0;try{hurt(t,d,sf)}catch(x){console.error(x)}_crit=0;MP.ht=0;break}
  case 'hh':{if(!MP.on||!G||!G.p||G.p.mx)break;const si=MP.slots[from];if(si==null)break;const sf=G.f[si],t=G.f[m.v];
    if(!sf||!t||t!==G.p||sf.dead||t.dead||t.st!='ground'||sf.tm===t.tm)break;const d=+m.d;if(!(d>0)||d>400)break;
