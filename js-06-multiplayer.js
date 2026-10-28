@@ -7,8 +7,6 @@ const mul=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.i
 const clean=s=>String(s||'Jogador').replace(/[<>&"'`]/g,'').slice(0,12)||'Jogador';
 function names(sd){const r=mul(sd^0x5bd1e995),a=NMP.filter(n=>n.toLowerCase()!='voce');for(let i=a.length-1;i>0;i--){const j=r()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
 window.ARR_NAMES=names;
-/* anti-cheat: jogador humano com o centro bem dentro de uma parede (noclip) */
-const inWall=(x,y)=>{try{return typeof wallAt==='function'&&!!(wallAt(x,y)&&wallAt(x+12,y)&&wallAt(x-12,y)&&wallAt(x,y+12)&&wallAt(x,y-12))}catch(e){return false}};
 let toastT=0;
 function toast(t){let d=$('mpt');if(!d){d=document.createElement('div');d.id='mpt';document.body.appendChild(d)}d.textContent=t;d.style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>d.style.display='none',4200)}
 
