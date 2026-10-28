@@ -8,8 +8,20 @@ const o0=ppOpen;let tok=0,timer=0;
 const num=(v,m)=>{v=Math.floor(+v);return v>0?Math.min(v,m):0};
 const sn=(v,n)=>String(v==null?'':v).replace(/[^\p{L}\p{N} _.-]/gu,'').replace(/\s+/g,' ').trim().slice(0,n);
 const colr=v=>/^#[0-9a-f]{6}$/i.test(String(v))?v:'#8b9bb2';
-async function fetchRec(uid){const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);
- try{const r=await fetch(DB+'/players/'+uid+'.json',{signal:c.signal,cache:'no-store'});if(!r.ok)return null;const v=await r.json();return v&&typeof v=='object'?v:null}catch(e){return null}finally{clearTimeout(t)}}
+const IDRE=/^\d{6,10}$/;
+async function getJ(p){const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);
+ try{const r=await fetch(DB+p+'.json',{signal:c.signal,cache:'no-store'});if(!r.ok)return null;return await r.json()}catch(e){return null}finally{clearTimeout(t)}}
+const fetchRec=uid=>getJ('/players/'+uid).then(v=>v&&typeof v=='object'?v:null);
+async function sha(s){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return''}}
+const VC={};
+/* confere o ID que o proprio jogador publicou: tem que existir no indice de IDs e, se a conta tiver nick, o nick tem que bater */
+async function verifyAid(aid,nick){const k=aid+'|'+nick.toLowerCase(),c=VC[k];if(c&&Date.now()-c.t<300000)return c.v;
+ let ok=false;
+ try{let ix=null;for(const p of['/ids/'+aid,'/inbox/id'+aid]){const v=await getJ(p);if(v&&typeof v.u=='string'){ix=v;break}}
+  if(ix&&/^[A-Za-z0-9_]{3,12}$/.test(ix.u)){ok=true;const u=ix.u.toLowerCase(),h=await sha('acc:'+u);
+   if(h){for(const p of['/accounts/'+u,'/inbox/ac'+h.slice(0,20)]){const a=await getJ(p);if(a&&a.h&&String(a.u||'').toLowerCase()===u){const nk=String(a.nk||'').toLowerCase();if(nk&&nk!==nick.toLowerCase())ok=false;break}}}}}catch(e){}
+ VC[k]={v:ok,t:Date.now()};return ok}
+const ago=t=>{const s=Math.max(0,(Date.now()-t)/1000);return s<90?'agora':s<5400?'há '+Math.round(s/60)+' min':s<129600?'há '+Math.round(s/3600)+' h':'há '+Math.round(s/86400)+' d'};
 function uidOf(d){if(UIDRE.test(String(d.key||'')))return d.key;try{const p=window.arrPlayerByName&&window.arrPlayerByName(d.n);if(p&&UIDRE.test(String(p.key||'')))return p.key}catch(e){}return''}
 const sig=d=>[d.n,d.k,d.w,d.g,d.rp,d.rg,d.rw,d.rt,d.ch,d.tj,JSON.stringify(d.eq||0),d.ep,d.er,d.c?d.c.tag+'|'+d.c.n+'|'+d.c.col:''].join('~');
 function merge(d,r){
