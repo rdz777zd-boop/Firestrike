@@ -426,6 +426,24 @@ const ic=n=>'<svg class="ic"><use href="#i-'+n+'"/></svg>',sv=()=>{try{localStor
 QMN.push('SALA');QMS.push('Treino \u2022 Contra Squad de 1x1 a 5x5');QMC.push('#2ecc71');PVI.push(PVI[1]);
 QMD.push({t:4,i:ic('group'),n:'SALA',s:'Treino \u2022 Contra Squad de 1x1 a 5x5',tg:'Treine ou assista os bots lutando em Contra Squad no tamanho que voc\u00ea escolher',b:[[ic('group'),'Escolha 1x1, 2x2, 3x3, 4x4 ou 5x5'],[ic('video'),'Jogue ou assista os bots lutando entre si com c\u00e2mera livre'],[ic('trophy'),'Nada conta: sem moedas, vit\u00f3rias, abates ou rank']],tip:'Dica: todos usam o Runer e s\u00f3 h\u00e1 5 armas: Escopeta, MP5, SMG, Cano Duplo e SPAS'});
 const st=document.createElement('style');st.textContent='.salacfg{margin:8px 0 4px;display:flex;flex-direction:column;gap:8px}.salacfg h4{margin:0;font:900 12px Trebuchet MS,Arial;color:#7fb9c4;letter-spacing:1px}.salacfg .sz{display:flex;gap:6px;flex-wrap:wrap}.salacfg .sz button{flex:1;min-width:46px;padding:8px 4px;border-radius:10px;border:2px solid #00ff8888;background:#0d1a13;color:#fff;font:900 15px Trebuchet MS,Arial}.salacfg .sz button.on{background:#00ff88;color:#032a18;border-color:#fff}.salacfg .go{display:flex;gap:8px}.salacfg .go button{flex:1;padding:12px 6px;border-radius:12px;border:2px solid #141211;font:900 15px Trebuchet MS,Arial;color:#fff;background:linear-gradient(#ff6600,#b54800);box-shadow:0 4px 0 #4d392b}.salacfg .go button.w{background:linear-gradient(#ff6600,#b54800);box-shadow:0 4px 0 #4d392b}';document.head.appendChild(st);
+let STAB=0,STM=0;
+const SX=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+{const sst=document.createElement('style');sst.textContent='.stb{display:flex;gap:6px}.stb button{flex:1;padding:10px 4px;border-radius:10px;border:2px solid #ff660088;background:#1f1b19;color:#fff;font:900 14px Trebuchet MS,Arial;letter-spacing:1px}.stb button.on{background:linear-gradient(#ff6600,#b54800);border-color:#fff}.srl{display:flex;flex-direction:column;gap:4px;max-height:210px;overflow:auto}.srl button{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px;border-radius:8px;border:0;background:#1f1b19;color:#fff;font:900 13px Trebuchet MS,Arial;text-align:left}.srl button small{color:#ff6600;font-size:11px;white-space:nowrap}.sre{color:#8a96b4;padding:8px;font:700 13px Trebuchet MS,Arial}';document.head.appendChild(sst)}
+function salaRq(){try{const n=window.ARR_NET;if(!n)return;if(n.lbOn())n.lbSend({k:'rq'});else n.lbOpen()}catch(e){}}
+function SALAUI(d){
+ const draw=()=>{let h='<div class="stb"><button data-t="0"'+(STAB==0?' class="on"':'')+'>CRIAR</button><button data-t="1"'+(STAB==1?' class="on"':'')+'>SALAS</button></div>';
+  if(STAB==0)h+='<h4>SALA PERSONALIZADA</h4><div class="go"><button data-c="1">CRIAR SALA</button></div>';
+  else{const me=(window.MP&&window.MP.code)||'',rl=window.ARR_USER?(window.ARR_RL||[]).filter(r=>r&&r[0]!==me&&(+r[2]||1)<8):[];
+   h+='<h4>SALAS ONLINE ('+rl.length+')</h4><div class="srl">'+(!window.ARR_USER?'<div class="sre">Entre na sua conta para ver as salas online</div>':rl.length?rl.map(r=>'<button data-j="'+SX(r[0])+'"><span>Sala de '+SX(r[1])+'</span><small>'+(+r[2]||1)+'/8 \u2022 ENTRAR</small></button>').join(''):'<div class="sre">Nenhuma sala online agora</div>')+'</div><div class="go"><button data-r="1">ATUALIZAR</button></div>'}
+  d.innerHTML=h};
+ d.onclick=e=>{const t=e.target.closest('button');if(!t)return;const k=t.dataset;
+  if(k.t!==undefined){STAB=+k.t;if(STAB==1)salaRq();draw();return}
+  if(k.c){$('modp').classList.add('hide');salaOpen();window.ARR_SALA&&window.ARR_SALA();return}
+  if(k.r){salaRq();draw();return}
+  if(k.j){$('modp').classList.add('hide');window.ARR_JOIN&&window.ARR_JOIN(k.j)}};
+ window.ARR_RLU=()=>{if(STAB==1&&d.isConnected)draw()};
+ clearInterval(STM);STM=setInterval(()=>{if(!d.isConnected){clearInterval(STM);return}const m=$('modp');if(STAB==1&&m&&!m.classList.contains('hide'))salaRq()},4000);
+ draw();if(STAB==1)salaRq()}
 const q0=qmR;qmR=function(){q0();const g=$('modg'),c=g&&g.children[4];if(c&&!c.querySelector('.mnv')){const n=document.createElement('span');n.className='mnv';n.textContent='NOVO';c.appendChild(n)}
 if(TB!=4)return;const d=document.createElement('div');d.className='salacfg';d.innerHTML='<h4>SALA PERSONALIZADA</h4><div class="go"><button data-w="0">CRIAR SALA</button></div>';
 d.querySelector('button').onclick=()=>{$('modp').classList.add('hide');salaOpen();window.ARR_SALA&&window.ARR_SALA()};
