@@ -5872,14 +5872,25 @@ window.arrPlayerByName=n=>(REM.nm&&REM.nm[n])||null;
 window.arrBnByName=n=>(REM.nm&&REM.nm[n]&&REM.nm[n].bn)||'';
 const ENS={};window.arrEnsure=(n,cb)=>{if(!window.ARR_USER||!n)return;const r=REM.nm&&REM.nm[n];if(r&&(r.av||r.bn))return;if(ENS[n]&&Date.now()-ENS[n]<30000)return;ENS[n]=Date.now();window.arrFind(n).then(()=>{if(cb)cb()}).catch(()=>{})};
 REM.extra={};REM.pic={};
+const hsh=t=>{let h=5381;t=String(t);for(let i=0;i<t.length;i++)h=((h*33)^t.charCodeAt(i))>>>0;return h.toString(36)};
 const picA=u=>{const p=REM.pic&&REM.pic[u];return(p&&p.a)||''},picB=u=>{const p=REM.pic&&REM.pic[u];return(p&&p.b)||''};
 async function picLoad(uids,force){
  const now=Date.now(),need=[...new Set(uids)].filter(u=>UIDRE.test(u)&&u!==UID&&(force||!REM.pic[u]||now-REM.pic[u].ts>((REM.pic[u].a||REM.pic[u].b)?300000:60000))).slice(0,20);
  if(!need.length)return 0;
  need.forEach(u=>{REM.pic[u]=Object.assign({a:'',b:''},REM.pic[u],{ts:now})});
  let r=null;try{r=await J('/pics.json?ids='+need.join(','))}catch(e){return 0}
- let ch=0;need.forEach(u=>{const v=r&&r[u],a=v?imgc(v.a):'',b=v?imgc(v.b):'',o=REM.pic[u];if((o.a||'')!==a||(o.b||'')!==b)ch=1;REM.pic[u]={a,b,ts:Date.now()}});
+ let ch=0;need.forEach(u=>{const v=r&&r[u],a=v?imgc(v.a):'',b=v?imgc(v.b):'',o=REM.pic[u];if((o.a||'')!==a||(o.b||'')!==b)ch=1;REM.pic[u]={a,b,h:(a||b)?hsh(a+'|'+b):'',t:(v&&+v.t)||0,ts:Date.now()}});
  if(ch)rebuild();return ch}
+let pollB=0;
+async function picPoll(){
+ if(pollB||document.hidden||!window.ARR_USER)return;
+ const m=document.getElementById('menu');if(!m||m.classList.contains('hide'))return;
+ const ids=Object.keys(REM.pic).filter(u=>u!==UID&&UIDRE.test(u)).slice(-60);if(!ids.length)return;
+ pollB=1;
+ try{const ch=[];for(let i=0;i<ids.length;i+=20){const part=ids.slice(i,i+20),r=await J('/pics.json?t=1&ids='+part.join(','));if(!r||typeof r!='object')continue;for(const u of part){const v=r[u];if(v&&typeof v=='object')continue;const o=REM.pic[u];if(o&&(o.t||0)!==(+v||0))ch.push(u)}}
+  if(ch.length){const x=await picLoad(ch.slice(0,20),1);if(x)refreshUI()}}catch(e){}
+ pollB=0}
+setInterval(picPoll,5000);
 window.arrPlayers=()=>Object.values(REM.players||{});
 const encq=v=>encodeURIComponent(JSON.stringify(v));
 window.arrFind=async q=>{q=sn(q,12);if(!q)return[];
@@ -5923,6 +5934,7 @@ async function publish(force){
   const rec={n:sn(PN,12)||'Jogador',k:num(m.k,1e7),w:num(m.w,1e7),g:num(m.g,1e7),rp:num(m.rp,1e6),rg:num(m.rg,1e7),rw:num(m.rw,1e7),rt:num(m.rt,1e7)};
   try{const cq=Math.floor(+CH);if(cq>=0&&cq<100)rec.ch=cq;const tq=trajeOf(CH);if(tq)rec.tj=tq;const qe={};let qn=0;for(const k in EQ){const a=Math.floor(+k),b=Math.floor(+EQ[k]);if(a>0&&a<100&&b>0&&b<1000&&qn<40){qe[a]=b;qn++}}if(qn)rec.eq=qe;if(EQP>0&&EQP<1000)rec.ep=Math.floor(EQP);if(EQR>0&&EQR<1000)rec.er=Math.floor(EQR)}catch(e){}
   if(PC&&ck){rec.cid=ck;rec.cn=sn(PC.n,20);rec.ct=tagc(PC.tag);rec.cc=colr(PC.col);rec.cs=symc(PC.sym)}
+  if(window.__picH)rec.pv=window.__picH;
   const sig=JSON.stringify(rec);
   const lck=ls('arr_lck');
   if(lck&&lck!==ck&&KEYRE.test(lck)){
@@ -5934,7 +5946,7 @@ async function publish(force){
    lastP=sig}
   {let pic=null;try{const sm=window.fsSmall?window.fsSmall():{};const a=imgc(sm.a),b=imgc(sm.b);if(a||b)pic={a,b}}catch(e){}
    const pk=pic?JSON.stringify(pic):'';
-   if(pk!==lastPic){try{if(pic)await put('/pics/'+UID,{a:pic.a,b:pic.b});else await del('/pics/'+UID);lastPic=pk;
+   if(pk!==lastPic){try{if(pic)await put('/pics/'+UID,{a:pic.a,b:pic.b});else await del('/pics/'+UID);lastPic=pk;window.__picH=pic?hsh(pic.a+'|'+pic.b):'';lastP='';setTimeout(()=>{try{window.arrPub&&window.arrPub()}catch(e){}},400);
      if(pic&&!REM.picMsg){REM.picMsg=1;try{soon('Sua foto/banner foi enviada ao servidor ✔')}catch(e){}}}
     catch(e2){if(!REM.picWarn){REM.picWarn=1;try{soon('Servidor recusou sua foto/banner ('+String(e2&&e2.message||e2).slice(0,30)+'). Atualize o Worker.')}catch(e){}}}}}
   if(PC&&ck&&KEYRE.test(ck)){
@@ -5955,7 +5967,9 @@ async function pull(){
   const q=f=>J('/players.json?orderBy=%22'+f+'%22&limitToLast=60');
   const [a,b,c,cl,st,rq,ib]=await Promise.all([q('k'),q('w'),q('rp'),J('/clans.json'),J('/clanstats.json'),J('/requests.json').catch(()=>null),J('/inbox/'+UID+'.json').catch(()=>null)]);
   REM.raw={P:Object.assign({},REM.extra,a,b,c),C:cl||{},S:st||{},R:rq||{}};REM.ok=Date.now();REM.err=0;REM.loaded=1;
-  try{const ids=[];for(const o of[a,b,c])if(o&&typeof o=='object')ids.push(...Object.keys(o).slice(-10));picLoad(ids).then(ch=>{if(ch)refreshUI()}).catch(()=>{})}catch(e){}
+  try{const ids=[];for(const o of[a,b,c])if(o&&typeof o=='object')ids.push(...Object.keys(o).slice(-10));picLoad(ids).then(ch=>{if(ch)refreshUI()}).catch(()=>{});
+   const st=[],nw=Date.now(),PP=REM.raw.P||{};for(const u in PP){const r=PP[u],o=REM.pic[u];if(!r||typeof r!='object'||u===UID)continue;const pv=(typeof r.pv=='string'&&/^[a-z0-9]{1,8}$/.test(r.pv))?r.pv:'';if(pv?(!o||(o.h!==pv&&nw-o.ts>15000)):(o&&(o.a||o.b)&&nw-o.ts>15000))st.push(u)}
+   if(st.length)picLoad(st.slice(0,20),1).then(ch=>{if(ch)refreshUI()}).catch(()=>{})}catch(e){}
   rebuild();const jn=await inboxHandle(ib);try{await friendInbox(ib)}catch(e){}if(jn){rebuild();publish(1)}checkMyClan();notifyReq();try{await ownDead()}catch(e){}
  }catch(e){REM.err=1}
  refreshUI();
@@ -7053,7 +7067,7 @@ var ARR_NOTAS=[
  {v:156,d:'27/10/2026',t:'Emblema no cartão e menu Personagens',i:[
   ['NOVO','<b>Emblema no cartão do menu.</b> Seu nome aparece com o emblema ao lado (dono ou verificado) e a cor do nome muda conforme o emblema.'],
   ['CORRIGIDO','<b>Menu de Personagens</b> não fica mais em tela preta.'],
-  ['CORRIGIDO','<b>Foto e banner dos outros jogadores</b> agora são enviados separados do perfil (o servidor recusava por tamanho). Cada jogador precisa abrir esta versão uma vez para enviar a sua. Exige o Worker atualizado.']]},
+  ['CORRIGIDO','<b>Foto e banner dos outros jogadores</b> agora são enviados separados do perfil (o servidor recusava por tamanho). Cada jogador precisa abrir esta versão uma vez para enviar a sua. Exige o Worker atualizado. Ao trocar a foto ou o banner, os outros veem a mudança em até ~10s (com o menu aberto), sem fechar o jogo. Worker atualizado de novo.']]},
  {v:155,d:'27/10/2026',t:'Cartão do menu, banimento e nova tela de notas',i:[
   ['NOVO','<b>Cartão do jogador no menu</b> agora mostra [TAG] do clã, o nome e o emblema. O emblema muda a cor do nome.'],
   ['NOVO','<b>Comandos do dono:</b> /banir ID motivo, /desbanir ID e /banidos.'],
