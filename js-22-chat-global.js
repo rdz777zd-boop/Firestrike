@@ -5,7 +5,7 @@ const $=id=>document.getElementById(id);
 let ws=null,myid=null,open=false,un=0,lastSend=0,tries=0,rt=0,ready=false;
 const MAXM=40,ROOMS=['chat-global','chatglobal','sala0'];let ri=0,gotHi=0,ct=0,why='';
 /* ID do DONO: crie sua conta, abra seu PERFIL, copie o ID e cole aqui entre as aspas. Vazio = ninguém é dono. */
-const OWNER_ID='33044471';
+const OWNER_ID='90514951';
 const GAME_URL='https://firestrike.rdz777zd.workers.dev';
 const isOwner=()=>!!OWNER_ID&&String(window.ARR_UID||'')===OWNER_ID;
 window.arrIsOwner=isOwner;
