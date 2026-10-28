@@ -285,7 +285,7 @@ $('lcs').onclick=send;$('lci').onkeydown=e=>{if(e.key==='Enter')send()};
 const orig=window.startL;
 window.startL=function(){if(!user||window.MP.arm||!orig||window.frWN)return orig&&orig.apply(this,arguments);
  if(party()&&hum()>0){if(!N().amHost()){say('Só o líder da equipe inicia a partida');return}if((TB==0||TB==2)&&gm()<2){say('Com amigos na equipe jogue em Duo ou Squad');return}if(TB==4&&typeof SALA!=='undefined'&&SALA.n<2){say('Com amigos na equipe use 2x2 ou mais');return}}
-if(L.rm){L.rm=0;try{N().lbSend({k:'rc'})}catch(e){}hide('sb');if(window.MP.bus&&N().amHost()&&hum()>0)N().hostGo();else{N().leave();orig()}return}L.lob=typeof TB!=='undefined'&&(TB==0||TB==2);if(TB==2&&window.frWarBad&&frWarBad().length)return orig.apply(this,arguments);search()};
+if(L.rm){L.rm=0;hide('sb');if(window.MP.bus&&N().amHost()&&hum()>0)N().hostGo();else{N().leave();orig()}return}L.lob=typeof TB!=='undefined'&&(TB==0||TB==2);if(TB==2&&window.frWarBad&&frWarBad().length)return orig.apply(this,arguments);search()};
 $('play').onclick=window.startL;$('again').onclick=window.startL;
 const party=()=>/^p[a-z0-9]{3,7}$/.test((window.MP&&window.MP.code)||''),say=t=>{try{soon(t)}catch(e){nota(t)}},hum=()=>{const M=window.MP;return M.bus?Object.keys(M.pr).filter(k=>M.pr[k]&&M.pr[k].s==='l').length:0},nota=t=>{L.nt=t;L.ne=Date.now()+3000};
 function tm(){}
@@ -307,7 +307,7 @@ window.ARR_KK=(f,m)=>{if(m.n===String(PN).replace(/[<>&"'`]/g,'').slice(0,12)&&!
 window.ARR_SALA=()=>{if(!user||L.s)return;const c='p'+Math.random().toString(36).slice(2,7).padEnd(5,'0');L.tb=0;L.lob=0;
  N().connect(c).then(()=>{L.rm=1;show('sb');$('sbp').style.display='none';$('sbc').textContent='FECHAR'})};
 window.ARR_INV=f=>{say('Você entrou na equipe de @'+f);try{window.frJoin(f)}catch(e){}};
-setInterval(()=>{if(!L.rm)return;const M=window.MP;if(M.arm||M.on){L.rm=0;hide('sb');return}$('sbt').textContent=Date.now()<L.ne?L.nt:'SALA PRIVADA • código '+String(M.code||'').slice(1).toUpperCase();tm()},300);
+setInterval(()=>{if(L.rm&&Date.now()>(L.rt||0)){L.rt=Date.now()+4000;try{const M0=window.MP;N().lbSend({k:'rm',c:String(M0.code||''),p:Math.min(8,1+hum())})}catch(e){}}if(!L.rm&&!L.jr)return;const M=window.MP;if(M.arm||M.on){if(L.rm){try{N().lbSend({k:'rc'})}catch(e){}}L.rm=0;L.jr=0;hide('sb');return}$('sbt').textContent=Date.now()<L.ne?L.nt:'SALA PRIVADA • código '+String(M.code||'').slice(1).toUpperCase();tm()},300);
 async function joinRoom(i){const n=N();Object.assign(L,{i,end:Date.now()+TL,go:0,ls:0});
  try{await n.connect('m'+gm()+'abcd'[i]);n.lbOpen();n.lbSend({k:'hi',n:PN,s:1});sys('Você entrou no lobby ('+['SOLO','DUO','SQUAD'][gm()-1]+')');
   setTimeout(()=>{const M=window.MP;if(!M.bus||L.i!==i)return;const h=1+Object.keys(M.pr).filter(k=>M.pr[k]&&M.pr[k].s==='l').length;if(h>8&&i<3){n.leave();joinRoom(i+1)}},3500)}
