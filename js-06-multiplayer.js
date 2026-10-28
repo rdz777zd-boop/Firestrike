@@ -56,6 +56,8 @@ const di0=die;die=function(t,s){if(MP.on&&!t.mx&&!t.mpd&&!t.dead){t.mpd=1;ev({t:
 const rv0=revive;revive=function(t,by){if(MP.on&&t.mx){if(by&&(by.isP||MP.host))ev({t:'rv',v:t.i,b:by.i});return}return rv0.apply(this,arguments)};
 const sh0=shoot;shoot=function(f,a){if(!MP.on||MP.rp)return sh0.apply(this,arguments);const c0=f.cd,r=sh0.apply(this,arguments);
  if(!f.mx&&f.cd>0&&c0<=0&&(f.isP||MP.host)){const q=[f.i,f.ws[f.cur]||0,+a.toFixed(2),f.x|0,f.y|0],tg=MP.host&&!f.isP?f.tg:null;if(tg&&tg.mx&&tg.hum)q.push(tg.i,+wr(a-Math.atan2(tg.y-f.y,tg.x-f.x)).toFixed(3));MP.q.push(q)}return r};
+/* gelo: replica a parede de gelo para todos (antes so existia na tela de quem jogou) */
+if(typeof iceMake==='function'){const ic0=iceMake;iceMake=function(q){const r=ic0.apply(this,arguments);try{const o=q&&q.o;if(MP.on&&!MP.icr&&MP.bus&&o&&!o.mx&&(o.isP||(MP.host&&!o.hum)))ev({t:'ic',i:o.i,x:Math.round(q.tx),y:Math.round(q.ty),a:+(+q.a).toFixed(3)})}catch(e){}return r}}
 const z0=zupd;zupd=function(dt){if(MP.on&&!MP.host)return;return z0(dt)};
 ['infApply','ytApply','frApply'].forEach(n=>{const o=window[n];if(typeof o!='function')return;window[n]=function(){if(MP.on)return;return o.apply(this,arguments)}});
 const st1=start;start=function(){if(MP.arm){MP.arm=0;MP.on=1}else MP.on=0;return st1.apply(this,arguments)};
@@ -65,7 +67,6 @@ function ev(m){const b=MP.bus;if(b)b.send(m)}
 function owns(from,i){const f=G.f[i];if(!f)return false;return f.hum?MP.slots[from]===i:from===MP.hpid}
 function onEv(from,m){if(!m||typeof m!=='object')return;if(m.t==='chat'){if(window.ARR_CHAT)window.ARR_CHAT(from,m);return}if(m.t==='cd'){if(window.ARR_CD)window.ARR_CD(from,m);return}if(m.t==='pos'){if(window.ARR_POS)window.ARR_POS(from,m);return}if(m.t==='kk'){if(window.ARR_KK)window.ARR_KK(from,m);return}if(m.t==='sb'){if(window.ARR_SB)window.ARR_SB(from,m);return}
  switch(m.t){
- case 'ic':{if(!MP.on||!G)break;const f=G.f[m.i];if(!f||!f.mx||!owns(from,m.i))break;const x=+m.x,y=+m.y,a=+m.a;if(!isFinite(x)||!isFinite(y)||!isFinite(a)||typeof iceMake!=='function')break;if(!G.iw)G.iw=[];if(!G.ig)G.ig=[];MP.icr=1;try{iceMake({tx:x,ty:y,a,o:f,tm:f.tm})}catch(e){}MP.icr=0;break}
  case 'go':begin(m,from);break;
  case 'sh':if(!MP.on||!G||!Array.isArray(m.a))break;for(const e of m.a){const f=G.f[e[0]];if(!f||!f.mx||f.dead||!owns(from,e[0]))continue;
    const aimMe=!MP.host&&!f.hum&&e[5]===MP.me&&G.p&&!G.p.dead;if(!aimMe){f.x=e[3];f.y=e[4]}
