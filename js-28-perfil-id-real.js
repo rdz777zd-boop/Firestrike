@@ -34,8 +34,8 @@ async function lookupId(d,rec){let v='';
 function badges(S){const h=document.querySelector('#ppg .hero .hsub');if(!h)return;
  let e=h.querySelector('.pidx'),f=h.querySelector('.pidf');
  if(!e){e=document.createElement('span');e.className='pid pidx';h.appendChild(e)}
- e.textContent=S.id?'ID '+S.id:(S.done&&S.gid?'ID '+S.gid:'ID …');
- e.title=S.id?'ID da conta':(S.done&&S.gid?'ID de convidado, gerado automaticamente (o jogador ainda não tem conta)':'Buscando o ID...');
+ e.textContent=S.id?'ID '+S.id:(S.done?'ID: sem conta':'ID …');
+ e.title=S.id?'ID da conta':'Sem ID de conta: o jogador nunca entrou com conta ou o ID ainda não foi confirmado';
  const t=S.rec?(+S.rec.t||0):0;
  const txt=S.rec?(t?'dados de '+ago(t):'dados do servidor'):(S.done?'sem registro online':'');
  if(txt){if(!f){f=document.createElement('span');f.className='pid pidf';f.style.opacity='.7';h.appendChild(f)}f.textContent=txt;f.title='Última vez que o servidor recebeu mudanças deste jogador'}else if(f)f.remove()}
@@ -48,7 +48,6 @@ function live(d){const my=++tok;clearTimeout(timer);const S={id:'',done:0,rec:nu
   let uid=uidOf(d);
   if(!uid&&!tried&&window.arrFind){tried=1;try{await window.arrFind(d.n)}catch(e){}uid=uidOf(d)}
   if(!alive())return;
-  S.gid=guestId(uid||d.n);
   const rec=uid?await fetchRec(uid):null;
   if(!alive())return;
   S.rec=rec;
@@ -60,5 +59,5 @@ function live(d){const my=++tok;clearTimeout(timer);const S={id:'',done:0,rec:nu
   else S.done=1;
   timer=setTimeout(step,10000)};
  step()}
-ppOpen=function(d){const r=o0.apply(this,arguments);try{if(d&&!d.me)live(d);else tok++}catch(e){}return r};
+ppOpen=function(d){const r=o0.apply(this,arguments);try{if(d&&!d.me)live(d);else{tok++;if(d&&d.me)ownBadge()}}catch(e){}return r};
 })();
