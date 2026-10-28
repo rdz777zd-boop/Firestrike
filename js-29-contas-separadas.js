@@ -50,6 +50,7 @@ function tick(){
 /* RESET GERAL (uma unica vez por aparelho, versao r1): apaga progresso, contas guardadas e sessao deste aparelho.
    O servidor apaga as contas e o ranking por conta propria na 1a vez que for publicado com RESET_EPOCH novo. */
 const RST='r1';
+const isWipe=k=>typeof k==='string'&&(k.indexOf('arr_')===0||k.indexOf('fs_')===0)&&k!=='arr_rst';
 function resetAll(){
  lock=2;
  const wipe=()=>{const ks=[];for(let i=0;i<LS.length;i++){const k=LS.key(i);if(k&&isWipe(k))ks.push(k)}ks.forEach(rem)};
