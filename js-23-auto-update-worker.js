@@ -25,7 +25,7 @@ function doUpdate(){
  try{if(window.caches)caches.keys().then(k=>k.forEach(x=>caches.delete(x)))}catch(e){}
  setTimeout(()=>{location.replace(GAME_URL+'/?v='+Date.now())},500)}
 function start(){
- if(counting)return;counting=true;let n=COUNT;
+ if(counting)return;counting=true;if(window.fsUpdScreen){window.fsUpdScreen({url:GAME_URL+'/'});return}let n=COUNT;
  box=document.createElement('div');box.id='autoupd';
  box.style.cssText='position:fixed;left:50%;top:max(14px,env(safe-area-inset-top));transform:translateX(-50%);z-index:100000;background:#171311ee;border:3px solid #ff6600;border-radius:14px;padding:10px 22px;color:#fff;font:900 clamp(16px,4.5vw,26px) "Trebuchet MS",Arial,sans-serif;text-align:center;box-shadow:0 0 24px #ff660088;pointer-events:none;white-space:nowrap';
  const draw=()=>{box.textContent='ATUALIZAÇÃO EM ( '+n+'s )'};draw();document.body.appendChild(box);
