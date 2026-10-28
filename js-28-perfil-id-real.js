@@ -5,6 +5,20 @@
 if(typeof ppOpen!=='function'||window.__ppReal)return;window.__ppReal=1;
 const DB='https://armada-relay.rdz777zd.workers.dev/db',UIDRE=/^[a-z0-9]{12,24}$/,CIDRE=/^[a-z0-9]{12,24}_u\d{10,16}$/,q=id=>document.getElementById(id);
 const o0=ppOpen;let tok=0,timer=0;
+const IDRE=/^\d{6,10}$/;
+/* v174: ID de convidado = gerado automaticamente a partir do ID do aparelho (o mesmo para quem ve e para o dono). Comeca com G para nao se confundir com ID de conta */
+const gKey=()=>{try{const u=localStorage.getItem('arr_uid');return UIDRE.test(u||'')?u:''}catch(e){return''}};
+function guestId(seed){seed=String(seed||'').toLowerCase();if(!seed)return'';let h=2166136261>>>0;for(let i=0;i<seed.length;i++){h^=seed.charCodeAt(i);h=Math.imul(h,16777619)>>>0}return'G'+String(10000000+h%90000000)}
+async function dbGet(p){const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);try{const r=await fetch(DB+p+'.json',{signal:c.signal,cache:'no-store'});if(!r.ok)return null;return await r.json()}catch(e){return null}finally{clearTimeout(t)}}
+/* confere o ID publicado pelo jogador: /ids/<id> -> usuario -> conta; so vale se a conta tem esse ID e o nick (ou usuario) bate com o nome do perfil */
+async function verifyAid(aid,nick){let u='';
+ for(const p of['/ids/'+aid,'/inbox/id'+aid]){const v=await dbGet(p);if(v&&typeof v.u=='string'&&/^[A-Za-z0-9_]{3,12}$/.test(v.u)){u=v.u;break}}
+ if(!u)return false;
+ const ac=await dbGet('/accounts/'+u.toLowerCase());
+ if(!ac||String(ac.i||'')!==String(aid))return false;
+ const lk=String(nick||'').toLowerCase();if(!lk)return false;
+ return String(ac.nk||'').toLowerCase()===lk||(!ac.nk&&String(ac.u||'').toLowerCase()===lk)}
+function ownBadge(){try{if(window.ARR_UID||window.ARR_USER)return;const h=document.querySelector('#ppg .hero .hsub');if(!h||h.querySelector('.pid'))return;const g=guestId(gKey());if(!g)return;const e=document.createElement('span');e.className='pid';e.textContent='ID '+g;e.title='ID de convidado, gerado automaticamente. Crie uma conta para ter um ID fixo.';h.appendChild(e)}catch(e){}}
 const num=(v,m)=>{v=Math.floor(+v);return v>0?Math.min(v,m):0};
 const sn=(v,n)=>String(v==null?'':v).replace(/[^\p{L}\p{N} _.-]/gu,'').replace(/\s+/g,' ').trim().slice(0,n);
 const colr=v=>/^#[0-9a-f]{6}$/i.test(String(v))?v:'#8b9bb2';
