@@ -108,7 +108,6 @@ async function auth1(reg){let u=$('au_u').value.trim();const p=$('au_p').value;
  if(reg){if(!nk)nk=u;if(!NKRE.test(nk)||nk.toLowerCase()==='voce')return am('Nick: 2 a 12 letras, números, espaço, _ . -')}
  am('Conectando...');
  const k=u.toLowerCase();let sa=null,down=0;
- try{if(window.ARR_TK)await ARR_TK.set(k,p)}catch(e){}
  try{sa=await getAcc(k)}catch(e){down=1}
  const la=lAcc(k);
  try{
@@ -208,7 +207,7 @@ window.arrSetNick=async v=>{const u=window.ARR_USER;if(!u)return false;const k=u
   try{localStorage.setItem('arr_nk:'+k,v)}catch(e){}
   if(String(window.ARR_UID||'')===OWNER_ID){OWNERS.length=0;OWNERS.push(v)}
   return true}catch(e){return false}};
-function enter(u,aid,nk){user=u;window.ARR_USER=u;const k=u.toLowerCase(),ik='arr_uid:'+k;try{if(aid)localStorage.setItem(ik,aid);else aid=localStorage.getItem(ik)||''}catch(e){}window.ARR_UID=aid||'';
+function enter(u,aid,nk){user=u;window.ARR_USER=u;try{window.ARR_TK&&ARR_TK.commit(u)}catch(e){}const k=u.toLowerCase(),ik='arr_uid:'+k;try{if(aid)localStorage.setItem(ik,aid);else aid=localStorage.getItem(ik)||''}catch(e){}window.ARR_UID=aid||'';
  if(!nk){try{nk=localStorage.getItem('arr_nk:'+k)||''}catch(e){}}nk=nk||u.slice(0,12);
  if(!aid)getAcc(k).then(a=>a&&ensureId(k,a)).then(i=>{if(i){window.ARR_UID=i;try{localStorage.setItem(ik,i)}catch(e){}}}).catch(()=>{});
  try{localStorage.setItem('arr_sess',u);localStorage.setItem('arr_pn',nk);localStorage.setItem('arr_nk:'+k,nk)}catch(e){}
