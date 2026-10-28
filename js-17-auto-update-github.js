@@ -10,6 +10,7 @@
  function playing(){try{return typeof mode!=='undefined'&&mode==='play'}catch(e){return false}}
  function go(){
   try{var l=+sessionStorage.getItem('arr_upd_t')||0;if(Date.now()-l<20000)return;sessionStorage.setItem('arr_upd_t',Date.now())}catch(e){}
+  if(window.fsUpdScreen){window.fsUpdScreen({url:U});return}
   tx.textContent='Atualizando o jogo...';bt.style.display='none';bar.classList.remove('hide');
   setTimeout(function(){location.replace(U+'?_u='+Date.now())},500)
  }
