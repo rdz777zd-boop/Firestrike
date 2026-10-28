@@ -12,13 +12,15 @@ const LS=window.localStorage,SP=Storage.prototype,sg=SP.getItem,ss=SP.setItem,sr
 const get=k=>{try{return sg.call(LS,k)}catch(e){return null}};
 const set=(k,v)=>{try{ss.call(LS,k,v);return 1}catch(e){return 0}};
 const rem=k=>{try{sr.call(LS,k)}catch(e){}};
-const KEEP=new Set(['arr_sess','arr_uid','arr_dtk','arr_own','arr_pn','arr_dburl','arr_ban','arr_owner','arr_vers']);
+const KEEP=new Set(['arr_sess','arr_uid','arr_dtk','arr_own','arr_pn','arr_dburl','arr_ban','arr_owner','arr_vers','arr_rst']);
 const KP=['arr_tk:','arr_acc:','arr_uid:','arr_nk:','arr_snap:'];
 const isGame=k=>typeof k==='string'&&(k.indexOf('arr_')===0||k.indexOf('fs_')===0)&&!KEEP.has(k)&&!KP.some(p=>k.indexOf(p)===0);
+/* tudo o que o reset geral apaga neste aparelho (menos a identidade do aparelho: arr_uid e arr_dtk) */
+const isWipe=k=>isGame(k)||(typeof k==='string'&&(KP.some(p=>k.indexOf(p)===0)&&k.indexOf('arr_uid:')!==0||k==='arr_sess'||k==='arr_own'||k==='arr_pn'||k==='arr_ban'||k==='arr_owner'||k==='arr_vers'||k.indexOf('arr_uid:')===0));
 let lock=0,warned=0;
 /* durante a troca, o jogo nao consegue regravar o progresso antigo por cima */
-SP.setItem=function(k){if(lock&&this===LS&&isGame(String(k)))return;return ss.apply(this,arguments)};
-SP.removeItem=function(k){if(lock&&this===LS&&isGame(String(k)))return;return sr.apply(this,arguments)};
+SP.setItem=function(k){if(lock&&this===LS&&(isGame(String(k))||(lock===2&&isWipe(String(k)))))return;return ss.apply(this,arguments)};
+SP.removeItem=function(k){if(lock&&this===LS&&(isGame(String(k))||(lock===2&&isWipe(String(k)))))return;return sr.apply(this,arguments)};
 function collect(){const o={};for(let i=0;i<LS.length;i++){const k=LS.key(i);if(k&&isGame(k))o[k]=get(k)}return o}
 function swap(own,cur){
  const mine=collect();
