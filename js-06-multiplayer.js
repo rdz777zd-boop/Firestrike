@@ -67,7 +67,7 @@ function owns(from,i){const f=G.f[i];if(!f)return false;return f.hum?MP.slots[fr
 function onEv(from,m){if(!m||typeof m!=='object')return;if(m.t==='chat'){if(window.ARR_CHAT)window.ARR_CHAT(from,m);return}if(m.t==='cd'){if(window.ARR_CD)window.ARR_CD(from,m);return}if(m.t==='pos'){if(window.ARR_POS)window.ARR_POS(from,m);return}if(m.t==='kk'){if(window.ARR_KK)window.ARR_KK(from,m);return}if(m.t==='sb'){if(window.ARR_SB)window.ARR_SB(from,m);return}
  switch(m.t){
  case 'go':begin(m,from);break;
- case 'sh':if(!MP.on||!G||!Array.isArray(m.a))break;for(const e of m.a){const f=G.f[e[0]];if(!f||!f.mx||f.dead||!owns(from,e[0]))continue;
+ case 'sh':if(!MP.on||!G||!Array.isArray(m.a))break;for(const e of m.a){const f=G.f[e[0]];if(!f||!f.mx||f.dead||!owns(from,e[0]))continue;if(f.hum&&inWall(e[3],e[4]))continue;
    const aimMe=!MP.host&&!f.hum&&e[5]===MP.me&&G.p&&!G.p.dead;if(!aimMe){f.x=e[3];f.y=e[4]}
    f.st='ground';f.ws[0]=e[1];f.cur=0;f.mg[0]=99;f.cd=0;f.rl=0;f.dn=0;f.pf=0;f.lgh=0;f.hl=null;MP.rp=1;try{shoot(f,aimMe?aimG(f):e[2])}catch(x){}MP.rp=0}break;
  case 'sn':if(!MP.on||!G||MP.host||from!==MP.hpid)break;snap(m);break;
