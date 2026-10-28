@@ -92,6 +92,14 @@ window.arrOnlineIds=async()=>{if(String(window.ARR_UID||'')!==OWNER_ID)return{e:
    if(u){const ac=await getAcc(u.toLowerCase());if(ac&&ac.i)id=String(ac.i)}}catch(e){}
   return{n:x.n,id,s:x.s}}));
  return{l:out}};
+/* ID verdadeiro de qualquer jogador (usado no PERFIL): nick -> usuario -> conta -> ID. So vale se o nick da conta bater com o nick pedido */
+const IDC={};
+window.arrIdOfNick=async n=>{n=String(n||'').replace(/\s+/g,' ').trim();if(!n||n.length>12)return'';const lk=n.toLowerCase(),c=IDC[lk];if(c&&Date.now()-c.t<(c.id?300000:30000))return c.id;
+ let id='';
+ try{let u='';for(const p of await nkp(n)){try{const r=await J(p);if(r&&typeof r.u=='string'&&r.u){u=r.u;break}}catch(e){}}
+  if(u){const ac=await getAcc(u.toLowerCase());if(ac&&ac.i&&(!ac.nk||String(ac.nk).toLowerCase()===lk))id=String(ac.i)}}catch(e){}
+ if(!/^\d{6,10}$/.test(id))id='';
+ IDC[lk]={id,t:Date.now()};return id};
 /* v161: anti-trapaca + /online no chat (instalado neste arquivo) */
 (function(){
  const inWall=(x,y)=>{try{return typeof wallAt==='function'&&!!(wallAt(x,y)&&wallAt(x+12,y)&&wallAt(x-12,y)&&wallAt(x,y+12)&&wallAt(x,y-12))}catch(e){return false}};
