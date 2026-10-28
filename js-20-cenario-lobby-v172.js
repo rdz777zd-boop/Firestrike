@@ -93,13 +93,40 @@ window.arrOnlineIds=async()=>{if(String(window.ARR_UID||'')!==OWNER_ID)return{e:
   return{n:x.n,id,s:x.s}}));
  return{l:out}};
 /* ID verdadeiro de qualquer jogador (usado no PERFIL): nick -> usuario -> conta -> ID. So vale se o nick da conta bater com o nick pedido */
-const IDC={};
-window.arrIdOfNick=async n=>{n=String(n||'').replace(/\s+/g,' ').trim();if(!n||n.length>12)return'';const lk=n.toLowerCase(),c=IDC[lk];if(c&&Date.now()-c.t<(c.id?300000:30000))return c.id;
+const IDC={},BFI={};
+/* grava sem token de dono (PUT por Request nao passa pelo js-02b), para NAO reservar o registro de outra pessoa */
+async function putNT(p,v){const r=await fetch(new Request(DB+p+'.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(v)}));if(!r.ok)throw'http'+r.status;return await r.json()}
+/* da um ID novo a uma conta antiga (sem "i"): reserva o ID no indice e grava na conta. Devolve o ID ou '' */
+function giveId(k,a){if(BFI[k])return BFI[k];return BFI[k]=(async()=>{try{
+ const f=await getAcc(k);if(!f)return'';if(f.i)return String(f.i);
+ for(let t=0;t<10;t++){const i=rid();let taken=0,wrote=0;
+  for(const p of idp(i)){try{const v=await J(p);if(v){taken=1;break}await putNT(p,{u:k});wrote=1;break}catch(e){}}
+  if(taken)continue;if(!wrote)return'';
+  const rec=Object.assign({},f,{i});
+  for(const q of await paths(k)){try{await putNT(q,rec);const v=await getAcc(k);if(v&&v.i)return String(v.i);break}catch(e){}}
+  return''}
+ return''}catch(e){return''}finally{setTimeout(()=>{delete BFI[k]},5000)}})()}
+/* ID verdadeiro de qualquer jogador (usado no PERFIL): nick -> usuario -> conta -> ID. Conta antiga sem ID recebe um na hora */
+window.arrIdOfNick=async n=>{n=String(n||'').replace(/\s+/g,' ').trim();if(!n||n.length>12)return'';const lk=n.toLowerCase(),c=IDC[lk];if(c&&Date.now()-c.t<(c.id?300000:20000))return c.id;
  let id='';
- try{let u='';for(const p of await nkp(n)){try{const r=await J(p);if(r&&typeof r.u=='string'&&r.u){u=r.u;break}}catch(e){}}
-  if(u){const ac=await getAcc(u.toLowerCase());if(ac&&ac.i&&(!ac.nk||String(ac.nk).toLowerCase()===lk))id=String(ac.i)}}catch(e){}
+ try{const cand=[];
+  for(const p of await nkp(n)){try{const r=await J(p);if(r&&typeof r.u=='string'&&r.u){cand.push(r.u.toLowerCase());break}}catch(e){}}
+  if(/^[a-z0-9_]{3,12}$/.test(lk)&&!cand.includes(lk))cand.push(lk);
+  for(const k of cand){let ac=null;try{ac=await getAcc(k)}catch(e){}
+   if(!ac)continue;
+   if(String(ac.nk||ac.u||'').toLowerCase()!==lk)continue;
+   id=ac.i?String(ac.i):await giveId(k,ac);
+   if(id)break}}catch(e){}
  if(!/^\d{6,10}$/.test(id))id='';
  IDC[lk]={id,t:Date.now()};return id};
+/* dono: da ID a TODAS as contas antigas de uma vez (le a lista de contas e preenche as que nao tem "i") */
+window.arrBackfillIds=async()=>{if(String(window.ARR_UID||'')!==OWNER_ID)return{e:'Só o dono pode usar esse comando.'};
+ let all=null;try{all=await J('/inbox')}catch(e){}
+ if(!all||typeof all!='object')return{e:'Não consegui ler as contas agora.'};
+ const L=[];for(const key in all){if(!/^ac[0-9a-f]{20}$/.test(key))continue;const v=all[key];if(v&&typeof v=='object'&&v.h&&!v.i&&!v.ptr&&/^[A-Za-z0-9_]{3,12}$/.test(String(v.u||'')))L.push(v)}
+ let ok=0,fail=0;for(const v of L.slice(0,300)){const id=await giveId(String(v.u).toLowerCase(),v);if(id)ok++;else fail++}
+ return{total:L.length,ok,fail}};
+(()=>{let done=0;setInterval(async()=>{if(done||String(window.ARR_UID||'')!==OWNER_ID)return;done=1;try{const r=await window.arrBackfillIds();if(r&&r.ok){try{soon(r.ok+' conta(s) antiga(s) receberam ID')}catch(e){}}}catch(e){}},20000)})();
 /* v161: anti-trapaca + /online no chat (instalado neste arquivo) */
 (function(){
  const inWall=(x,y)=>{try{return typeof wallAt==='function'&&!!(wallAt(x,y)&&wallAt(x+12,y)&&wallAt(x-12,y)&&wallAt(x,y+12)&&wallAt(x,y-12))}catch(e){return false}};
