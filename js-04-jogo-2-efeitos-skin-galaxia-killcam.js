@@ -53,7 +53,9 @@ function wipe(tm){const T=G.teams[tm];if(T.m.some(o=>!o.dead&&!(o.dn>0)))return;
 function knock(t,s){t.dn=10;t.hp=100;t.dk=s&&s!==t?s:null;t.hl=null;t.bq=null;t.rl=0;t.rt=null;t.rp=0;t.rvt=0;t.rpg=0;t.cd=0;t.vx=0;t.vy=0;
 if(t.isP){ads=0;aA.on=0;shk=10;snd(110,.3,'sawtooth',.08,-40)}
 sayEv(t,s,1);boom(t.x,t.y,'#ff8a8a',12,150);wipe(t.tm)}
-function revive(t,by){if(!by.isP)by.rsU=G.t+10;t.dn=0;t.hp=100;t.rvt=0;t.rpg=0;t.dk=null;t.fl=0;t.cd=.4;boom(t.x,t.y,'#7dff6a',16,170);if(t.isP||by.isP)snd(660,.2,'triangle',.06,300)}
+function revive(t,by){const _wd=t.dn>0;if(!by.isP)by.rsU=G.t+10;t.dn=0;t.hp=100;t.rvt=0;t.rpg=0;t.dk=null;t.fl=0;t.cd=.4;boom(t.x,t.y,'#7dff6a',16,170);if(t.isP||by.isP)snd(660,.2,'triangle',.06,300);
+/* aviso para o jogador quando alguem do time dele e salvo (derrubado -> levantado) */
+try{const _p=G.p;if(_wd&&_p&&t.tm===_p.tm&&!G.cs&&G.feed)G.feed.push(by&&by!==t?{ao:by,a:by.name,m:'salvou',bo:t,b:t.name,l:4}:{ao:t,a:t.name,m:'foi salvo!',b:'',l:4})}catch(_){}}
 function nearDown(p){let b=null,bd=110;for(const o of G.teams[p.tm].m)if(o!==p&&!o.dead&&o.dn>0&&o.st=='ground'){const d=dst(p,o);if(d<bd){bd=d;b=o}}return b}
 function toggleRev(p){if(p.dead||p.dn>0||p.st!='ground')return;if(p.rt){p.rt=null;p.rp=0;return}const t=nearDown(p);if(t){p.rt=t;p.rp=0;p.hl=null}}
 var mythRG=null,mythSG,mythCG,mythYG,mythTG;
