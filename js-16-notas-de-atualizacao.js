@@ -4,6 +4,8 @@
    com v = número seguinte. Todo jogador recebe um aviso novo em AVISOS automaticamente.
    Tipos: NOVO, CORRIGIDO, MELHORADO, REMOVIDO. */
 var ARR_NOTAS=[
+ {v:160,d:'28/10/2026',t:'Comando /online',i:[
+  ['NOVO','<b>Comando do dono: /online</b> lista os jogadores online (no lobby ou em partida) com o ID verdadeiro de cada um. Use o ID com /verificar, /banir e /desbanir.']]},
  {v:159,d:'28/10/2026',t:'Anti-trapaça no multiplayer e correção do /verificar',i:[
   ['CORRIGIDO','<b>Parede de gelo agora aparece para todos</b> na partida online. Antes ela só existia na tela de quem jogou, e os tiros atravessavam.'],
   ['CORRIGIDO','<b>Acertos validados pelo dono da sala:</b> tiro através de parede ou gelo, fora do alcance da arma ou vindo de dentro de uma parede não dá mais dano.'],
