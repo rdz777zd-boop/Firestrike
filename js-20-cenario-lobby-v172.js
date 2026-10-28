@@ -131,7 +131,7 @@ async function auth1(reg){let u=$('au_u').value.trim();const p=$('au_p').value;
    else await freeNick(nk,k)}
   lSave(k,rec);
   if(!ok){try{soon('Servidor indisponível: conta salva só neste aparelho')}catch(e){}}
-  enter(u,aid,nk)}catch(e){am('Erro ao conectar, tente de novo')}}
+  enter(u,aid,nk)}catch(e){am('Erro ao conectar ('+(J.last||(e&&e.message)||e)+'), tente de novo')}}
 /* ---- LOGIN COM GOOGLE (Google Identity Services) ---- */
 const gParse=cred=>{let pl=null;try{pl=JSON.parse(decodeURIComponent(escape(atob(String(cred).split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))))}catch(e){}return pl&&pl.sub&&pl.aud===GOOGLE_CLIENT_ID?pl:null};
 const setOpen=()=>{const e=$('set');return !!e&&!e.classList.contains('hide')};
@@ -141,7 +141,6 @@ async function gAuth(cred){if(AB)return;AB=1;try{
  if(!pl)return am('Login do Google inválido, tente de novo');
  am('Entrando com Google...');
  const u='g_'+(await sha('google:'+pl.sub)).slice(0,10),k=u.toLowerCase();let sa=null,down=0;
- try{if(window.ARR_TK)await ARR_TK.set(k,pl.sub)}catch(e){}
  try{sa=await getAcc(k)}catch(e){down=1}
  let a=sa||lAcc(k);
  if(a&&a.ptr){/* Google vinculado a uma conta de usuario/senha: entra nela */
