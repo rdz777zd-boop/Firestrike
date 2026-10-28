@@ -14,7 +14,6 @@ function addAn(t){if(!msgs)return;const d=document.createElement('div');d.classN
 async function announce(t){if(!ws||ws.readyState!==1||!ready){add('','Sem conexão. Tente de novo.',0,1);connect();return}
 const ts=Date.now(),sg=await sha(OWNER_ID+':'+ts+':'+t);ws.send(JSON.stringify({k:'e',m:{t:'gc',a:1,x:t,ts,sg}}));addAn(t)}
 let attT=0,attBox=null;
-function fsAtt(){attStop();if(window.fsUpdScreen){window.fsUpdScreen({url:GAME_URL+'/'});return}attStart()}
 function attStop(){try{window.fsUpdCancel&&window.fsUpdCancel()}catch(e){}clearInterval(attT);attT=0;if(attBox){attBox.remove();attBox=null}}
 function doUpdate(){try{if(navigator.serviceWorker)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()))}catch(e){}
 try{if(window.caches)caches.keys().then(k=>k.forEach(x=>caches.delete(x)))}catch(e){}
@@ -54,7 +53,7 @@ let w;try{w=ws=new WebSocket(u)}catch(e){setSt('offline ('+e.message+')');return
 clearTimeout(ct);ct=setTimeout(()=>{if(ws===w&&!gotHi){why='servidor não respondeu';try{w.close()}catch(e){}}},8000);
 w.onmessage=e=>{let d;try{d=JSON.parse(e.data)}catch(x){return}
  if(d.k==='hi'){myid=d.id;ready=true;gotHi=1;tries=0;clearTimeout(ct);setSt('online',1);return}
- if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid&&d.m.u){const m=d.m;if(!OWNER_ID||Math.abs(Date.now()-(+m.ts||0))>300000)return;sha(OWNER_ID+':'+m.ts+':u'+m.u).then(h=>{if(h!==m.sg)return;if(m.u===1)attStart();else if(m.u===2)attStop()});return}
+ if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid&&d.m.u){const m=d.m;if(!OWNER_ID||Math.abs(Date.now()-(+m.ts||0))>300000)return;sha(OWNER_ID+':'+m.ts+':u'+m.u).then(h=>{if(h!==m.sg)return;if(m.u===1)fsAtt();else if(m.u===2)attStop()});return}
  if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid&&d.m.a){const m=d.m,x=String(m.x||'').slice(0,120);if(!OWNER_ID||!x||Math.abs(Date.now()-(+m.ts||0))>300000)return;sha(OWNER_ID+':'+m.ts+':'+x).then(h=>{if(h!==m.sg)return;addAn(x);try{soon('ANÚNCIO: '+x)}catch(e){}if(!open){un++;badge()}});return}
  if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid){const n=String(d.m.n||'?').slice(0,14),x=String(d.m.x||'').slice(0,120);if(!x)return;add(n,x,0);if(!open){un++;badge()}}};
 w.onclose=e=>{ready=false;clearTimeout(ct);if(ws===w)ws=null;if(!gotHi){ri=(ri+1)%ROOMS.length;why=why||('código '+(e&&e.code||'?'))}
