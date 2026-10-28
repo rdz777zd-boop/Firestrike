@@ -92,6 +92,36 @@ window.arrOnlineIds=async()=>{if(String(window.ARR_UID||'')!==OWNER_ID)return{e:
    if(u){const ac=await getAcc(u.toLowerCase());if(ac&&ac.i)id=String(ac.i)}}catch(e){}
   return{n:x.n,id,s:x.s}}));
  return{l:out}};
+/* v161: anti-trapaca + /online no chat (instalado neste arquivo) */
+(function(){
+ const inWall=(x,y)=>{try{return typeof wallAt==='function'&&!!(wallAt(x,y)&&wallAt(x+12,y)&&wallAt(x-12,y)&&wallAt(x,y+12)&&wallAt(x,y-12))}catch(e){return false}};
+ const owns=(from,i)=>{const M=window.MP,f=G.f[i];if(!f)return false;return f.hum?M.slots[from]===i:from===M.hpid};
+ if(typeof window.MPT==='function'){const m0=window.MPT;window.MPT=function(f,dt){try{const M=window.MP;if(M.on&&f.mx&&f.hum){const t=M.st[f.i];if(t&&t.st==='ground'&&inWall(t.x,t.y)){t.x=f.x;t.y=f.y;t.vx=0;t.vy=0}}}catch(e){}return m0.apply(this,arguments)}}
+ const wrapEv=cb=>{const e0=cb.ev;cb.__p=1;cb.ev=function(from,m){try{const M=window.MP;
+  if(m&&typeof m==='object'&&M.on&&G){
+   if(m.t==='ic'){const f=G.f[m.i];if(!f||!f.mx||!owns(from,m.i))return;const x=+m.x,y=+m.y,a=+m.a;if(!isFinite(x)||!isFinite(y)||!isFinite(a)||typeof iceMake!=='function')return;if(!G.iw)G.iw=[];if(!G.ig)G.ig=[];M.icr=1;try{iceMake({tx:x,ty:y,a,o:f,tm:f.tm})}catch(e){}M.icr=0;return}
+   if(m.t==='sh'&&Array.isArray(m.a))m.a=m.a.filter(e=>{const f=G.f[e[0]];return!(f&&f.hum&&inWall(e[3],e[4]))});
+   if(m.t==='ht'&&M.host){const sf=G.f[M.slots[from]],t=G.f[m.v];
+    if(sf&&t){const w0=WP[sf.ws[0]||0]||{},dx0=sf.x-t.x,dy0=sf.y-t.y,mr=(w0.rg||0)*1.6+250;
+     if(w0.rg&&dx0*dx0+dy0*dy0>mr*mr)return;if(inWall(sf.x,sf.y))return;if(typeof los==='function'&&!los(sf,t))return}}}
+  }catch(e){}
+  return e0.apply(this,arguments)}};
+ setInterval(()=>{try{const b=window.MP&&window.MP.bus;if(b&&b.cb&&b.cb.ev&&!b.cb.__p)wrapEv(b.cb)}catch(e){}},400);
+ /* /online e aviso no /ajuda: intercepta o campo do chat antes do js-22 */
+ const say=t=>{const bx=document.getElementById('gcm');if(!bx)return;const d=document.createElement('div');d.textContent=t;bx.appendChild(d);bx.scrollTop=bx.scrollHeight};
+ const isOwn=()=>String(window.ARR_UID||'')===OWNER_ID;
+ const cmd=inp=>{const v=String(inp.value||'').replace(/\s+/g,' ').trim().toLowerCase();
+  if(v==='/ajuda'||v==='/help'||v==='/?'){if(isOwn())setTimeout(()=>say('Dono: /online mostra os jogadores online com o ID de cada um'),60);return false}
+  if(v!=='/online'&&v!=='/jogadores'&&v!=='/players')return false;
+  inp.value='';
+  if(!isOwn()){say('Esse comando é só para o dono.');return true}
+  if(!window.arrOnlineIds){say('Indisponível agora.');return true}
+  say('Buscando jogadores online...');
+  window.arrOnlineIds().then(r=>{if(r.e){say(r.e);return}const L=r.l;say('Online agora: '+L.length+' jogador(es)');L.slice(0,15).forEach(x=>say('@'+x.n+' • ID '+(x.id||'não encontrado')+' • '+(x.s==3?'em partida':'no lobby')));if(L.length>15)say('… +'+(L.length-15)+' jogadores')}).catch(()=>say('Não foi possível buscar agora. Tente de novo.'));
+  return true};
+ document.addEventListener('keydown',ev=>{if(ev.key!=='Enter'||!ev.target||ev.target.id!=='gcin')return;if(cmd(ev.target)){ev.stopPropagation();ev.preventDefault()}},true);
+ document.addEventListener('click',ev=>{const t=ev.target;if(!t||t.id!=='gcs')return;const i=document.getElementById('gcin');if(i&&cmd(i)){ev.stopPropagation();ev.preventDefault()}},true);
+})();
 const rid=()=>{let n;try{n=crypto.getRandomValues(new Uint32Array(1))[0]}catch(e){n=Math.floor(Math.random()*4294967295)}return String(10000000+n%90000000)};
 async function newId(k){for(let t=0;t<10;t++){const i=rid();let taken=0;for(const p of idp(i)){try{const v=await J(p);if(v){taken=1;break}await J(p,Object.assign({body:JSON.stringify({u:k})},PUTH));return i}catch(e){}}if(!taken)return''}return''}
 async function idFix(i,k){try{let ok=0;for(const p of idp(i)){try{const v=await J(p);ok=1;if(v&&v.u)return}catch(e){}}if(!ok)return;for(const p of idp(i)){try{await J(p,Object.assign({body:JSON.stringify({u:k})},PUTH));return}catch(e){}}}catch(e){}}
