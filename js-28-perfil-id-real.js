@@ -48,6 +48,7 @@ function live(d){const my=++tok;clearTimeout(timer);const S={id:'',done:0,rec:nu
   let uid=uidOf(d);
   if(!uid&&!tried&&window.arrFind){tried=1;try{await window.arrFind(d.n)}catch(e){}uid=uidOf(d)}
   if(!alive())return;
+  S.gid=guestId(uid||d.n);
   const rec=uid?await fetchRec(uid):null;
   if(!alive())return;
   S.rec=rec;
