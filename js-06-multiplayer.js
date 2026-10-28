@@ -7,8 +7,6 @@ const mul=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.i
 const clean=s=>String(s||'Jogador').replace(/[<>&"'`]/g,'').slice(0,12)||'Jogador';
 function names(sd){const r=mul(sd^0x5bd1e995),a=NMP.filter(n=>n.toLowerCase()!='voce');for(let i=a.length-1;i>0;i--){const j=r()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
 window.ARR_NAMES=names;
-/* anti-cheat: jogador humano com o centro bem dentro de uma parede (noclip) */
-const inWall=(x,y)=>{try{return typeof wallAt==='function'&&!!(wallAt(x,y)&&wallAt(x+12,y)&&wallAt(x-12,y)&&wallAt(x,y+12)&&wallAt(x,y-12))}catch(e){return false}};
 let toastT=0;
 function toast(t){let d=$('mpt');if(!d){d=document.createElement('div');d.id='mpt';document.body.appendChild(d)}d.textContent=t;d.style.display='block';clearTimeout(toastT);toastT=setTimeout(()=>d.style.display='none',4200)}
 
@@ -29,6 +27,7 @@ window.MPT=function(f,dt){if(!MP.on||!f.mx)return false;
  else{if(!f.mi){f.mi=1;f.x=t.x;f.y=t.y}
   let tx=t.x,ty=t.y;
   if(t._t&&t.st==='ground'){const lat=Math.min(.12,((MP.bus&&MP.bus.ping)||0)/2000),ag=Math.min(.25,Math.max(0,(performance.now()-t._t)/1000)+lat);tx+=(t.vx||0)*ag;ty+=(t.vy||0)*ag}
+  if(f.hum&&t.st==='ground'&&inWall(tx,ty)){tx=f.x;ty=f.y}
   const ex=tx-f.x,ey=ty-f.y;if(ex*ex+ey*ey>90000){f.x=tx;f.y=ty}
   const k=Math.min(1,dt*22),nx=f.x+(tx-f.x)*k,ny=f.y+(ty-f.y)*k;if(dt>.001){f.vx=(nx-f.x)/dt;f.vy=(ny-f.y)/dt}f.x=nx;f.y=ny}
  f.ang+=wr(t.a-f.ang)*Math.min(1,dt*14);f.hp=t.hp;f.ar=t.ar||0;f.st=t.st;f.dn=t.dn;
