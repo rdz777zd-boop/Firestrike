@@ -1,0 +1,18 @@
+/* ===== MENU: personagem em idle (respirando parado) =====
+   O personagem da tela inicial e uma imagem unica, entao a respiracao e feita no corpo todo,
+   com o pe como ponto fixo: o peito/cabeca sobem e descem de leve, e o corpo balanca bem pouco. */
+@keyframes chBreath{
+ 0%,100%{transform:translateY(0) scale(1,1)}
+ 42%{transform:translateY(calc(var(--u)*-5)) scale(1.012,1.03)}
+ 55%{transform:translateY(calc(var(--u)*-5)) scale(1.012,1.03)}
+}
+@keyframes chSway{
+ 0%,100%{transform:rotate(0deg)}
+ 28%{transform:rotate(.7deg)}
+ 64%{transform:rotate(-.6deg)}
+}
+#menu #chs{transform-origin:calc(var(--u)*230) calc(var(--u)*700);animation:chSway 9s ease-in-out infinite;will-change:transform}
+#menu #chs .char{transform-origin:50% 97%;animation:chBreath 3.6s ease-in-out infinite;will-change:transform}
+@media (prefers-reduced-motion:reduce){
+ #menu #chs,#menu #chs .char{animation:none}
+}
