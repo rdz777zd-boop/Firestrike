@@ -32,7 +32,7 @@ const paths=async u=>['/accounts/'+u,'/inbox/ac'+(await sha('acc:'+u)).slice(0,2
 const idp=i=>['/ids/'+i,'/inbox/id'+i],PUTH={method:'PUT',headers:{'Content-Type':'application/json'}};
 /* verificado permanente (dado pelo dono via ID): /verified/<id> */
 const namesOfId=async id=>{for(const p of['/ids/'+id,'/inbox/id'+id]){try{const v=await J(p),u=v&&typeof v.u=='string'?v.u:'';if(/^[A-Za-z0-9_]{3,12}$/.test(u)){const o=[u];try{const ac=await getAcc(u.toLowerCase());if(ac&&ac.nk)o.push(ac.nk)}catch(e){}return o}}catch(e){}}return[]};
-const nickOfId=async id=>{for(const p of['/ids/'+id,'/inbox/id'+id]){try{const v=await J(p),u=v&&typeof v.u=='string'?v.u:'';if(/^[A-Za-z0-9_]{3,12}$/.test(u)){let nk=u;try{const ac=await getAcc(u.toLowerCase());if(ac&&ac.nk)nk=ac.nk}catch(e){}return nk}}catch(e){}}return''};
+const nickOfId=async id=>{for(const p of['/ids/'+id,'/inbox/id'+id]){try{const v=await J(p),u=v&&typeof v.u=='string'?v.u:'';if(/^[A-Za-z0-9_.-]{3,20}$/.test(u)){let nk=u;try{const ac=await getAcc(u.toLowerCase());if(ac&&ac.nk)nk=ac.nk}catch(e){}return nk}}catch(e){}}return''};
 const vcp=i=>['/vclaim/'+i,'/inbox/vc'+i];
 async function vcGet(id){for(const p of vcp(id)){try{const v=await J(p);if(v)return v}catch(e){}}return null}
 async function VL(){try{let v=null,v2=null,ok=0;try{v=await J('/verified');ok=1}catch(e){}try{v2=await J('/inbox/verlist');ok=1}catch(e){}if(!ok)return;
