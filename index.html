@@ -5870,8 +5870,16 @@ const idc=v=>{v=Math.floor(+v);return v>0&&v<1000?v:0};
 window.arrAvByName=(n,id)=>{const a=REM.mav&&REM.mav[id];return(a&&a[n])||(REM.nm&&REM.nm[n]&&REM.nm[n].av)||''};
 window.arrPlayerByName=n=>(REM.nm&&REM.nm[n])||null;
 window.arrBnByName=n=>(REM.nm&&REM.nm[n]&&REM.nm[n].bn)||'';
-const ENS={};window.arrEnsure=(n,cb)=>{if(!window.ARR_USER||!n||ENS[n])return;const r=REM.nm&&REM.nm[n];if(r&&(r.av||r.bn))return;ENS[n]=1;window.arrFind(n).then(()=>{if(cb)cb()}).catch(()=>{})};
-REM.extra={};
+const ENS={};window.arrEnsure=(n,cb)=>{if(!window.ARR_USER||!n)return;const r=REM.nm&&REM.nm[n];if(r&&(r.av||r.bn))return;if(ENS[n]&&Date.now()-ENS[n]<30000)return;ENS[n]=Date.now();window.arrFind(n).then(()=>{if(cb)cb()}).catch(()=>{})};
+REM.extra={};REM.pic={};
+const picA=u=>{const p=REM.pic&&REM.pic[u];return(p&&p.a)||''},picB=u=>{const p=REM.pic&&REM.pic[u];return(p&&p.b)||''};
+async function picLoad(uids,force){
+ const now=Date.now(),need=[...new Set(uids)].filter(u=>UIDRE.test(u)&&u!==UID&&(force||!REM.pic[u]||now-REM.pic[u].ts>((REM.pic[u].a||REM.pic[u].b)?300000:60000))).slice(0,20);
+ if(!need.length)return 0;
+ need.forEach(u=>{REM.pic[u]=Object.assign({a:'',b:''},REM.pic[u],{ts:now})});
+ let r=null;try{r=await J('/pics.json?ids='+need.join(','))}catch(e){return 0}
+ let ch=0;need.forEach(u=>{const v=r&&r[u],a=v?imgc(v.a):'',b=v?imgc(v.b):'',o=REM.pic[u];if((o.a||'')!==a||(o.b||'')!==b)ch=1;REM.pic[u]={a,b,ts:Date.now()}});
+ if(ch)rebuild();return ch}
 window.arrPlayers=()=>Object.values(REM.players||{});
 const encq=v=>encodeURIComponent(JSON.stringify(v));
 window.arrFind=async q=>{q=sn(q,12);if(!q)return[];
@@ -5879,6 +5887,7 @@ window.arrFind=async q=>{q=sn(q,12);if(!q)return[];
  const rs=await Promise.all(vs.map(v=>J('/players.json?orderBy='+encq('n')+'&startAt='+encq(v)+'&endAt='+encq(v+'\uf8ff')+'&limitToFirst=8').catch(()=>null)));
  let add=0;for(const r of rs){if(!r||typeof r!='object')continue;for(const u in r){if(UIDRE.test(u)&&r[u]&&typeof r[u]=='object'){REM.extra[u]=r[u];add=1}}}
  if(add){REM.raw.P=Object.assign({},REM.extra,REM.raw.P);rebuild()}
+ try{const ks=window.arrPlayers().filter(p=>p.n.toLowerCase().includes(q.toLowerCase())).slice(0,8).map(p=>p.key);await picLoad(ks,1)}catch(e){}
  return window.arrPlayers().filter(p=>p.n.toLowerCase().includes(q.toLowerCase()))};
 window.arrFrSend=async(n,kind)=>{let t=window.arrPlayerByName(n);if(!t){await window.arrFind(n);t=window.arrPlayerByName(n)}
  if(!t||!UIDRE.test(t.key))throw new Error('x');
@@ -5905,7 +5914,7 @@ const put=(p,v,o)=>J(p+'.json',Object.assign({method:'PUT',headers:{'Content-Typ
 const del=p=>J(p+'.json',{method:'DELETE'});
 
 /* ---------- publicar o que e meu ---------- */
-let lastP='',lastC='',lastS='',busy=0;
+let lastP='',lastC='',lastS='',lastPic='',busy=0;
 async function publish(force){
  if(!ON||busy||window.__arrDead)return;busy=1;
  try{
@@ -5914,7 +5923,6 @@ async function publish(force){
   const rec={n:sn(PN,12)||'Jogador',k:num(m.k,1e7),w:num(m.w,1e7),g:num(m.g,1e7),rp:num(m.rp,1e6),rg:num(m.rg,1e7),rw:num(m.rw,1e7),rt:num(m.rt,1e7)};
   try{const cq=Math.floor(+CH);if(cq>=0&&cq<100)rec.ch=cq;const tq=trajeOf(CH);if(tq)rec.tj=tq;const qe={};let qn=0;for(const k in EQ){const a=Math.floor(+k),b=Math.floor(+EQ[k]);if(a>0&&a<100&&b>0&&b<1000&&qn<40){qe[a]=b;qn++}}if(qn)rec.eq=qe;if(EQP>0&&EQP<1000)rec.ep=Math.floor(EQP);if(EQR>0&&EQR<1000)rec.er=Math.floor(EQR)}catch(e){}
   if(PC&&ck){rec.cid=ck;rec.cn=sn(PC.n,20);rec.ct=tagc(PC.tag);rec.cc=colr(PC.col);rec.cs=symc(PC.sym)}
-  try{const sm=window.fsSmall?window.fsSmall():{};if(imgc(sm.a))rec.av=sm.a;if(imgc(sm.b))rec.bn=sm.b}catch(e){}
   const sig=JSON.stringify(rec);
   const lck=ls('arr_lck');
   if(lck&&lck!==ck&&KEYRE.test(lck)){
@@ -5922,8 +5930,13 @@ async function publish(force){
    if(lck.indexOf(UID+'_')===0)await del('/clans/'+lck);
    try{localStorage.removeItem('arr_lck')}catch(e){}lastC='';lastS=''}
   if(force||sig!==lastP){rec.t=Date.now();
-   try{await put('/players/'+UID,rec)}catch(e1){if(rec.av||rec.bn){const r2=Object.assign({},rec);delete r2.av;delete r2.bn;await put('/players/'+UID,r2);REM.imgFail=1}else throw e1}
+   try{await put('/players/'+UID,rec)}catch(e1){if(rec.av||rec.bn){const r2=Object.assign({},rec);delete r2.av;delete r2.bn;await put('/players/'+UID,r2);REM.imgFail=1;try{if(!REM.imgWarned){REM.imgWarned=1;soon('Servidor recusou sua foto/banner ('+String(e1&&e1.message||e1).slice(0,40)+'). Os outros não conseguem ver.')}}catch(e3){}}else throw e1}
    lastP=sig}
+  {let pic=null;try{const sm=window.fsSmall?window.fsSmall():{};const a=imgc(sm.a),b=imgc(sm.b);if(a||b)pic={a,b}}catch(e){}
+   const pk=pic?JSON.stringify(pic):'';
+   if(pk!==lastPic){try{if(pic)await put('/pics/'+UID,{a:pic.a,b:pic.b});else await del('/pics/'+UID);lastPic=pk;
+     if(pic&&!REM.picMsg){REM.picMsg=1;try{soon('Sua foto/banner foi enviada ao servidor ✔')}catch(e){}}}
+    catch(e2){if(!REM.picWarn){REM.picWarn=1;try{soon('Servidor recusou sua foto/banner ('+String(e2&&e2.message||e2).slice(0,30)+'). Atualize o Worker.')}catch(e){}}}}}
   if(PC&&ck&&KEYRE.test(ck)){
    if(PC.own){const cr={n:sn(PC.n,20),tg:tagc(PC.tag),c:colr(PC.col),s:symc(PC.sym),o:UID,on:sn(PN,12)||'Jogador'},cs=JSON.stringify(cr);
     if(force||cs!==lastC){await put('/clans/'+ck,cr);lastC=cs}}
@@ -5942,6 +5955,7 @@ async function pull(){
   const q=f=>J('/players.json?orderBy=%22'+f+'%22&limitToLast=60');
   const [a,b,c,cl,st,rq,ib]=await Promise.all([q('k'),q('w'),q('rp'),J('/clans.json'),J('/clanstats.json'),J('/requests.json').catch(()=>null),J('/inbox/'+UID+'.json').catch(()=>null)]);
   REM.raw={P:Object.assign({},REM.extra,a,b,c),C:cl||{},S:st||{},R:rq||{}};REM.ok=Date.now();REM.err=0;REM.loaded=1;
+  try{const ids=[];for(const o of[a,b,c])if(o&&typeof o=='object')ids.push(...Object.keys(o).slice(-10));picLoad(ids).then(ch=>{if(ch)refreshUI()}).catch(()=>{})}catch(e){}
   rebuild();const jn=await inboxHandle(ib);try{await friendInbox(ib)}catch(e){}if(jn){rebuild();publish(1)}checkMyClan();notifyReq();try{await ownDead()}catch(e){}
  }catch(e){REM.err=1}
  refreshUI();
@@ -5953,7 +5967,7 @@ function rebuild(){
  const pl={},byN={};
  for(const u in P){if(!UIDRE.test(u)||u===UID)continue;const r=P[u];if(!r||typeof r!='object')continue;const n=sn(r.n,12);if(!n)continue;
   if(window.ARR_USER&&n.toLowerCase()===String(PN).toLowerCase())continue;
-  const o={key:u,n,k:num(r.k,1e7),w:num(r.w,1e7),g:num(r.g,1e7),rp:num(r.rp,1e6),rg:num(r.rg,1e7),rw:num(r.rw,1e7),rt:num(r.rt,1e7),c:null,av:imgc(r.av),bn:imgc(r.bn),ch:chc(r.ch),tj:tjc(r.tj),eq:eqc(r.eq),ep:idc(r.ep),er:idc(r.er),t:+r.t||0};
+  const o={key:u,n,k:num(r.k,1e7),w:num(r.w,1e7),g:num(r.g,1e7),rp:num(r.rp,1e6),rg:num(r.rg,1e7),rw:num(r.rw,1e7),rt:num(r.rt,1e7),c:null,av:imgc(r.av)||picA(u),bn:imgc(r.bn)||picB(u),ch:chc(r.ch),tj:tjc(r.tj),eq:eqc(r.eq),ep:idc(r.ep),er:idc(r.er),t:+r.t||0};
   if(r.cid&&KEYRE.test(r.cid))o.c={id:lid(r.cid),n:sn(r.cn,20)||'Clã',tag:tagc(r.ct)||'CLA',col:colr(r.cc),sym:symc(r.cs)};
   {const nk=n.toLowerCase(),pv=byN[nk];if(pv){if((pv.t||0)>=(o.t||0))continue;delete pl[pv.key]}byN[nk]=o}
   pl[u]=o}
@@ -7038,7 +7052,8 @@ ui()
 var ARR_NOTAS=[
  {v:156,d:'27/10/2026',t:'Emblema no cartão e menu Personagens',i:[
   ['NOVO','<b>Emblema no cartão do menu.</b> Seu nome aparece com o emblema ao lado (dono ou verificado) e a cor do nome muda conforme o emblema.'],
-  ['CORRIGIDO','<b>Menu de Personagens</b> não fica mais em tela preta.']]},
+  ['CORRIGIDO','<b>Menu de Personagens</b> não fica mais em tela preta.'],
+  ['CORRIGIDO','<b>Foto e banner dos outros jogadores</b> agora são enviados separados do perfil (o servidor recusava por tamanho). Cada jogador precisa abrir esta versão uma vez para enviar a sua. Exige o Worker atualizado.']]},
  {v:155,d:'27/10/2026',t:'Cartão do menu, banimento e nova tela de notas',i:[
   ['NOVO','<b>Cartão do jogador no menu</b> agora mostra [TAG] do clã, o nome e o emblema. O emblema muda a cor do nome.'],
   ['NOVO','<b>Comandos do dono:</b> /banir ID motivo, /desbanir ID e /banidos.'],
@@ -7761,11 +7776,11 @@ function pick(kind){
  i.click();
 }
 /* versoes pequenas (vao para o ranking online) */
-const KS={a:'fs_pav_t',b:'fs_pbn_t'},tried={};
+const KS={a:'fs_pav_u',b:'fs_pbn_u'},tried={};
 const pubN=()=>{try{window.arrPub&&window.arrPub()}catch(e){}};
 function mkS(kind,src){if(tried[kind])return;tried[kind]=1;const im=new Image();
- im.onload=()=>{const W=kind=='a'?48:160,H=kind=='a'?48:48,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d'),s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;x.drawImage(im,(W-w)/2,(H-h)/2,w,h);
-  try{localStorage.setItem(KS[kind],c.toDataURL('image/jpeg',.45))}catch(e){}pubN()};
+ im.onload=()=>{const W=kind=='a'?64:240,H=kind=='a'?64:72,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d'),s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;x.drawImage(im,(W-w)/2,(H-h)/2,w,h);
+  try{localStorage.setItem(KS[kind],c.toDataURL('image/jpeg',.5))}catch(e){}pubN()};
  im.src=src}
 window.fsSmall=function(){const a=get(K.a),b=get(K.b),r={a:'',b:''};
  if(a){r.a=get(KS.a);if(!r.a)mkS('a',a)}else{try{localStorage.removeItem(KS.a)}catch(e){}}
@@ -7787,7 +7802,7 @@ if(pfp&&av){
  ed.innerHTML='<div class="fsr"><button type="button" class="btn sec" id="fsa">TROCAR FOTO</button><button type="button" class="btn sec" id="fsb">TROCAR BANNER</button></div><button type="button" class="btn sec" id="fsx">REMOVER FOTOS</button>';
  av.after(ed);
  q('fsa').onclick=()=>pick('a');q('fsb').onclick=()=>pick('b');
- q('fsx').onclick=()=>{try{localStorage.removeItem(K.a);localStorage.removeItem(K.b);localStorage.removeItem('fs_pav_s');localStorage.removeItem('fs_pbn_s');localStorage.removeItem('fs_pav_t');localStorage.removeItem('fs_pbn_t')}catch(e){}apply();inject();say('Fotos removidas');pubN()};
+ q('fsx').onclick=()=>{try{localStorage.removeItem(K.a);localStorage.removeItem(K.b);localStorage.removeItem('fs_pav_s');localStorage.removeItem('fs_pbn_s');localStorage.removeItem('fs_pav_u');localStorage.removeItem('fs_pbn_u')}catch(e){}apply();inject();say('Fotos removidas');pubN()};
 }
 /* perfil do jogador (so o proprio) */
 function inject(){
