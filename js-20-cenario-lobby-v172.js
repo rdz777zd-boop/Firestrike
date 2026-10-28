@@ -265,7 +265,7 @@ function enter(u,aid,nk){user=u;window.ARR_USER=u;const k=u.toLowerCase(),ik='ar
  try{PN=nk;if(typeof pfShow==='function')pfShow()}catch(e){}
  setTimeout(()=>{try{BL()}catch(e){}},600);setTimeout(()=>{try{BL()}catch(e){}},4000);
  $('au_p').value='';$('au_n').value='';am('');hide('au');try{if(setOpen())glRefresh()}catch(e){}try{window.arrFrLogin&&window.arrFrLogin(u)}catch(e){}try{const n=N();if(n){n.lbOpen();n.lbSend({k:'hi',n:PN,s:1})}}catch(e){}
- getAcc(k).then(a=>{const m=a&&a.nk;if(m&&m!==PN){try{applyNick(m)}catch(e){}try{N()&&N().lbSend({k:'hi',n:PN,s:1})}catch(e){}try{window.arrPub&&window.arrPub()}catch(e){}}}).catch(()=>{})}
+ getAcc(k).then(a=>{const m=a&&a.nk;if(m){try{claimNick(m,k).catch(()=>{})}catch(e){}}if(m&&m!==PN){try{applyNick(m)}catch(e){}try{N()&&N().lbSend({k:'hi',n:PN,s:1})}catch(e){}try{window.arrPub&&window.arrPub()}catch(e){}}}).catch(()=>{})}
 let AM=0;const setMode=m=>{AM=m;$('au_t0').classList.toggle('on',!m);$('au_t1').classList.toggle('on',!!m);$('au_n').classList.toggle('hide',!m);$('au_l').classList.toggle('hide',!!m);$('au_r').classList.toggle('hide',!m);$('au_p').setAttribute('autocomplete',m?'new-password':'current-password');am('')};
 function guest(){am('');try{if(window.ARR_USER){PN='Convidado';if(typeof pfShow==='function')pfShow()}}catch(e){}try{N()&&N().leave()}catch(e){}user=null;window.ARR_USER=null;window.ARR_UID='';try{localStorage.removeItem('arr_sess')}catch(e){}hide('au');try{soon('Você entrou como convidado')}catch(e){}}
 $('au_t0').onclick=()=>setMode(0);$('au_t1').onclick=()=>setMode(1);
