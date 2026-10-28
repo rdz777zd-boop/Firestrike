@@ -4,6 +4,8 @@
    com v = número seguinte. Todo jogador recebe um aviso novo em AVISOS automaticamente.
    Tipos: NOVO, CORRIGIDO, MELHORADO, REMOVIDO. */
 var ARR_NOTAS=[
+ {v:158,d:'28/10/2026',t:'Nova tela de atualização',i:[
+  ['NOVO','<b>Tela ATUALIZANDO...</b> com barra de progresso. Quando sai uma versão nova, o jogo baixa os arquivos, a barra enche até 100% e só então reinicia. O contador de segundos saiu.']]},
  {v:157,d:'28/10/2026',t:'Oni de Sangue',i:[
   ['NOVO','<b>SPAS Oni de Sangue</b> e <b>traje Oni de Sangue</b>: as skins Oni de Gelo agora são de sangue. Arma, tiros, efeito de eliminação, armadura, chifres, cabelo e capa em vermelho-sangue.']]},
  {v:156,d:'27/10/2026',t:'Emblema no cartão e menu Personagens',i:[
