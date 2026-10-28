@@ -98,6 +98,7 @@ async function publish(force){
   try{const cq=Math.floor(+CH);if(cq>=0&&cq<100)rec.ch=cq;const tq=trajeOf(CH);if(tq)rec.tj=tq;const qe={};let qn=0;for(const k in EQ){const a=Math.floor(+k),b=Math.floor(+EQ[k]);if(a>0&&a<100&&b>0&&b<1000&&qn<40){qe[a]=b;qn++}}if(qn)rec.eq=qe;if(EQP>0&&EQP<1000)rec.ep=Math.floor(EQP);if(EQR>0&&EQR<1000)rec.er=Math.floor(EQR)}catch(e){}
   if(PC&&ck){rec.cid=ck;rec.cn=sn(PC.n,20);rec.ct=tagc(PC.tag);rec.cc=colr(PC.col);rec.cs=symc(PC.sym)}
   if(window.__picH)rec.pv=window.__picH;
+  if(/^\d{6,10}$/.test(String(window.ARR_UID||'')))rec.aid=String(window.ARR_UID);
   const sig=JSON.stringify(rec);
   const lck=ls('arr_lck');
   if(lck&&lck!==ck&&KEYRE.test(lck)){
