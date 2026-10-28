@@ -108,6 +108,7 @@ async function auth1(reg){let u=$('au_u').value.trim();const p=$('au_p').value;
  if(reg){if(!nk)nk=u;if(!NKRE.test(nk)||nk.toLowerCase()==='voce')return am('Nick: 2 a 12 letras, números, espaço, _ . -')}
  am('Conectando...');
  const k=u.toLowerCase();let sa=null,down=0;
+ try{if(window.ARR_TK)await ARR_TK.set(k,p)}catch(e){}
  try{sa=await getAcc(k)}catch(e){down=1}
  const la=lAcc(k);
  try{
