@@ -208,7 +208,7 @@ window.arrSetNick=async v=>{const u=window.ARR_USER;if(!u)return false;const k=u
   try{localStorage.setItem('arr_nk:'+k,v)}catch(e){}
   if(String(window.ARR_UID||'')===OWNER_ID){OWNERS.length=0;OWNERS.push(v)}
   return true}catch(e){return false}};
-function enter(u,aid,nk){user=u;window.ARR_USER=u;const k=u.toLowerCase(),ik='arr_uid:'+k;try{if(aid)localStorage.setItem(ik,aid);else aid=localStorage.getItem(ik)||''}catch(e){}window.ARR_UID=aid||'';
+function enter(u,aid,nk){user=u;window.ARR_USER=u;try{window.ARR_TK&&ARR_TK.commit(u)}catch(e){}try{$('au_gu').classList.remove('hide')}catch(e){}const k=u.toLowerCase(),ik='arr_uid:'+k;try{if(aid)localStorage.setItem(ik,aid);else aid=localStorage.getItem(ik)||''}catch(e){}window.ARR_UID=aid||'';
  if(!nk){try{nk=localStorage.getItem('arr_nk:'+k)||''}catch(e){}}nk=nk||u.slice(0,12);
  if(!aid)getAcc(k).then(a=>a&&ensureId(k,a)).then(i=>{if(i){window.ARR_UID=i;try{localStorage.setItem(ik,i)}catch(e){}}}).catch(()=>{});
  try{localStorage.setItem('arr_sess',u);localStorage.setItem('arr_pn',nk);localStorage.setItem('arr_nk:'+k,nk)}catch(e){}
@@ -287,22 +287,6 @@ $('delacc').onclick=async()=>{const b=$('delacc');if(b.disabled)return;b.disable
   location.reload()}
  catch(e){window.__arrDead=0;b.disabled=false;b.textContent='EXCLUIR CONTA';try{soon('Não foi possível excluir agora. Tente de novo')}catch(_){}}};
 $('lac').onclick=()=>{N().leave();try{N().lbClose()}catch(e){}hide('lo');try{localStorage.removeItem('arr_sess')}catch(e){}user=null;window.ARR_USER=null;show('au')};
-/* botao TROCAR DE CONTA (configuracoes): 1o toque pede confirmacao, 2o toque sai da conta e abre o login (sem opcao de convidado) */
-let swT=0;
-$('swacc').onclick=()=>{const b=$('swacc');
- if(user&&!swT){b.textContent='CONFIRMAR? TOQUE DE NOVO';swT=setTimeout(()=>{swT=0;b.textContent='TROCAR DE CONTA'},4000);return}
- clearTimeout(swT);swT=0;b.textContent='TROCAR DE CONTA';
- const old=user;
- try{N().leave()}catch(e){}try{N().lbClose()}catch(e){}
- try{hide('lo')}catch(e){}try{hide('sb')}catch(e){}
- try{const se=$('set');if(se)se.classList.add('hide')}catch(e){}
- try{localStorage.removeItem('arr_sess')}catch(e){}
- try{if(window.ARR_TK&&old)ARR_TK.forget(old)}catch(e){}
- user=null;window.ARR_USER=null;window.ARR_UID='';
- try{PN='Convidado';if(typeof pfShow==='function')pfShow()}catch(e){}
- $('au_u').value='';$('au_p').value='';$('au_n').value='';setMode(0);am('');
- $('au_gu').classList.add('hide');show('au');
- try{soon('Você saiu da conta. Entre em uma conta ou crie uma nova')}catch(e){}};
 setInterval(()=>{if($('lo').classList.contains('hide'))return;const M=window.MP,n=N();
  if(M.arm||M.on){hide('lo');return}
  if(M.bus){const h=n.amHost();M.host=h?1:0;if(h&&!L.sd)L.sd=(Math.random()*2147483647)|0;if(h)window.ARR_LSD=L.sd|0;if(h&&Date.now()-L.ls>=1000){L.ls=Date.now();M.bus.send({t:'cd',r:Math.max(0,L.end-Date.now()),sd:L.sd|0})}
