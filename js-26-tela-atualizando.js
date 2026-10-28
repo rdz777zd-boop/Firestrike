@@ -93,6 +93,7 @@ window.fsUpdScreen=function(o){
 window.fsUpdCancel=function(){
  dead=1;on=0;cancelAnimationFrame(raf);if(box){box.remove();box=null}};
 window.__fsUpdPreview=function(){window.fsUpdScreen({preview:1,min:4000})};
+window.fsAtt=function(){try{window.fsUpdCancel()}catch(e){}window.fsUpdScreen({url:GAME_URL})};
 /* se algum codigo antigo criar o contador "ATUALIZACAO EM ( Ns )" (ex.: comando /att), esconde e mostra esta tela */
 try{new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(function(n){
  if(n.nodeType===1&&n.id!=='fsupd'&&/^ATUALIZA(Ç|C)(Ã|A)O EM/i.test((n.textContent||'').trim())){n.style.display='none';window.fsUpdScreen({url:GAME_URL})}})})}).observe(document.body,{childList:true})}catch(e){}
