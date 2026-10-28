@@ -141,10 +141,10 @@ async function gAuth(cred){if(AB)return;AB=1;try{
  if(!pl)return am('Login do Google inválido, tente de novo');
  am('Entrando com Google...');
  const u='g_'+(await sha('google:'+pl.sub)).slice(0,10),k=u.toLowerCase();let sa=null,down=0;
- try{if(window.ARR_TK)await ARR_TK.set(k,pl.sub)}catch(e){}
  try{sa=await getAcc(k)}catch(e){down=1}
  let a=sa||lAcc(k);
  if(a&&a.ptr){/* Google vinculado a uma conta de usuario/senha: entra nela */
+  try{window.ARR_TK&&ARR_TK.clear()}catch(e){}
   const tk=String(a.ptr).toLowerCase();let ts=null,td=0;try{ts=await getAcc(tk)}catch(e){td=1}const t=ts||lAcc(tk);
   if(t){let aid=t.i?String(t.i):'';if(ts&&!aid)aid=await ensureId(tk,ts);lSave(tk,Object.assign({},t,aid?{i:aid}:{}));return enter(t.u||tk,aid,t.nk||'')}
   if(td)return am('Servidor indisponível, tente de novo');a=null;sa=null}
