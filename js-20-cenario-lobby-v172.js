@@ -119,8 +119,6 @@ async function auth1(reg){let u=$('au_u').value.trim();const p=$('au_p').value;
     if(!nk){nk=u.slice(0,12);let c=await claimNick(nk,k);if(c==='taken'){nk=u.slice(0,8)+String(aid||'').slice(-3);await claimNick(nk,k)}}}
    else{nk=hit.nk||'';if(!down&&!sa){const r2=Object.assign({},hit);await pushAcc(k,r2);aid=r2.i?String(r2.i):aid;nk=r2.nk||nk}}
    lSave(k,Object.assign({},hit,aid?{i:aid}:{},nk?{nk}:{}));
-   /* reserva a conta com o token (regrava o mesmo registro) para ninguem mais poder altera-la */
-   if(hit===sa&&!down){try{for(const q of await paths(k)){try{await J(q,Object.assign({body:JSON.stringify(sa)},PUTH));break}catch(e){}}}catch(e){}}
    return enter(u,aid,nk)}
   if(!reg){if(!cand.length&&down)return am('Servidor indisponível ('+(J.last||'sem resposta')+'), tente de novo');return am('Usuário ou senha incorretos')}
   if(sa||(la&&down))return am('Esse usuário já existe');
@@ -143,6 +141,7 @@ async function gAuth(cred){if(AB)return;AB=1;try{
  if(!pl)return am('Login do Google inválido, tente de novo');
  am('Entrando com Google...');
  const u='g_'+(await sha('google:'+pl.sub)).slice(0,10),k=u.toLowerCase();let sa=null,down=0;
+ try{if(window.ARR_TK)await ARR_TK.set(k,pl.sub)}catch(e){}
  try{sa=await getAcc(k)}catch(e){down=1}
  let a=sa||lAcc(k);
  if(a&&a.ptr){/* Google vinculado a uma conta de usuario/senha: entra nela */
