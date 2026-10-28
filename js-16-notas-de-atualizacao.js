@@ -4,6 +4,11 @@
    com v = número seguinte. Todo jogador recebe um aviso novo em AVISOS automaticamente.
    Tipos: NOVO, CORRIGIDO, MELHORADO, REMOVIDO. */
 var ARR_NOTAS=[
+ {v:159,d:'28/10/2026',t:'Anti-trapaça no multiplayer e correção do /verificar',i:[
+  ['CORRIGIDO','<b>Parede de gelo agora aparece para todos</b> na partida online. Antes ela só existia na tela de quem jogou, e os tiros atravessavam.'],
+  ['CORRIGIDO','<b>Acertos validados pelo dono da sala:</b> tiro através de parede ou gelo, fora do alcance da arma ou vindo de dentro de uma parede não dá mais dano.'],
+  ['CORRIGIDO','<b>Jogador dentro de parede (noclip)</b> não se move mais para dentro dela e não consegue atirar de lá.'],
+  ['CORRIGIDO','<b>Comando /verificar</b> volta a achar jogadores cujo ID não estava registrado ou cujo nick tem ponto ou hífen. O jogador precisa abrir o jogo uma vez.']]},
  {v:158,d:'28/10/2026',t:'Nova tela de atualização',i:[
   ['NOVO','<b>Tela ATUALIZANDO...</b> com barra de progresso. Quando sai uma versão nova, o jogo baixa os arquivos, a barra enche até 100% e só então reinicia. O contador de segundos saiu.']]},
  {v:157,d:'28/10/2026',t:'Oni de Sangue',i:[
