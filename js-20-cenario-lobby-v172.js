@@ -131,7 +131,7 @@ async function auth1(reg){let u=$('au_u').value.trim();const p=$('au_p').value;
    else await freeNick(nk,k)}
   lSave(k,rec);
   if(!ok){try{soon('Servidor indisponível: conta salva só neste aparelho')}catch(e){}}
-  enter(u,aid,nk)}catch(e){am('Erro ao conectar ('+(J.last||(e&&e.message)||e)+'), tente de novo')}}
+  enter(u,aid,nk)}catch(e){am('Erro ao conectar, tente de novo')}}
 /* ---- LOGIN COM GOOGLE (Google Identity Services) ---- */
 const gParse=cred=>{let pl=null;try{pl=JSON.parse(decodeURIComponent(escape(atob(String(cred).split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))))}catch(e){}return pl&&pl.sub&&pl.aud===GOOGLE_CLIENT_ID?pl:null};
 const setOpen=()=>{const e=$('set');return !!e&&!e.classList.contains('hide')};
@@ -157,6 +157,9 @@ async function gAuth(cred){if(AB)return;AB=1;try{
  enter(u,rec.i?String(rec.i):'',rec.nk)}
  catch(e){am('Erro no login do Google, tente de novo')}finally{AB=0}}
 function gInit(){const box=$('au_g');if(!box)return;
+ /* o Google bloqueia login dentro de WebView (app/APK): mostra aviso claro em vez de erro */
+ if(/; wv\)|Android.*Version\/4\.0/.test(navigator.userAgent)){box.innerHTML='<button id="au_gb" class="s" style="width:100%;margin:0">ENTRAR COM GOOGLE</button>';
+  $('au_gb').onclick=()=>am('O Google bloqueia login dentro do app. Use usuário e senha ou abra o jogo no navegador.');return}
  if(!/^[0-9A-Za-z._-]+\.apps\.googleusercontent\.com$/.test(GOOGLE_CLIENT_ID)||/^COLE_AQUI/.test(GOOGLE_CLIENT_ID)){
   box.innerHTML='<button id="au_gb" class="s" style="width:100%;margin:0">ENTRAR COM GOOGLE</button>';
   $('au_gb').onclick=()=>am('Google ainda não configurado: falta o GOOGLE_CLIENT_ID no código.');return}
