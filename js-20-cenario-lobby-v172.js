@@ -83,6 +83,15 @@ window.arrVerSet=async(id,on)=>{id=String(id||'').trim();if(String(window.ARR_UI
  if(err){try{let L=null;try{L=await J('/inbox/verlist')}catch(e){}if(!L||typeof L!='object')L={};if(on)L[id]={n,t:GT};else delete L[id];await J('/inbox/verlist',Object.assign({body:JSON.stringify(L)},PUTH));err=''}catch(e2){return{e:'Falha ao salvar ('+err+' / '+String(e2)+'). Tente de novo.'}}}
  if(!on){for(const p of vcp(id)){try{await J(p,{method:'DELETE'})}catch(e){}}}
  await VL();return{n}};
+/* /online (dono): jogadores online no lobby + ID verdadeiro de cada um (nick -> usuario -> conta -> ID) */
+window.arrOnlineIds=async()=>{if(String(window.ARR_UID||'')!==OWNER_ID)return{e:'Só o dono pode usar esse comando.'};
+ const L=window.ARR_LB;if(!L||!L.size)return{e:'Nenhum jogador online agora (ou o lobby está desconectado).'};
+ const ent=[...L].slice(0,40).map(([k,v])=>{const nm=typeof k==='string'&&!/^\d+$/.test(k)?k:(v&&v.n);const s=(typeof v==='number'?v:(v&&v.s))==3?3:1;return{n:nm,s}}).filter(x=>x.n);
+ const out=await Promise.all(ent.map(async x=>{let id='';
+  try{let u='';for(const p of await nkp(x.n)){try{const r=await J(p);if(r&&typeof r.u=='string'&&r.u){u=r.u;break}}catch(e){}}
+   if(u){const ac=await getAcc(u.toLowerCase());if(ac&&ac.i)id=String(ac.i)}}catch(e){}
+  return{n:x.n,id,s:x.s}}));
+ return{l:out}};
 const rid=()=>{let n;try{n=crypto.getRandomValues(new Uint32Array(1))[0]}catch(e){n=Math.floor(Math.random()*4294967295)}return String(10000000+n%90000000)};
 async function newId(k){for(let t=0;t<10;t++){const i=rid();let taken=0;for(const p of idp(i)){try{const v=await J(p);if(v){taken=1;break}await J(p,Object.assign({body:JSON.stringify({u:k})},PUTH));return i}catch(e){}}if(!taken)return''}return''}
 async function idFix(i,k){try{let ok=0;for(const p of idp(i)){try{const v=await J(p);ok=1;if(v&&v.u)return}catch(e){}}if(!ok)return;for(const p of idp(i)){try{await J(p,Object.assign({body:JSON.stringify({u:k})},PUTH));return}catch(e){}}}catch(e){}}
