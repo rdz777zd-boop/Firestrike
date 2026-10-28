@@ -14,6 +14,7 @@ function addAn(t){if(!msgs)return;const d=document.createElement('div');d.classN
 async function announce(t){if(!ws||ws.readyState!==1||!ready){add('','Sem conexão. Tente de novo.',0,1);connect();return}
 const ts=Date.now(),sg=await sha(OWNER_ID+':'+ts+':'+t);ws.send(JSON.stringify({k:'e',m:{t:'gc',a:1,x:t,ts,sg}}));addAn(t)}
 let attT=0,attBox=null;
+function fsAtt(){attStop();if(window.fsUpdScreen){window.fsUpdScreen({url:GAME_URL+'/'});return}attStart()}
 function attStop(){try{window.fsUpdCancel&&window.fsUpdCancel()}catch(e){}clearInterval(attT);attT=0;if(attBox){attBox.remove();attBox=null}}
 function doUpdate(){try{if(navigator.serviceWorker)navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()))}catch(e){}
 try{if(window.caches)caches.keys().then(k=>k.forEach(x=>caches.delete(x)))}catch(e){}
@@ -30,7 +31,7 @@ if(c==='limpar'||c==='clear'){if(msgs)msgs.innerHTML='';add('','Chat limpo.',0,1
 if(c==='anuncio'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}if(!a){add('','Uso: /anuncio mensagem',0,1);return}announce(a.slice(0,120));return}
 if(c==='att'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}
 if(a.toLowerCase()==='cancelar'){ownerCast(2).then(ok=>{if(ok){attStop();add('','Atualização cancelada.',0,1)}});return}
-ownerCast(1).then(ok=>{if(ok){fsAtt();add('','Atualização iniciada para todos.',0,1)}});return}
+ownerCast(1).then(ok=>{if(ok){attStart();add('','Atualização iniciada para todos.',0,1)}});return}
 if(c==='verificar'||c==='verify'||c==='desverificar'||c==='unverify'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}const on=c==='verificar'||c==='verify';if(!a){add('','Uso: /'+(on?'verificar':'desverificar')+' ID',0,1);return}
 if(!window.arrVerSet){add('','Indisponível agora.',0,1);return}window.arrVerSet(a.split(/\s+/)[0],on).then(r=>add('',r.e?r.e:(on?'@'+r.n+' recebeu o VERIFICADO. Ele precisa coletar em AVISOS para ativar.':'@'+r.n+' não é mais verificado.'),0,1));return}
 if(c==='banir'||c==='ban'||c==='desbanir'||c==='unban'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}const on=c==='banir'||c==='ban';const w=a.split(/\s+/);const id=w.shift()||'';if(!id){add('','Uso: /'+(on?'banir ID motivo':'desbanir ID'),0,1);return}
