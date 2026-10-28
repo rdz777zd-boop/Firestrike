@@ -30,7 +30,7 @@ if(c==='limpar'||c==='clear'){if(msgs)msgs.innerHTML='';add('','Chat limpo.',0,1
 if(c==='anuncio'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}if(!a){add('','Uso: /anuncio mensagem',0,1);return}announce(a.slice(0,120));return}
 if(c==='att'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}
 if(a.toLowerCase()==='cancelar'){ownerCast(2).then(ok=>{if(ok){attStop();add('','Atualização cancelada.',0,1)}});return}
-ownerCast(1).then(ok=>{if(ok){attStart();add('','Atualização iniciada para todos.',0,1)}});return}
+ownerCast(1).then(ok=>{if(ok){fsAtt();add('','Atualização iniciada para todos.',0,1)}});return}
 if(c==='verificar'||c==='verify'||c==='desverificar'||c==='unverify'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}const on=c==='verificar'||c==='verify';if(!a){add('','Uso: /'+(on?'verificar':'desverificar')+' ID',0,1);return}
 if(!window.arrVerSet){add('','Indisponível agora.',0,1);return}window.arrVerSet(a.split(/\s+/)[0],on).then(r=>add('',r.e?r.e:(on?'@'+r.n+' recebeu o VERIFICADO. Ele precisa coletar em AVISOS para ativar.':'@'+r.n+' não é mais verificado.'),0,1));return}
 if(c==='banir'||c==='ban'||c==='desbanir'||c==='unban'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}const on=c==='banir'||c==='ban';const w=a.split(/\s+/);const id=w.shift()||'';if(!id){add('','Uso: /'+(on?'banir ID motivo':'desbanir ID'),0,1);return}
@@ -53,7 +53,7 @@ let w;try{w=ws=new WebSocket(u)}catch(e){setSt('offline ('+e.message+')');return
 clearTimeout(ct);ct=setTimeout(()=>{if(ws===w&&!gotHi){why='servidor não respondeu';try{w.close()}catch(e){}}},8000);
 w.onmessage=e=>{let d;try{d=JSON.parse(e.data)}catch(x){return}
  if(d.k==='hi'){myid=d.id;ready=true;gotHi=1;tries=0;clearTimeout(ct);setSt('online',1);return}
- if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid&&d.m.u){const m=d.m;if(!OWNER_ID||Math.abs(Date.now()-(+m.ts||0))>300000)return;sha(OWNER_ID+':'+m.ts+':u'+m.u).then(h=>{if(h!==m.sg)return;if(m.u===1)fsAtt();else if(m.u===2)attStop()});return}
+ if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid&&d.m.u){const m=d.m;if(!OWNER_ID||Math.abs(Date.now()-(+m.ts||0))>300000)return;sha(OWNER_ID+':'+m.ts+':u'+m.u).then(h=>{if(h!==m.sg)return;if(m.u===1)attStart();else if(m.u===2)attStop()});return}
  if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid&&d.m.a){const m=d.m,x=String(m.x||'').slice(0,120);if(!OWNER_ID||!x||Math.abs(Date.now()-(+m.ts||0))>300000)return;sha(OWNER_ID+':'+m.ts+':'+x).then(h=>{if(h!==m.sg)return;addAn(x);try{soon('ANÚNCIO: '+x)}catch(e){}if(!open){un++;badge()}});return}
  if(d.k==='e'&&d.m&&d.m.t==='gc'&&d.f!==myid){const n=String(d.m.n||'?').slice(0,14),x=String(d.m.x||'').slice(0,120);if(!x)return;add(n,x,0);if(!open){un++;badge()}}};
 w.onclose=e=>{ready=false;clearTimeout(ct);if(ws===w)ws=null;if(!gotHi){ri=(ri+1)%ROOMS.length;why=why||('código '+(e&&e.code||'?'))}
