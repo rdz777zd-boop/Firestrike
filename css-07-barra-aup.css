@@ -1,0 +1,4 @@
+
+#aup{position:fixed;z-index:99995;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;align-items:center;gap:10px;max-width:92vw;padding:9px 14px;font:900 13px 'Trebuchet MS',Arial,sans-serif;color:#ffefe0;background:#171311;border:2px solid #ff6600;border-radius:12px;box-shadow:0 0 12px #ff660055}
+#aup.hide{display:none}
+#aup button{font:900 12px 'Trebuchet MS',Arial,sans-serif;color:#15100d;background:#ff6600;border:0;border-radius:8px;padding:6px 10px;cursor:pointer}

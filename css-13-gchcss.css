@@ -1,0 +1,18 @@
+
+#menu #gchb{display:flex;align-items:center;justify-content:center;gap:calc(var(--u)*12);width:100%;height:calc(var(--u)*64);margin:calc(var(--u)*10) 0 0;padding:0;background:#2d241e;border:calc(var(--u)*3) solid #ff6600;color:#fff;border-radius:calc(var(--u)*10);font:900 calc(var(--u)*30) 'Trebuchet MS',Arial,sans-serif;cursor:pointer;position:relative;box-shadow:0 0 calc(var(--u)*12) #ff660066}
+#menu #gchb em{display:none;min-width:calc(var(--u)*34);height:calc(var(--u)*34);line-height:calc(var(--u)*34);border-radius:calc(var(--u)*17);background:#e53935;color:#fff;font:900 calc(var(--u)*22) Arial;font-style:normal;text-align:center;padding:0 calc(var(--u)*6)}
+#menu #gchb.un em{display:inline-block}
+#gchp{position:fixed;left:8px;bottom:8px;width:min(300px,calc(100vw - 16px));z-index:30000;display:none;flex-direction:column;gap:0;font-family:'Trebuchet MS',Arial,sans-serif;color:#fff;background:#171311f2;border:2px solid #ff6600;border-radius:12px;box-shadow:0 4px 18px #000a;overflow:hidden}
+#gchp.on{display:flex}
+.pid{margin-top:4px;font:800 12px 'Trebuchet MS',Arial,sans-serif;letter-spacing:1px;color:#ffba7d;user-select:all;-webkit-user-select:all;cursor:text}
+#gchp .gh{display:flex;align-items:center;justify-content:space-between;padding:4px 6px 4px 10px;background:#25211e;border-bottom:1px solid #ff660055;font:900 12px 'Trebuchet MS',Arial,sans-serif;letter-spacing:1px;color:#ff6600}
+#gchp .gh button{width:26px;height:26px;padding:0;font:900 15px/1 Arial;color:#fff;background:#e53935;border:0;border-radius:8px;cursor:pointer;touch-action:manipulation}
+#gchp .gs{padding:2px 8px 0;min-height:14px}
+#gchp .gm{height:clamp(90px,28vh,150px);overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 8px;font-size:12px;line-height:1.35;pointer-events:auto;touch-action:pan-y}
+#gchp .gm div{margin:0 0 2px;word-break:break-word}
+#gchp .gm b{color:#ffba7d}
+#gchp .gm .an{background:#ff660033;border-left:3px solid #ff6600;padding:3px 6px;border-radius:4px;color:#ffe92e;font-weight:800}
+#gchp .gm .an b{color:#ff6600}
+#gchp .gi{display:flex;gap:4px;padding:5px;pointer-events:auto;border-top:1px solid #ff660033}
+#gchp .gi input{flex:1;min-width:0;padding:7px 9px;border-radius:8px;border:2px solid #2f251f;background:#000a;color:#fff;font:700 14px Arial;user-select:text;-webkit-user-select:text;outline:none}
+#gchp .gi button{font:900 12px 'Trebuchet MS',Arial;color:#fff;background:#35312fcc;border:0;border-radius:8px;padding:7px 10px;cursor:pointer}

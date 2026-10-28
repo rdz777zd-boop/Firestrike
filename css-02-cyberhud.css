@@ -1,0 +1,392 @@
+
+/* ===== FUTURISTA CYBERPUNK HUD — Black & Cyan Holographic ===== */
+:root{--cy:#FF6600;--cy2:#FF6600;--cyd:#B54800;--gr:#00FF88;--tx:#FFEFE0;--au:#FFC400;
+--bg:#0E0D0C;--ink:#FFEFE0;--gold:#FF6600;--navy:#1f1b19;--line:#FF6600;
+--k0:#0E0D0C;--k1:#171311;--k2:#1f1b19;--k3:#25211E;--ln:#FF660055;--mut:#DCA47F;--gd:#FF6600;--gd2:#B54800;
+--grid:linear-gradient(#FF660026 1px,transparent 1px) 0 0/42px 42px,linear-gradient(90deg,#FF660026 1px,transparent 1px) 0 0/42px 42px}
+html,body{background:#0E0D0C;color:#FFEFE0}
+body,button,input,select,textarea{font-family:'Rajdhani','Trebuchet MS',Arial,sans-serif;letter-spacing:.4px}
+h1,h2,h3,.big,.btn,.tb,.ldlt,.ldm{font-family:'Orbitron','Rajdhani','Trebuchet MS',Arial,sans-serif}
+h1,.big{color:#FF6600;-webkit-text-stroke:0;text-shadow:0 0 8px #FF6600,0 0 26px #FF660099,0 0 60px #FF660044;transform:none}
+
+/* fundo: preto profundo + grid/circuito ciano 15% */
+.ov{background:var(--grid),radial-gradient(ellipse at 50% 28%,#171311,#0E0D0C 72%)!important}
+#menu{background:var(--grid),radial-gradient(ellipse at 50% 55%,#171311,#0E0D0C 75%)!important}
+#menu .ceil{background:linear-gradient(#ff66001f,#0000)!important}
+#menu .vig{background:radial-gradient(ellipse at 50% 58%,#0000 45%,#0e0d0cee 100%)!important}
+.pn,#set,#salap,#betp{background:var(--grid),radial-gradient(ellipse at 50% 40%,#171311f2,#0e0d0cf7)!important;}
+/* varredura holografica sutil */
+#menu:after,.ov:after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(#0000 0 3px,#ff66000a 3px 4px);z-index:1}
+
+/* cenario do lobby vira hologramas */
+.cont,.crate,.barrel,.lamp{display:none!important}
+.door{background:linear-gradient(#FF660022,#FF660005)!important;border:2px solid #FF6600!important;box-shadow:0 0 30px #FF660077,inset 0 0 50px #FF660033!important}
+.floorline{height:2px!important;background:linear-gradient(90deg,#0000,#FF6600,#0000)!important;box-shadow:0 0 14px #FF6600!important}
+
+/* plataforma de luz embaixo do personagem */
+.csh{z-index:0;background:radial-gradient(ellipse at center,#ff6600cc 0,#FF660066 30%,#FF660011 62%,#0000 72%)!important;border:2px solid #FF6600!important;box-shadow:0 0 calc(var(--u)*40) #FF6600,0 0 calc(var(--u)*110) #FF660077,inset 0 0 calc(var(--u)*30) #FF6600!important;animation:cyHp 2.6s ease-in-out infinite}
+.csh:before{content:"";position:absolute;left:10%;right:10%;bottom:50%;height:calc(var(--u)*560);background:linear-gradient(#FF660000,#ff66002e);clip-path:polygon(0 0,100% 0,92% 100%,8% 100%);pointer-events:none}
+.csh:after{content:"";position:absolute;inset:18%;border-radius:50%;border:1px dashed #FF6600;opacity:.8}
+.char{z-index:1}
+@keyframes cyHp{0%,100%{filter:brightness(1)}50%{filter:brightness(1.35)}}
+
+/* paineis / janelas */
+.pn .bx,#set .bx,#salap .bx2,#betp .bx2{background:linear-gradient(#FF660014,#0000 32%),#1f1b19!important;border:2px solid #FF6600!important;border-top:3px solid #FF6600!important;border-radius:8px!important;color:#FFEFE0!important;box-shadow:0 0 18px #FF660088,0 0 70px #FF660022,inset 0 0 26px #ff66001f!important}
+.pn h2,#set h2,#salap .hd h3,#betp .hd h3{background:transparent!important;border:0!important;border-bottom:2px solid #FF6600!important;border-radius:0!important;color:#FF6600!important;text-shadow:0 0 10px #FF6600;box-shadow:0 10px 14px -12px #FF6600!important;letter-spacing:3px;text-transform:uppercase;padding:4px 18px!important}
+.pn .bx::-webkit-scrollbar-thumb{background:#FF6600!important;border-color:#0E0D0C!important}
+
+/* botoes */
+.btn{background:linear-gradient(#FF6600,#B54800)!important;color:#15100D!important;border:2px solid #FF6600!important;border-radius:6px!important;box-shadow:0 0 14px #ff6600aa,inset 0 0 10px #ffffff55!important;text-transform:uppercase;letter-spacing:2px}
+.btn:active{transform:translateY(2px)!important;filter:brightness(1.25)}
+.btn.sec{background:#171311!important;color:#FF6600!important;border:1.5px solid #FF6600!important;box-shadow:0 0 10px #FF660055,inset 0 0 10px #FF660022!important}
+.mdr .btn.cl{background:linear-gradient(#FF6600,#B54800)!important;color:#15100D!important}
+#shb{background:#171311!important;color:#FF6600!important;border:2px solid #FF6600!important;box-shadow:0 0 18px #FF6600!important}
+
+/* HUD do menu: barra de moedas, icones, nivel */
+.pill,.ib,.co{background:#171311cc!important;border:1.5px solid #FF6600!important;color:#FFEFE0!important;box-shadow:0 0 12px #FF660066,inset 0 0 12px #ff66001a!important}
+.pill b{color:#FFC400!important;text-shadow:0 0 10px #FFC40088}
+.coin{box-shadow:0 0 14px #FFC400aa}
+.lvl{background:#171311!important;border:2px solid #FF6600!important;box-shadow:0 0 22px #FF6600,inset 0 0 18px #FF660055!important}
+#rec{text-shadow:0 0 10px #FF6600!important;color:#FFEFE0}
+
+/* abas e botoes de modo */
+#menu .tabs,.tabs{background:#171311aa!important;border:0!important;border-bottom:1.5px solid #FF660077!important}
+.tb{background:transparent!important;color:#DCA47F!important;border:0!important;border-bottom:3px solid #B5480055!important;border-radius:0!important;-webkit-text-stroke:0!important;box-shadow:none!important;letter-spacing:2px;text-transform:uppercase}
+.tb.on{background:linear-gradient(#FF660000,#FF660033)!important;color:#FF6600!important;border-bottom:3px solid #FF6600!important;text-shadow:0 0 12px #FF6600;box-shadow:0 10px 18px -10px #FF6600!important}
+.mb,.alone,.bb,.sd{background:#171311d9!important;color:#FFEFE0!important;border:1.5px solid #FF660077!important;box-shadow:inset 0 0 14px #ff66001a!important;-webkit-text-stroke:0!important}
+.mb.on,.alone.on,.bb.on,.sd.on{background:linear-gradient(#FF6600,#DA5700)!important;color:#15100D!important;border-color:#FF6600!important;box-shadow:0 0 20px #FF6600,inset 0 0 12px #ffffff66!important}
+.bb{box-shadow:inset 0 -6px 0 #FF6600,0 0 12px #FF660055!important}
+.playb{background:linear-gradient(#FF6600,#B54800)!important;color:#15100D!important;border:2px solid #FF6600!important;box-shadow:0 0 28px #FF6600,inset 0 0 14px #ffffff66!important;letter-spacing:4px}
+
+/* cards, listas, rankings, loja, cla */
+.cd,.shi,.shv,.rkb,.rkc,.rkrow,.rkr,.rkl,.shl2,.cmh,.cme,.prr,.prl,.qxb,.ivc2{background-color:#25211E!important;border-color:#FF660066!important;box-shadow:0 0 10px #FF660033,inset 0 0 10px #FF660014!important;color:#FFEFE0}
+.rkl,.shl2,.rkr{border-color:#FF6600!important;box-shadow:0 0 14px #FF660055!important}
+.cd:hover,.shi:hover,.rkrow:hover{border-color:#FF6600!important;box-shadow:0 0 18px #FF660099!important}
+.cme,.sl.me,#salap .sl.me{border-color:#00FF88!important;box-shadow:0 0 14px #00FF8899!important}
+input,select,textarea{background:#171311!important;color:#FFEFE0!important;border:1.5px solid #FF660088!important;box-shadow:inset 0 0 10px #ff66001a}
+input:focus{outline:none;border-color:#FF6600!important;box-shadow:0 0 14px #FF6600}
+
+/* telas de carregamento / fim de partida / espectador */
+.ldsky{background:radial-gradient(90% 40% at 50% 104%,#FF660055,transparent 70%),radial-gradient(60% 50% at 50% 38%,#2f251fcc,transparent 72%),#0E0D0C!important}
+.ldcl{background:radial-gradient(closest-side,#FF660022,#ff66000d 55%,transparent)!important}
+.ldfl{background:radial-gradient(70% 55% at 50% 25%,#FF660055,#FF660011 45%,transparent 75%)!important}
+.ldlt{color:#FFEFE0!important}
+#end .big{color:#FF6600}
+#vsb,#end{color:#FFEFE0}
+#toast{background:#171311f0!important;color:#FF6600!important;border:1.5px solid #FF6600!important;box-shadow:0 0 16px #FF660088!important}
+
+/* Sala / Aposta / Multiplayer */
+#salap .row button.on,#salap .go2 button.st,.salacfg .sz button.on,.salacfg .go button{background:linear-gradient(#FF6600,#B54800)!important;color:#15100D!important;box-shadow:0 0 12px #FF6600!important}
+#betp .sum b{color:#FFC400}
+
+/* ===== MENU DE PERSONAGENS / TRAJES: sem sobreposicao, selecao clara ===== */
+#chr .smg{grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-auto-rows:auto!important;align-content:start!important;max-height:none!important;flex:1 1 0!important;min-height:0!important;overflow-y:auto!important;gap:10px!important}
+#chr .smk{height:auto!important;min-height:236px!important;overflow:hidden!important;background:linear-gradient(#FF660014,#0000 40%),#25211E!important;border:1.5px solid #B54800!important;border-radius:8px!important}
+#chr .smk.sel{border:2px solid #FF6600!important;box-shadow:0 0 18px #FF6600,inset 0 0 14px #FF660044!important}
+#chr .ivtb{background:#1f1b19!important;border:1.5px solid #B54800!important;border-radius:6px!important;color:#FFEFE0!important;min-height:64px}
+#chr .ivtb.on{background:linear-gradient(#FF6600,#DA5700)!important;color:#15100D!important;border-color:#FF6600!important;box-shadow:0 0 18px #FF6600!important}
+#chr .ivtb span{font-size:13px!important;font-weight:800;letter-spacing:1px}
+#chr .ivtt{color:#FF6600!important;font-size:15px!important;text-shadow:0 0 8px #FF6600}
+#chr .smp b{letter-spacing:1px}
+
+/* estados de botao: selecionado x nao selecionado, desabilitado */
+#set .sqr .btn:not(.on),.btn.off{background:#171311!important;color:#DCA47F!important;border:1.5px solid #B54800!important;box-shadow:none!important}
+.btn:disabled{filter:grayscale(.7);opacity:.5}
+
+/* ===== PERSONAGENS em tela deitada (celular): tudo compacto, 3 colunas, sem rolar a tela toda ===== */
+@media(max-height:520px){
+#chr{padding:4px!important;align-items:flex-start!important}
+#chr .bx.chx{padding:0 6px 4px!important;max-height:calc(100dvh - 8px)!important;overflow:hidden!important;border-radius:6px!important}
+#chr .ph{padding:2px 8px!important;margin:0 0 3px!important;gap:6px!important}
+#chr h2{font-size:12px!important;letter-spacing:2px!important;padding:2px 10px!important}
+#chr .co{font-size:11px!important;padding:1px 8px!important}
+#chr .xb2{width:22px!important;height:22px!important}
+#chr .ivm{grid-template-columns:104px minmax(0,1.35fr) minmax(0,1fr)!important;gap:6px!important;height:calc(100dvh - 46px)!important;min-height:0!important}
+#chr .ivs{padding:4px!important;gap:4px!important;flex-direction:column!important;flex-wrap:nowrap!important}
+#chr .ivtabs{flex-direction:column!important;gap:4px!important;flex:none!important}
+#chr .ivtb{flex-direction:row!important;min-height:30px!important;height:30px!important;border-radius:5px!important}
+#chr .ivtb i{width:28px!important;height:100%!important;font-size:14px!important}
+#chr .ivtb span{font-size:10px!important;padding:0 3px!important;letter-spacing:0!important}
+#chr .ivbt.smvt{padding:4px!important;font-size:9px!important;margin-top:auto!important}
+#chr .ivtt{font-size:10px!important;letter-spacing:1px!important}
+#chr .ivc2{gap:3px!important;overflow:hidden!important}
+#chr .smg{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4px!important;padding:1px!important}
+#chr .smk{min-height:0!important;padding:3px 2px!important;gap:0!important;border-radius:5px!important}
+#chr .smk canvas{max-height:46px!important}
+#chr .smn{font-size:9px!important}
+#chr .sms2{font-size:7.5px!important}
+#chr .smp{padding:1px!important;margin:1px 0 0!important;font-size:8px!important}
+#chr .smp b{font-size:8px!important}
+#chr .ivch{font-size:6.5px!important;padding:1px 3px!important;top:2px!important;left:2px!important}
+#chr .ivbd{width:14px!important;height:14px!important;font-size:9px!important;top:2px!important;right:2px!important}
+#chr .ivpg{padding:2px 6px!important}#chr .ivpi{font-size:10px!important}#chr .ivar{font-size:14px!important;padding:0 8px!important}
+#chr .ivd{padding:0!important;gap:0!important;overflow-y:auto!important}
+#chr #chv{flex:none!important;max-height:40%!important;min-height:0!important}
+#chr #chv canvas,#chr #chv svg,#chr #chv img{max-height:100%!important;height:100%!important;width:auto!important;margin:0 auto}
+#chr .ivrr{padding:0 4px 3px!important;gap:3px!important;font-size:9px!important}
+#chr .ivrr *{font-size:9px!important;line-height:1.2!important}
+#chr .ivrr .ivbt,#chr .ivrr button{padding:4px 6px!important;font-size:10px!important;min-height:0!important}
+}
+@media(max-height:520px){
+#chr .ivd{grid-column:auto!important}
+#chr .smk{min-height:92px!important}
+#chr .smk canvas{flex:none!important;height:48px!important;width:auto!important;max-width:100%!important;max-height:48px!important}
+}
+@media(max-height:520px){
+#chr .ivpv{height:74px!important;min-height:0!important;flex:none!important;overflow:hidden}
+#chr .chbig{height:74px!important;width:74px!important;max-height:74px!important}
+#chr .ivpt{font-size:8px!important;padding:1px 6px!important}
+#chr .cmhd{padding:2px 6px!important}#chr .cmhd small{font-size:8px!important}
+#chr .ivnm{font-size:13px!important}
+#chr #chv{max-height:none!important}
+#chr .ivin{padding:2px 6px!important}#chr .ivsb{font-size:8px!important}#chr .ivds{font-size:8px!important;line-height:1.2!important}
+#chr .ivtb span{font-size:9px!important;white-space:nowrap}
+#chr .ivbt.smvt{flex:none!important;min-height:22px!important}
+#chr .cmnv{padding:0!important}#chr .ivar{width:24px!important;height:22px!important;padding:0!important}
+#chr .ivap{padding:5px!important;font-size:10px!important}
+#chr .ivs{overflow:hidden!important}
+}
+@media(max-height:520px){#chr .ivtb span{font-size:8px!important}#chr .ivtb i{width:22px!important}}
+
+
+/* ===== v28: icones menores nos menus (Clas, Inventario, Loja, Personagens, Rankings, Perfil, Config etc.) ===== */
+.pn .ic,#set .ic,#ppf .ic{width:.78em;height:.78em;vertical-align:-.1em}
+.pn .ic[style]{width:18px!important;height:18px!important;vertical-align:-3px!important}
+.pn .ph .ic,#arm h2 .ic{width:18px;height:18px}
+.pn .xb2 .ic,#modp .xb2 .ic{width:14px;height:14px}
+.prcn .ic,.prtabs button .ic{width:15px;height:15px}
+.prft .ic{width:17px;height:17px}
+.rmd .ic{width:19px;height:19px}
+.pn .co .ic{width:.85em;height:.85em}
+.smp .ic,.smpr .ic{width:.9em;height:.9em}
+.ivch .ic{width:.8em;height:.8em}
+/* abas laterais (Inventario / Loja / Personagens) */
+.ivtb i{width:30px;height:30px;font-size:15px}
+#shop .ivtb i{height:34px}
+#chr .ivtb i{height:32px}
+.ivtb i .ic{width:16px;height:16px}
+.ivtb{font-size:12px}
+.ivbd{width:18px;height:18px;font-size:11px}
+.ivbd .ic{width:11px;height:11px}
+/* Cla: emblema, estatisticas e ranking */
+.cye{width:64px;height:64px}
+.cyg i{font-size:13px}.cyg i .ic{width:14px;height:14px}
+.cyh .ic,.cyf h4 .ic,.cym summary .ic,.rkh .ic,.rkt .ic{width:13px;height:13px}
+.rkb .e{font-size:15px}.rkb .e .ic{width:16px;height:16px}
+.rkrow .rn .ic{width:13px;height:13px}
+.rkrow .xp2 .ic{width:11px;height:11px}
+#cmb .av u{font-size:11px}#cmb .av u .ic{width:11px;height:11px}
+/* Configuracoes */
+#set .stt span svg{width:1.15em;height:1.15em}
+#setxx{width:30px;height:30px}
+/* Perfil do jogador */
+#ppf .ptr svg{width:clamp(18px,4.2vmin,26px);height:clamp(18px,4.2vmin,26px)}
+#ppf .ps .ic{width:clamp(16px,4vmin,26px);height:clamp(16px,4vmin,26px)}
+#ppf .pbn .ic{width:1.1em;height:1.1em}
+@media(max-width:560px){
+.ivtb i .ic{width:14px;height:14px}
+.ivtb i{height:24px!important}
+.cye{width:54px;height:54px}
+}
+@media(max-height:520px){
+.pn .ic,#set .ic{width:.72em;height:.72em}
+.ivtb i{width:22px!important;height:24px!important}
+.ivtb i .ic{width:13px;height:13px}
+.cye{width:50px;height:50px}
+}
+
+/* ===== v28b: icones de armas, paraquedas e rastros menores (cards do Inventario e da Loja) ===== */
+#arm .ivk canvas{left:17%;top:14%;width:66%;max-height:46%}
+#arm .ivwi canvas,.ivwi canvas{width:66%;max-height:28px}
+#shop .smk{min-height:170px}
+#shop .smk canvas{width:62%;max-height:64px;flex:0 0 auto;margin:6px auto 4px}
+#shop .smn{font-size:13px}
+@media(max-width:560px){
+#arm .ivk canvas{left:20%;width:60%;top:12%;max-height:44%}
+#shop .smk{min-height:150px}
+#shop .smk canvas{width:58%;max-height:54px}
+}
+@media(max-height:520px){
+#shop .smk{min-height:120px}
+#shop .smk canvas{max-height:44px}
+}
+
+/* ===== v29: HUD (elementos HTML) com visual neon/tatico ===== */
+#toast,.cn,#hudt{background:linear-gradient(180deg,#28211cee,#120f0dee)!important;border:1px solid #ff660099!important;border-left:4px solid #ff6600!important;border-radius:4px 14px 4px 14px!important;box-shadow:0 0 14px #ff660055,inset 0 0 12px #ff66001a!important;color:#fff3e8!important;letter-spacing:.5px}
+#slb,#shb{background:linear-gradient(#28211c,#120f0d)!important;border:2px solid #ff6600!important;border-radius:4px 14px 4px 14px!important;color:#ff6600!important;font-weight:900;letter-spacing:1.5px;box-shadow:0 0 14px #ff660077,inset 0 0 10px #ff660022!important}
+#slb:active,#shb:active{transform:scale(.94)}
+#igb{background:linear-gradient(#28211c,#120f0d)!important;border:1.5px solid #ff6600!important;box-shadow:0 0 10px #ff660088}
+/* ===== v29: novo menu Personagens / Trajes ===== */
+#chr .bx{background:radial-gradient(120% 70% at 85% 0,#ff66001f,#0000 60%),linear-gradient(160deg,#1c1815,#0f0d0b)!important;border:1px solid #ff660066!important;border-top:3px solid #ff6600!important;border-radius:6px 22px 6px 22px!important}
+#chr h2{color:#fff!important;letter-spacing:6px!important;text-shadow:0 0 12px #ff6600}
+#chr .ivs{background:none!important;border:0!important;padding:0 4px 0 0!important}
+#chr .ivtabs{flex-direction:row!important;gap:6px!important}
+#chr .ivtb{flex:1!important;flex-direction:row!important;justify-content:center!important;gap:6px!important;min-height:36px!important;border-radius:999px!important;border:1.5px solid #b54800!important;background:#1c1714!important;clip-path:none!important}
+#chr .ivtb i{width:24px!important;height:24px!important;background:none!important;color:inherit!important}
+#chr .ivtb span{padding:0 8px 0 0!important;font-weight:900;letter-spacing:1px}
+#chr .ivtb.on{background:linear-gradient(90deg,#ff6600,#ff7418)!important;color:#15100d!important}
+#chr .smk{border-radius:4px 18px 4px 18px!important;border:1.5px solid #b54800!important;background:radial-gradient(90% 60% at 50% 25%,#ff660026,#0000 70%),linear-gradient(#221d19,#130f0d)!important;box-shadow:inset 0 -3px 0 var(--rc,#ff7d27)}
+#chr .smk:hover{transform:translateY(-2px);box-shadow:0 6px 16px #ff660033,inset 0 -3px 0 var(--rc,#ff7d27)}
+#chr .smk.sel{border-color:#ffd93b!important;box-shadow:0 0 18px #ffd93b99,inset 0 -3px 0 #ffd93b!important}
+#chr .smn{color:#fff;letter-spacing:.5px;text-transform:uppercase}
+#chr .ivin{border-radius:4px 14px 4px 14px!important;border:1px solid #ff660066!important;border-left:4px solid #ffd93b!important;background:#16120fe6!important}
+#chr .ivnm{color:#ffd93b!important;text-shadow:0 0 12px #ffd93b88!important}
+#chr .ivap{border-radius:4px 14px 4px 14px!important;background:linear-gradient(90deg,#ffd93b,#ff9a1f)!important;color:#2a1600!important;box-shadow:0 0 16px #ffb02e88!important}
+#chr .ivap:disabled{background:#2e2824!important;color:#ecbb8f!important;box-shadow:none!important}
+
+/* ===== v30: lista de trajes a esquerda ===== */
+#chr .chtl{display:none}
+#chr.tj .chtl{display:flex;flex-direction:column;gap:6px;flex:1 1 0;min-height:0;overflow-y:auto;padding:2px}
+#chr.tj .ivm{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr)!important}
+#chr.tj .ivc2{display:none!important}
+#chr.tj .ivs{overflow:hidden!important;display:flex!important}
+#chr .ivtb i{display:none!important}
+#chr .ivtb span{font-size:11px!important;padding:0 4px!important;white-space:nowrap}
+.tjb{position:relative;display:flex;align-items:center;gap:10px;width:100%;padding:6px 10px 6px 6px;text-align:left;color:#ffefe0;background:linear-gradient(90deg,#221d19,#130f0d);border:1.5px solid #b54800;border-radius:4px 16px 4px 16px;cursor:pointer;font-family:'Trebuchet MS',Arial,sans-serif}
+.tjb canvas{flex:none;width:52px;height:52px;border-radius:8px;background:radial-gradient(circle at 50% 70%,#ff660033,#0000 70%)}
+.tjb span{min-width:0;display:flex;flex-direction:column}.tjb b{font-size:14px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tjb small{font-size:10px;color:#dca47f;font-weight:800}
+.tjb em{margin-left:auto;font-style:normal;font-weight:900;color:#7dff6a}
+.tjb.on{border-color:#ffd93b;background:linear-gradient(90deg,#2a2308,#1c1815);box-shadow:0 0 14px #ffd93b88}
+.tjb.on b{color:#ffd93b}
+/* ===== v30: botao JOGAR ===== */
+#menu .playb{background:linear-gradient(135deg,#ff6600 0%,#ff761a 55%,#ff944d 100%)!important;border:0!important;border-radius:0!important;clip-path:polygon(7% 0,100% 0,93% 100%,0 100%);box-shadow:inset 0 0 0 calc(var(--u)*5) #ffffffaa,inset 0 calc(var(--u)*-14) 0 #5c463866!important;color:#fff!important}
+#menu .playb b{color:#fff!important;text-shadow:0 calc(var(--u)*6) 0 #463529,0 0 calc(var(--u)*24) #ffffff99!important;letter-spacing:calc(var(--u)*10)}
+#menu .playb:active{filter:brightness(1.2)}
+
+/* ===== v31: TEMA NEON TATICO em todo o jogo ===== */
+:root{--nr:calc(var(--u,1px)*10) calc(var(--u,1px)*30) calc(var(--u,1px)*10) calc(var(--u,1px)*30)}
+/* botoes do menu inicial */
+#menu .bb,#menu .sd,#menu .mb,#menu .alone,#menu .ib{background:linear-gradient(180deg,#2e2621f2,#120f0df2)!important;border:1.5px solid #ff6600aa!important;border-radius:var(--nr)!important;box-shadow:0 0 calc(var(--u)*16) #ff660055,inset 0 0 calc(var(--u)*14) #ff66001f!important;color:#fff3e8!important}
+#menu .bb{box-shadow:0 0 calc(var(--u)*16) #ff660055,inset 0 calc(var(--u)*-8) 0 #ff6600!important}
+#menu .bb:active,#menu .sd:active,#menu .ib:active{filter:brightness(1.35);transform:scale(.97)}
+#menu .mb.on,#menu .alone.on{background:linear-gradient(135deg,#ff6600,#ff761a)!important;color:#15100d!important}
+#menu #modb{background:linear-gradient(135deg,#342a24,#1d1713)!important;border:1.5px solid #ff6600!important;border-radius:var(--nr)!important;box-shadow:0 0 calc(var(--u)*22) #ff660077,inset 0 0 calc(var(--u)*18) #ff66002a!important;color:#fff3e8!important}
+#menu .pill,#menu .lvl{background:linear-gradient(180deg,#2e2621f2,#120f0df2)!important;border:1.5px solid #ff6600aa!important;box-shadow:0 0 calc(var(--u)*14) #ff660055!important}
+/* icones do menu inicial menores */
+#menu .bb span .ic,#menu .sd span .ic,#menu #modb span .ic,#menu .ib .ic,#menu .lvl small .ic,#menu .gem .ic{width:.8em;height:.8em}
+/* botoes gerais */
+.btn,.ivbt,.pvbt,.ivfb,.cmx,.qxr .btn{border-radius:4px 14px 4px 14px!important;letter-spacing:1.2px}
+.btn{background:linear-gradient(180deg,#ff6600,#d86112)!important;color:#15100d!important;border:1px solid #ffd4ae!important;box-shadow:0 0 12px #ff660077,inset 0 1px 0 #ffffff88!important;text-transform:uppercase}
+.btn.sec,.btn.cl{background:linear-gradient(180deg,#28211c,#16120f)!important;color:#ffddbf!important;border:1px solid #b54800!important;box-shadow:0 0 8px #ff660033!important}
+.btn:active{filter:brightness(1.25);transform:scale(.97)}
+.pn .xb2{border:1.5px solid #ff6600!important;background:#16120f!important;color:#ff6600!important;box-shadow:0 0 10px #ff660077}
+.ivbt,.pvbt,.ivfb{background:linear-gradient(#28211c,#16120f)!important;border:1px solid #b54800!important;color:#ffddbf!important}
+.ivfb.on,.pvbt.p,.pvbt.on{background:linear-gradient(135deg,#ff6600,#ff7418)!important;color:#15100d!important}
+/* paineis, cartoes, linhas e avisos */
+.cd,.qmc,.qxr,.qxd,.vr,.rkrow,.rkb,.cyg div,.cyl,.cyr,.rkl,.rkr,.smpr,.ivin,.prl,.prr,.cme,.cmh{border-radius:4px 16px 4px 16px!important;border:1px solid #ff660077!important;background:linear-gradient(180deg,#29221d,#120e0c)!important;box-shadow:0 0 10px #ff660026,inset 0 0 10px #ff660010!important}
+.cd.on,.qxr.new,.qxd.on,.vr.mv,.rkrow.me,.rkrow.mine{border-color:#ffd93b!important;box-shadow:0 0 14px #ffd93b77!important}
+.pn .ph{background:linear-gradient(90deg,#2e2621,#16120f 70%)!important;border-bottom:1px solid #ff660066!important}
+.pn h2,#set h2{color:#fff3e8!important;text-shadow:0 0 12px #ff6600}
+.pn .bx,#set .bx{border-radius:6px 22px 6px 22px!important;border:1px solid #ff660066!important;border-top:3px solid #ff6600!important;box-shadow:0 0 30px #ff660033,0 24px 70px #000e!important}
+.co,.pn .co{border-radius:4px 12px 4px 12px!important;border:1px solid #ff6600aa!important;background:#16120f!important}
+input,select,textarea{border:1px solid #b54800!important;border-radius:4px 12px 4px 12px!important;background:#16120f!important;color:#fff3e8!important}
+/* loja durante a partida, placar, avisos */
+#shp{border-radius:6px 22px 6px 22px!important;border:1px solid #ff660077!important;border-top:3px solid #ff6600!important}
+#shp .it{border-radius:4px 14px 4px 14px;border:1px solid #ff660066!important;background:linear-gradient(#29221d,#120e0c)!important}
+#shp .it button,#shb,#slb{background:linear-gradient(180deg,#ff6600,#d86112)!important;color:#15100d!important;border-radius:4px 12px 4px 12px!important}
+#slb,#shb{color:#ff6600!important;background:linear-gradient(#28211c,#120f0d)!important}
+.ov:not(#menu) .btn{min-width:120px}
+.big{color:#fff3e8!important;text-shadow:0 0 18px #ff6600,0 3px 0 #46352a!important}
+/* icones menores nas telas fora do menu principal */
+.ov:not(#menu) .ic,#shp .ic,#toast .ic,.cn .ic,.qmc .ic,.qxr .ic,.vr .ic{width:.82em;height:.82em}
+.qmc .qmi .ic{width:30px;height:30px}
+.pvth button i .ic,#pvth i .ic{width:16px;height:16px}
+.cmx .ic{width:12px;height:12px}
+.ivsr .ic{width:12px;height:12px}
+#cinvx .ic{width:14px;height:14px}
+
+/* ===== v32: abas, habilidades, icones de itens minusculos, olho ===== */
+#chr .ivtabs{flex:none!important;align-self:stretch;height:auto!important}
+#chr .ivtb{height:32px!important;min-height:32px!important;max-height:32px!important;flex:1 1 0!important;padding:0 4px!important}
+#chr .ivtb span{font-size:11px!important;line-height:1!important}
+#chr .ivds{font-size:9px!important;line-height:1.25!important}
+#chr .ivds b{font-size:10px!important}
+#chr .ivds .ic,#chr .ivsb .ic{width:10px!important;height:10px!important}
+#chr .sms2{font-size:8px!important}
+#chr .smp{font-size:9px!important;padding:2px!important}
+/* icones de armas / paraquedas / rastros: bem menores */
+#arm .ivk{aspect-ratio:3/2.3}
+#arm .ivk canvas{left:31%!important;top:12%!important;width:38%!important;max-height:34%!important}
+#arm .ivwi{width:62px}
+#arm .ivwi canvas,.ivwi canvas{width:48%!important;max-height:18px!important}
+#arm .ivwi b{font-size:8px}
+#shop .smk{min-height:104px!important}
+#shop .smk canvas{width:34%!important;max-height:34px!important;margin:4px auto 2px!important}
+#shop .smn{font-size:11px}#shop .sms2{font-size:9px}#shop .smp{font-size:11px;padding:2px}#shop .smbt{padding:5px 4px;font-size:11px}
+.ivki b{font-size:10px}
+/* olho de pre-visualizacao */
+.ivey{position:absolute;top:28px;right:4px;z-index:3;width:20px;height:20px;padding:0;border-radius:50%;border:1px solid #ff6600;background:#16120fcc;color:#ff6600;display:grid;place-items:center;cursor:pointer;box-shadow:0 0 8px #ff660088}
+.ivey .ic{width:12px!important;height:12px!important;margin:0}
+.ivey:active{background:#ff6600;color:#15100d}
+#shop .ivey{top:6px;right:6px}
+#spv{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;background:rgba(8,7,6,.88);}
+.spx{position:relative;width:min(420px,92vw);max-height:92vh;overflow:auto;padding:16px;text-align:center;color:#fff3e8;border:1px solid var(--rc);border-top:3px solid var(--rc);border-radius:6px 22px 6px 22px;background:radial-gradient(90% 60% at 50% 30%,#ff660022,#0000 70%),linear-gradient(#221d19,#120e0c);box-shadow:0 0 30px #ff660044}
+.spn{font:900 20px 'Trebuchet MS',Arial;color:var(--rc);text-transform:uppercase;letter-spacing:1px}.sps{font-size:11px;font-weight:800;color:#dca47f;margin-top:2px}
+.spw{margin:10px 0}.spcv{width:100%;max-width:300px;height:auto;}
+.spd{font-size:12px;line-height:1.4;color:#f7e4d3}
+.spc{position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;border:1.5px solid #ff6600;background:#16120f;color:#ff6600;display:grid;place-items:center;cursor:pointer;padding:0}.spc .ic{width:13px;height:13px}
+
+/* v33: abas Personagens/Trajes com tamanho fixo (nao mudam ao trocar de aba) */
+@media(min-width:561px){
+#chr .ivtabs{flex-direction:column!important;gap:6px!important;width:100%!important;max-width:146px!important;align-self:flex-start!important}
+#chr .ivtb{flex:none!important;width:100%!important;height:32px!important}
+#chr .ivtb span{font-size:11px!important;padding:0 6px!important;letter-spacing:.5px!important;overflow:hidden;text-overflow:ellipsis}
+}
+@media(max-height:520px) and (min-width:561px){
+#chr:not(.tj) .ivm{grid-template-columns:150px minmax(0,1.35fr) minmax(0,1fr)!important}
+}
+
+/* v34: menu de personagens novo: uma lista de icones pequenos -> tela de trajes */
+#chr .bx.chx{display:flex!important;flex-direction:column!important;height:min(560px,calc(100dvh - 16px))!important;max-height:calc(100dvh - 8px)!important;overflow:hidden!important}
+#chr .cxl,#chr .cxs{display:flex;flex-direction:column;flex:1 1 0;min-height:0;gap:6px;padding:4px 0}
+#chr .cxl.hide,#chr .cxs.hide{display:none!important}
+#chr .cxg{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:6px;align-content:start;flex:1 1 0;min-height:0;overflow-y:auto!important;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:2px 4px 2px 2px}
+#chr .cxc{position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 2px 3px;color:#ffefe0;background:linear-gradient(#ff660014,#0000 50%),#221d19;border:1.5px solid #b54800;border-radius:4px 12px 4px 12px;cursor:pointer;font-family:'Trebuchet MS',Arial,sans-serif;min-width:0}
+#chr .cxc canvas{width:48px;height:48px;flex:none;pointer-events:none}
+#chr .cxnm{font-size:9px;font-weight:800;letter-spacing:.3px;text-transform:uppercase;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#chr .cxc.eq{border-color:#7dff6a}
+#chr .cxc.sel{border-color:#ffd93b;box-shadow:0 0 12px #ffd93b99}
+#chr .cxc:active{filter:brightness(1.3)}
+#chr .cxok{position:absolute;top:1px;right:3px;font-style:normal;font-weight:900;font-size:10px;color:#7dff6a}
+#chr .cxbar{display:flex;align-items:center;gap:10px;flex:none}
+#chr .cxbar b{color:#ffd93b;font-size:14px;letter-spacing:1px;text-transform:uppercase;text-shadow:0 0 8px #ffd93b88}
+#chr .cxbk{padding:5px 12px;font:900 11px 'Trebuchet MS',Arial;color:#ffddbf;background:linear-gradient(#28211c,#16120f);border:1px solid #b54800;border-radius:4px 12px 4px 12px;cursor:pointer}
+#chr .cxbody{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:8px;flex:1 1 0;min-height:0}
+#chr .cxd{display:flex;flex-direction:column;gap:6px;min-height:0;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding-right:2px}
+#chr .cxv{flex:none;display:grid;place-items:center;border:1px solid #ff660066;border-radius:4px 14px 4px 14px;background:radial-gradient(80% 60% at 50% 70%,#ff66002a,#0000 70%),#16120f;padding:4px}
+#chr .cxbig{width:min(150px,100%);height:auto;max-height:150px;object-fit:contain}
+#chr .cxi{font-size:10px;line-height:1.3;color:#f7e4d3;padding:6px 8px;border:1px solid #ff660066;border-left:4px solid #ffd93b;border-radius:4px 12px 4px 12px;background:#16120fe6}
+#chr .cxh{font-size:13px;font-weight:900;color:#ffd93b;text-transform:uppercase}
+#chr .cxa{color:#ffba7d;margin:2px 0}.cxa .ic{width:10px;height:10px}
+#chr .cxs2{margin-top:3px;color:#c9b39f}
+#chr .cxbar .ivap{flex:none;margin-left:auto;width:auto;padding:6px 16px;font-size:11px;cursor:pointer}
+#chr>.bx>.btn.cl{flex:none;margin-top:4px;padding:6px 10px;font-size:11px}
+@media(max-width:560px){#chr .cxbody{display:flex;flex-direction:column}#chr .cxd{flex:0 1 auto;max-height:48%}#chr .cxt{flex:1 1 0}#chr .cxbig{max-height:80px}}
+@media(max-height:520px){#chr .cxl,#chr .cxs{padding:2px 0;gap:4px}#chr .cxg{grid-template-columns:repeat(auto-fill,minmax(66px,1fr));gap:4px}#chr .cxc canvas{width:40px;height:40px}#chr .cxnm{font-size:8px}#chr .cxbig{max-height:84px}#chr .cxbody{gap:6px}#chr .cxi{font-size:9px;padding:4px 6px}#chr .cxbk{padding:3px 10px;font-size:10px}#chr>.bx>.btn.cl{padding:3px 8px;font-size:10px;margin-top:2px}}
+
+/* v35: cards de armas/itens do Inventario bem menores */
+#arm .ivl{grid-template-columns:repeat(auto-fill,minmax(92px,1fr))!important;gap:5px!important}
+#arm .ivk{aspect-ratio:auto!important;height:62px!important;border-radius:5px!important}
+#arm .ivk canvas{left:22%!important;top:5px!important;width:56%!important;max-height:32px!important}
+#arm .ivki{padding:8px 3px 2px!important;bottom:2px!important}
+#arm .ivki b{font-size:9px!important;letter-spacing:0}
+#arm .ivki .ivrw{margin-top:0!important}
+#arm .ivk .ivch{font-size:7px!important;padding:1px 3px!important}
+#arm .ivk .ivsr{font-size:9px!important}
+#arm .ivk .ivet{font-size:7px!important;padding:1px 3px!important;top:2px!important;left:2px!important}
+#arm .ivk .ivbd{width:14px!important;height:14px!important;font-size:9px!important;top:2px!important;right:2px!important}
+
+/* v36: inventario em tela baixa (celular deitado): painel com altura fixa, so a lista rola */
+@media(max-height:520px) and (min-width:561px){
+#arm{padding:4px!important;align-items:flex-start!important}
+#arm .bx.ivx{height:calc(100dvh - 8px)!important;max-height:calc(100dvh - 8px)!important;overflow:hidden!important;padding:0 8px 6px!important;display:flex!important;flex-direction:column!important}
+#arm .ph{margin:0 -8px 4px!important;padding:3px 10px!important;flex:none}
+#arm h2{font-size:13px!important}
+#arm .ivm{flex:1 1 0!important;height:auto!important;min-height:0!important;grid-template-columns:132px minmax(0,1.3fr) minmax(0,1fr)!important;grid-template-rows:minmax(0,1fr)!important;gap:6px!important}
+#arm .ivd{grid-column:auto!important}
+#arm .ivc2{overflow:hidden!important;display:flex!important;flex-direction:column!important;min-height:0!important;gap:3px}
+#arm .ivl{flex:1 1 0!important;max-height:none!important;min-height:0!important;overflow-y:auto!important;touch-action:pan-y}
+#arm .ivpg{flex:none;padding:0 4px!important}
+#arm .ivpg .ivar{height:24px!important;padding:0 10px!important}
+#arm .ivs,#arm .ivd{overflow-y:auto!important;min-height:0!important;touch-action:pan-y}
+}

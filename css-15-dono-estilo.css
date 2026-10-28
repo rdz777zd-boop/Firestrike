@@ -1,0 +1,4 @@
+
+.ownm{color:#050505!important;font-weight:900;text-shadow:0 0 1px #f00,0 0 3px #f00,0 0 6px #f00,0 0 10px #ff2a2a,1px 0 0 #f00,-1px 0 0 #f00,0 1px 0 #f00,0 -1px 0 #f00;animation:ownGlow 1.6s ease-in-out infinite alternate}
+@keyframes ownGlow{from{text-shadow:0 0 1px #f00,0 0 3px #f00,0 0 5px #f00,1px 0 0 #f00,-1px 0 0 #f00,0 1px 0 #f00,0 -1px 0 #f00}to{text-shadow:0 0 2px #f00,0 0 6px #f00,0 0 12px #ff3030,0 0 18px #ff1a1a,1px 0 0 #f00,-1px 0 0 #f00,0 1px 0 #f00,0 -1px 0 #f00}}
+.owb{image-rendering:pixelated;filter:drop-shadow(0 0 4px #f00)}

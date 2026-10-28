@@ -1,0 +1,1 @@
+(function(){var r=document.documentElement;function f(){r.style.setProperty('--vh',(window.innerHeight/100)+'px')}f();addEventListener('resize',f);addEventListener('orientationchange',function(){setTimeout(f,250)});if(window.visualViewport)visualViewport.addEventListener('resize',f)})();

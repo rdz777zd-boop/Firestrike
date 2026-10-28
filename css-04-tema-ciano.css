@@ -1,0 +1,97 @@
+
+/* tema ciano: troca amarelo/laranja da interface */
+.mdr{--c:#ff6600}
+.mdr .tip{background:linear-gradient(#ff6600,#b54800)!important;color:#15100d!important}
+.mdr .inf .rp span{color:#ff6600!important}
+#ppf .pph{background:linear-gradient(#2e2621,#120f0d)!important;border:2px solid #ff6600!important;box-shadow:0 0 16px #ff660088!important}
+#ppf .pph b{color:#ffba7d!important;text-shadow:0 0 10px #ff6600aa}
+#frp .frti{color:#ffba7d!important;text-shadow:0 0 calc(var(--fw)*16) #ff6600aa!important}
+#chr .ivin,#chr .cxi{border-left-color:#ff6600!important}
+#chr .ivnm,#chr .cxbar b,#chr .cxh{color:#ffba7d!important;text-shadow:0 0 8px #ff660088!important}
+#chr .ivap{background:linear-gradient(#ff6600,#b54800)!important;color:#15100d!important;box-shadow:0 0 16px #ff660088!important}
+#chr .ivap:disabled{background:#2e2824!important;color:#ecbb8f!important;box-shadow:none!important}
+#chr .cxc.sel,#chr .smk.sel{border-color:#ff6600!important;box-shadow:0 0 12px #ff660099!important}
+.tjb.on{border-color:#ff6600!important;box-shadow:0 0 12px #ff660088!important}
+.tjb.on b{color:#ffba7d!important}
+.cd.on,.qxr.new,.qxd.on,.vr.mv,.rkrow.me,.rkrow.mine{border-color:#ff6600!important;box-shadow:0 0 14px #ff660077!important}
+.qxr.new{background:#1d1814cc!important}
+#igb{border-color:#ff6600!important}
+#vic .vt{text-shadow:0 0 14px #ff6600aa!important}
+
+/* ===== LOJA CONTRA SQUAD / SALA: cards pequenos com icone ===== */
+#cs{background:linear-gradient(180deg,#211c18ef,#120f0df7)!important;border-top:2px solid #ff6600!important;box-shadow:0 -6px 24px #ff660033!important;padding:6px 10px 8px!important;max-height:54vh}
+#cs .ch{align-items:center;margin-bottom:6px;font-size:12px;letter-spacing:1.5px;color:#ffba7d}
+#cs #csM{display:flex;align-items:center;gap:6px;background:#120f0d;border:1.5px solid #ff6600;border-radius:999px;padding:3px 12px 3px 8px;color:#fff;font-size:14px;box-shadow:0 0 10px #ff660055}
+#cs #csM:before{content:'';width:11px;height:11px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe27a,#d98c00);box-shadow:0 0 6px #ffc40088}
+#cs .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:5px}
+#cs .sec{grid-column:1/-1;display:flex;align-items:center;gap:8px;font-size:9px;letter-spacing:2px;color:#dca47f;margin-top:2px}
+#cs .sec:after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#ff660066,transparent)}
+#cs button.cc{flex:none;max-width:none;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 3px 4px;background:linear-gradient(#2e2621,#16120f);border:1px solid #ff660066;border-radius:4px 12px 4px 12px;color:#fff;font:900 9px 'Trebuchet MS',Arial,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#cs button.cc:active{transform:scale(.95)}
+#cs .cc canvas{width:100%;height:auto;max-height:34px;object-fit:contain;display:block}
+#cs .cc b{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px}
+#cs .cc small{display:block;font-size:8px;color:#ffba7d}
+#cs .cc i{display:block;width:80%;height:3px;border-radius:2px;background:#221c18;overflow:hidden}
+#cs .cc i u{display:block;height:100%;text-decoration:none;background:linear-gradient(90deg,#b54800,#ff6600)}
+#cs .cc em{font-style:normal;margin-top:1px;padding:1px 8px;border-radius:999px;background:linear-gradient(#ff6600,#b54800);color:#15100d;font-size:10px}
+#cs button.cc.off{opacity:1;filter:grayscale(.7) brightness(.65)}
+#cs button.cc.off em{background:#4c4541;color:#c4ae9f}
+#cs button.cc.own{filter:none;border-color:#00ff88;background:linear-gradient(#221d19,#13100e);box-shadow:0 0 10px #00ff8855,inset 0 0 10px #00ff8822}
+#cs button.cc.own em{background:linear-gradient(#5dffb0,#00c46a);color:#17120e;font-size:8px;padding:2px 6px}
+
+/* ===== LOJA CONTRA SQUAD / SALA v2: painel neon futurista ===== */
+#cs{--n:#ff7519;background:linear-gradient(90deg,#ff751900,#ff7519,#ff751900) 0 0/100% 2px no-repeat,linear-gradient(#ff751912 1px,transparent 1px) 0 0/100% 16px,linear-gradient(90deg,#ff75190d 1px,transparent 1px) 0 0/16px 100%,linear-gradient(180deg,#221c18f2,#0d0a08fa)!important;border:0!important;border-top:0!important;box-shadow:none!important;clip-path:polygon(0 16px,16px 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);padding:0 12px 10px!important;max-height:50vh;}
+#cs.on{animation:csin .28s ease-out}
+@keyframes csin{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+#cs::-webkit-scrollbar{width:6px}#cs::-webkit-scrollbar-thumb{background:#ff751999;border-radius:3px}#cs::-webkit-scrollbar-track{background:#100d0b}
+#cs .ch{position:sticky;top:0;z-index:3;margin:0 -12px 8px;padding:12px 16px 7px;background:linear-gradient(#1d1814,#1d1814ee 70%,#1d181400);border-bottom:1px solid #ff751944;align-items:center}
+#cs #csT{font:900 13px 'Trebuchet MS',Arial,sans-serif;font-style:italic;letter-spacing:.16em;text-transform:uppercase;color:#fff2e6;text-shadow:0 0 8px #ff7519,0 0 18px #ff751988}
+#cs #csT:before{content:'LOJA  //  ';color:#ff7519}
+#cs #csM{border:0;border-radius:0;clip-path:polygon(9px 0,100% 0,calc(100% - 9px) 100%,0 100%);padding:4px 18px 4px 14px;background:#1e1814;box-shadow:inset 0 0 0 1.5px #ff7519,inset 0 0 14px #ff751955;color:#fff;font-weight:900}
+#cs .g{grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:7px}
+#cs .sec{color:#ff7519;letter-spacing:3px;font-size:10px;text-shadow:0 0 8px #ff751988;margin-top:4px}
+#cs .sec:after{height:2px;background:linear-gradient(90deg,#ff751999,transparent)}
+#cs button.cc{border:0!important;border-radius:0!important;padding:6px 4px 5px;background:linear-gradient(160deg,#40342c,#1a1512 72%)!important;box-shadow:inset 0 0 0 1px #ff751977,inset 0 -16px 20px -16px #ff751988;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);transition:transform .12s,box-shadow .15s}
+#cs button.cc:hover{box-shadow:inset 0 0 0 1.5px #ff7519,inset 0 -16px 22px -12px #ff7519aa}
+#cs .cc canvas{max-height:38px}
+#cs .cc b{font-size:9.5px;letter-spacing:.04em;text-transform:uppercase}
+#cs .cc small{color:#ffc48f}
+#cs .cc i{height:4px;background:#15100d}
+#cs .cc i u{background:linear-gradient(90deg,#b04c0a,#ff7519);box-shadow:0 0 6px #ff7519}
+#cs .cc em{border-radius:0;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);padding:2px 10px;background:linear-gradient(#ff9f5f,#d06219);color:#15100d;font-size:10.5px}
+#cs button.cc.off{filter:grayscale(.75) brightness(.6)}
+#cs button.cc.own{background:linear-gradient(160deg,#2a221c,#130f0d 72%)!important;box-shadow:inset 0 0 0 1.5px #35ff9a,inset 0 -16px 20px -14px #35ff9a88!important}
+#cs button.cc.own em{background:linear-gradient(#7dffc0,#12c06c);color:#17120e}
+
+/* ===== PATENTES v2 ===== */
+.rtt{font-size:30px!important;font-weight:900;letter-spacing:.2em;text-shadow:0 0 12px currentColor,0 0 28px currentColor;font-style:italic}
+.rst{font-size:22px;color:#ffd93b;text-shadow:0 0 10px #ffd93b99;letter-spacing:4px}
+.rrr{background:linear-gradient(90deg,#211c18,#14110f)!important;border-radius:4px 14px 4px 14px!important}
+.rrr canvas{flex:none;}
+.rrr:not(.ok) canvas{filter:grayscale(1) brightness(.55)}
+#menu .rkbd canvas{}
+#menu .rkbd .tl{background:linear-gradient(#2a2010,#0d0a04)!important;font-weight:900;letter-spacing:.12em;font-style:italic;text-shadow:0 0 8px currentColor;box-shadow:0 0 14px #0008,inset 0 0 10px #ffffff12}
+
+/* ===== v3: menus leves + rolagem + pre-visualizacao suave ===== */
+html,body{touch-action:manipulation!important}
+#c,#hudc{touch-action:none!important}
+.pn .bx,.pn .bx *,.ov:not(#menu),.ov:not(#menu) *,#set .bx,#set .bx *,#shp,#shp *,#cs,#cs *,#ppf,#ppf *,#frp .fri,#frp .fri *{touch-action:manipulation!important}
+.pvb2,.pvb2 *{touch-action:none!important}
+/* clip-path em containers rolaveis quebra a rolagem no celular */
+.pn .bx,#arm .bx,#shop .bx,#chr .bx,#set .bx,#frp .fri,#cs,#ppf,#set .sin,.ivx,.shx,.chx{clip-path:none!important}
+#cs{border-top:2px solid #ff7519!important;border-radius:14px 14px 0 0}
+.pn,#set,#cs,#pvw,.ov{}
+*{-webkit-tap-highlight-color:transparent}
+.pn .bx,#arm .bx,#shop .bx,#chr .bx{box-shadow:0 0 0 1px #000!important}
+.pn canvas,#cs canvas,#arm canvas,#shop canvas,#chr canvas{filter:none!important}
+.pn .smg *,.pn .ivl *,#cs *,#chr .cxg *{text-shadow:none!important}
+.pn .bx,#cs,.smg,#chr .cxg,#arm .ivl,#arm .ivd,#arm .ivs{-webkit-overflow-scrolling:touch;overscroll-behavior:contain;transform:translateZ(0)}
+.pn *,#set *,#cs *{transition-duration:.12s!important}
+/* pausa as animacoes do menu principal quando um painel esta aberto */
+body:has(.pn:not(.hide)) #menu *,body:has(#set:not(.hide)) #menu *,body:has(#ppf:not(.hide)) #menu *,body:has(#pvw:not(.hide)) #menu *{animation:none!important}
+/* pre-visualizacao */
+#pvw .pvs{box-shadow:0 0 0 1px var(--pa)!important;contain:layout paint}
+#pvw .pvx{background:#0b0908!important}
+#pvst canvas{transform:translateZ(0);backface-visibility:hidden;image-rendering:auto}
+#pvw *{text-shadow:none}
+#pvw .pvon{text-shadow:0 2px 0 #000}

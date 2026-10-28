@@ -1,0 +1,41 @@
+
+#frp{--W:min(94vw,max(340px,min(58vw,calc(58vh*1.6))));--fw:calc(var(--W)/1000)}
+#frp .frx{width:var(--W)}
+#frp .fro{clip-path:none!important;border-radius:16px;padding:2px;background:linear-gradient(#ff9a3c,#ff6600 55%,#a83f00)}
+#frp .fri{border-radius:14px;padding:10px 12px 12px;background:linear-gradient(#1c1612,#0f0c0b);max-height:min(82vh,560px)}
+#frp .frt{width:auto;background:none;padding:0;clip-path:none;margin:0 0 8px}
+#frp .frti{background:none;text-align:left;font-size:15px;letter-spacing:2px;padding:0 34px 0 2px;color:#ffba7d}
+#frp .frcl{right:10px;top:8px;width:26px;height:26px;min-width:0;min-height:0;font-size:13px;border-radius:50%}
+#frp .frtabs{gap:6px;margin-bottom:8px}
+#frp .frtb{font-size:10px;padding:6px 4px;border-radius:9px;box-shadow:none}
+#frp .frtb.on{box-shadow:none}
+#frp .frgrid{grid-template-columns:1fr;gap:8px}
+#frp .frc2{background:#120f0d;border-radius:12px;padding:8px 9px}
+#frp .frl{font-size:10px;letter-spacing:1.5px;color:#ffba7d;margin:0 0 6px}
+#frp .frl.s2{margin-top:8px;padding-top:8px}
+#frp .frsr{gap:6px}
+#frp .frsr input{font-size:12px;padding:7px 10px;border-radius:10px;border-width:1px}
+#frp .frcnt{font-size:10px;margin:0 0 6px 2px}
+#frp .fre{font-size:11px;padding:10px 6px}
+#frp .frmo{font-size:10px;margin-top:2px}
+#frp .frr{position:relative;display:flex;align-items:center;gap:9px;overflow:hidden;isolation:isolate;border-radius:12px;padding:7px 9px;margin:0 0 6px;background:#1a1512;border:1px solid #2e2926;min-height:46px}
+#frp .frr+.frr{border-top:1px solid #2e2926}
+#frp .frr:last-child{margin-bottom:0}
+#frp .frr .fcb{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center}
+#frp .frr:after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#0c0a09f5 0%,#0c0a09c0 55%,#0c0a0970 100%)}
+#frp .fca{position:relative;flex:none;width:36px;height:36px;border-radius:50%;border:2px solid var(--ac,#ff6600);background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;font:900 15px Arial;color:#fff;cursor:pointer}
+#frp .fca .dt{position:absolute;right:-3px;bottom:-3px;width:11px;height:11px;min-width:0;min-height:0;margin:0;border:2px solid #141110}
+#frp .frr.ow{--ac:#ff2a2a;border-color:#ff2a2a88;box-shadow:0 0 10px #ff2a2a44}
+#frp .frr.vf{--ac:#ffc21c;border-color:#ffc21c77;box-shadow:0 0 8px #ffc21c33}
+#frp .frr.sel{outline:2px solid #ff6600}
+#frp .frn{flex:1;min-width:0}
+#frp .frn b{font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+#frp .frn b .ytb{height:14px;width:14px;vertical-align:-3px;margin-left:4px}
+#frp .frn small{font-size:10px;margin-top:1px}
+#frp .frr .fry,#frp .frr .frg{font-size:10px;padding:6px 10px;border-radius:9px;box-shadow:0 2px 0 #0008}
+#frp .frr .fry.sq,#frp .frr .frg.sq{width:34px;min-width:34px;font-size:14px;padding:5px 0}
+#frp .rqb2{display:flex;gap:5px;flex:none}
+#frp .frbot{gap:8px;margin-top:8px;padding:0}
+#frp .frbot button{font-size:11px;padding:8px 0;border-radius:10px;box-shadow:0 2px 0 #0008}
+#cmb .mc.ow{border-color:#ff2a2a!important;box-shadow:0 0 12px #ff2a2a66!important}
+#cmb .mc.vf{border-color:#ffc21c!important;box-shadow:0 0 10px #ffc21c55!important}

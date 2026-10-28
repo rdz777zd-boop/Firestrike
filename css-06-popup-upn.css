@@ -1,0 +1,25 @@
+
+#upn{position:fixed;inset:0;z-index:99990;display:flex;align-items:center;justify-content:center;padding:max(10px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left));box-sizing:border-box;background:rgba(6,5,4,.9);font-family:'Trebuchet MS',Arial,sans-serif;color:#ffefe0;touch-action:pan-y}
+#upn.hide{display:none}
+#upn .bx{position:relative;width:min(780px,100%);height:min(360px,100%);display:flex;background:#14100d;border:2px solid #ff6600;border-radius:18px;box-shadow:0 0 28px #ff660055;overflow:hidden}
+#upn #upx{position:absolute;top:8px;right:8px;z-index:3;width:30px;height:30px;padding:0;font:900 16px/1 Arial;color:#fff;background:#e53935;border:0;border-radius:9px;cursor:pointer;touch-action:manipulation}
+#upn .side{flex:0 0 31%;max-width:230px;display:flex;flex-direction:column;background:#1b1612;border-right:1px solid #ff660040}
+#upn .sh{padding:12px 12px 8px;font-weight:900;font-size:11px;letter-spacing:2px;color:#ff6600}
+#upn #upl{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 8px 8px}
+#upn #upl button{display:block;width:100%;text-align:left;margin:0 0 6px;padding:8px 10px;font:700 12px 'Trebuchet MS',Arial,sans-serif;color:#d9c3b0;background:#241d18;border:1px solid #ffffff10;border-radius:10px;cursor:pointer}
+#upn #upl button b{display:block;font-size:14px;color:#fff}
+#upn #upl button small{display:block;opacity:.7;margin-top:1px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#upn #upl button.on{background:linear-gradient(#ff6600,#b54800);border-color:#ffb066;color:#2a1608}
+#upn #upl button.on b{color:#1a0d04}
+#upn .main{flex:1;min-width:0;display:flex;flex-direction:column}
+#upn .hd{padding:14px 48px 10px 16px;border-bottom:1px solid #ff660030}
+#upn .hd small{font-weight:900;font-size:11px;letter-spacing:1.5px;color:#ffba7d}
+#upn h2{margin:3px 0 0;font-size:clamp(17px,4.4vw,22px);font-weight:900;color:#fff}
+#upn .ubd{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 14px}
+#upn .it{margin:0 0 8px;padding:8px 10px;font-size:13px;line-height:1.4;background:#211a15;border-left:4px solid var(--c,#00ff88);border-radius:4px 10px 10px 4px}
+#upn .it em{display:inline-block;margin-bottom:3px;padding:1px 7px;font:900 10px 'Trebuchet MS',Arial,sans-serif;font-style:normal;letter-spacing:1px;color:#120a04;background:var(--c,#00ff88);border-radius:6px}
+#upn .it b{color:#fff}
+#upn .ft{padding:8px 14px 12px;text-align:right;border-top:1px solid #ff660030}
+#upn .ok{font:900 15px 'Trebuchet MS',Arial,sans-serif;color:#15100d;background:linear-gradient(#ff6600,#b54800);border:2px solid #0e0d0c;border-radius:11px;padding:8px 30px;box-shadow:0 3px 0 #4d392b;cursor:pointer}
+#upn .ok:active{transform:translateY(2px);box-shadow:0 1px 0 #4d392b}
+@media (max-width:560px) and (orientation:portrait){#upn .bx{flex-direction:column;height:min(560px,100%)}#upn .side{flex:0 0 auto;max-width:none;border-right:0;border-bottom:1px solid #ff660040}#upn #upl{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding-bottom:8px}#upn #upl button{flex:0 0 auto;width:auto;margin:0}}

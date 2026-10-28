@@ -1,0 +1,1 @@
+(function(){var o=Math.random;window.__mpR=null;Math.random=function(){return window.__mpR?window.__mpR():o()}})();

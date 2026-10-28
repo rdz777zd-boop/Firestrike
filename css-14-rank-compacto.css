@@ -1,0 +1,15 @@
+
+.prrow{gap:7px!important;padding:3px 8px!important;margin:3px 0!important;border-radius:9px!important}
+.prrow .rk{width:26px!important;font-size:15px!important}
+.prrow .nm{font-size:14px!important}
+.prrow .st{font-size:10.5px!important}
+.prrow .dl{font-size:12px!important}
+#cln .cxl{gap:6px!important}
+#cln .cxc{gap:8px!important;padding:5px 9px!important}
+#cln .cxe{width:46px!important;height:46px!important}
+#cln .cxe canvas{width:40px!important;height:40px!important}
+#cln .cxn b{font-size:clamp(14px,2.6vh,18px)!important}
+#cln .cxm{font-size:13px!important}
+#cln .cxs2{font-size:12px!important;gap:2px 8px!important}
+#cln .cxs2 .lv2{font-size:12px!important;padding:0 6px!important}
+#cln .cxj{font-size:13px!important;padding:6px 10px!important}

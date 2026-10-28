@@ -1,0 +1,21 @@
+
+/* ===== TEMA FOGO: preto + laranja neon (HUD tatico) ===== */
+:root{--cy:#ff7a1a;--cy2:#ff9a3c;--cyd:#e85d04;--gold:#ff7a1a;--line:#ff7a1a;--ln:#ff7a1a66;--bg:#0a0b0e}
+html,body{background:#0a0b0e}
+body,button,input,select,textarea,h1,h2,h3,.big,.btn,.tb,.ldlt,.ldm{font-family:'Rajdhani','Trebuchet MS',Arial,sans-serif!important}
+h1,h2,h3,.big,.btn,.tb,.playb,.bb,.sd,.mb{font-weight:800!important;letter-spacing:1px}
+.ov,#menu{background:repeating-linear-gradient(62deg,#0000 0 70px,#ff7a1a08 70px 72px),radial-gradient(ellipse at 50% 60%,#14120f,#0a0b0e 75%)!important}
+#menu:after,.ov:after{background:none!important}
+.pill,.ib,.co,.sd,.bb,.mb,.alone,.tabs,.tb{border-radius:calc(var(--u,1px)*34)!important}
+.pill,.ib,.sd,.bb,.mb,.alone{background:#0f1116e6!important;border:1.5px solid #ff7a1a88!important;box-shadow:0 0 12px #ff7a1a33,inset 0 0 12px #ff7a1a14!important}
+.mb.on,.alone.on,.bb.on,.sd.on,.tb.on{background:linear-gradient(#ff8a2a,#f0620a)!important;color:#1a0a00!important;border-color:#ffa04d!important;box-shadow:0 0 20px #ff7a1a99,inset 0 0 10px #ffffff33!important}
+.btn,.playb,.mdr .btn.cl{background:linear-gradient(#ff8a2a,#f0620a)!important;color:#1a0a00!important;border:2px solid #ffa04d!important;border-radius:14px!important;box-shadow:0 0 22px #ff7a1a88,inset 0 0 10px #ffffff44!important}
+.playb{border-radius:calc(var(--u)*40)!important;box-shadow:0 0 34px #ff7a1acc,inset 0 0 16px #ffffff55!important}
+.playb b,.playb small{color:#1a0a00}.playb .tri{border-left-color:#1a0a00!important}
+.btn.sec,#shb{background:#0f1116!important;color:#ff9a3c!important;border:1.5px solid #ff7a1a!important}
+.pn .bx,#set .bx{border-radius:18px!important;background:linear-gradient(#ff7a1a12,#0000 30%),#0f1116!important}
+.lvl{background:#0f1116!important;border:3px solid #ff7a1a!important}
+#gemv{color:#2bb6ff!important;text-shadow:0 0 10px #2bb6ff88!important}
+#nplat,.csh{filter:none}
+.ib em{background:#ff7a1a!important;color:#1a0a00!important;border-color:#0a0b0e!important}
+input,select,textarea{background:#0f1116!important;border-color:#ff7a1a88!important}
