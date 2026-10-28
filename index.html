@@ -7407,15 +7407,17 @@ document.querySelectorAll('#prkp .prtabs button').forEach(b=>b.onclick=()=>{prT=
 <script>
 (function(){
 const $=id=>document.getElementById(id),N=()=>window.ARR_NET,DB='https://armada-relay.rdz777zd.workers.dev/db';
+/* LOGIN COM GOOGLE: cole aqui o seu Client ID (Google Cloud Console > APIs e servicos > Credenciais > ID do cliente OAuth > Aplicativo da Web) */
+const GOOGLE_CLIENT_ID='COLE_AQUI_SEU_CLIENT_ID.apps.googleusercontent.com';
 const gm=()=>typeof MS!=='undefined'?MS:1,sm=n=>{MS=n};
 let user=null,L={i:0,end:0,go:0,ls:0,s:0,tb:0,rm:0,nt:'',ne:0};
 const root=document.createElement('div');
-root.innerHTML='<div id="au" class="hide"><div class="abx"><h2>ARMADA ROYALE</h2><div style="text-align:center;font-size:13px;opacity:.85">Usuário e senha servem para entrar. O nick é o nome que todos veem.</div><input id="au_u" maxlength="12" placeholder="USUÁRIO (@ para entrar)" autocomplete="username"><input id="au_p" type="password" maxlength="30" placeholder="SENHA" autocomplete="current-password"><input id="au_n" maxlength="12" placeholder="NICK (só ao criar a conta)" autocomplete="off"><div class="am" id="au_m"></div><button id="au_l">ENTRAR</button><button id="au_r" class="s">CRIAR CONTA</button></div></div>'
+root.innerHTML='<div id="au" class="hide"><div class="abx"><h2>ARMADA ROYALE</h2><div style="text-align:center;font-size:13px;opacity:.85">Usuário e senha servem para entrar. O nick é o nome que todos veem.</div><input id="au_u" maxlength="12" placeholder="USUÁRIO (@ para entrar)" autocomplete="username"><input id="au_p" type="password" maxlength="30" placeholder="SENHA" autocomplete="current-password"><input id="au_n" maxlength="12" placeholder="NICK (só ao criar a conta)" autocomplete="off"><div class="am" id="au_m"></div><button id="au_l">ENTRAR</button><button id="au_r" class="s">CRIAR CONTA</button><div style="text-align:center;opacity:.6;font-size:12px;margin:10px 0 4px">ou</div><div id="au_g" style="display:flex;justify-content:center;min-height:44px"></div></div></div>'
 +'<div id="sb" class="hide"><div id="sbt"></div><div id="sbp"><i></i></div><button id="sbc">CANCELAR</button></div><div id="lo" class="hide"><canvas id="lcv"></canvas><div id="lhd"><div id="lcd"></div><div id="lst"></div></div><div id="lbt"><button id="lof">OFFLINE</button><button id="lsa">SAIR</button><button id="lac">TROCAR CONTA</button></div><div id="lon"></div><div id="llg"></div><div id="lcb"><input id="lci" maxlength="120" placeholder="Conversar..."><button id="lcs">ENVIAR</button></div></div>';
 document.body.appendChild(root);
 const show=id=>$(id).classList.remove('hide'),hide=id=>$(id).classList.add('hide'),am=t=>$('au_m').textContent=t||'';
 async function sha(s){if(window.crypto&&crypto.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}let h=5381;for(const c of s)h=(h*33^c.charCodeAt(0))>>>0;return'x'+h.toString(16)}
-async function J(p,o){const c=new AbortController(),t=setTimeout(()=>c.abort(),9000);try{const r=await fetch(DB+p+'.json',Object.assign({signal:c.signal,cache:'no-store'},o));if(!r.ok)throw('http'+r.status);return await r.json()}finally{clearTimeout(t)}}
+async function J(p,o){let last;for(let t=0;t<2;t++){const c=new AbortController(),tm=setTimeout(()=>c.abort(),15000);try{const r=await fetch(DB+p+'.json',Object.assign({signal:c.signal,cache:'no-store'},o));if(!r.ok)throw('http'+r.status);return await r.json()}catch(e){last=e}finally{clearTimeout(tm)}await new Promise(r=>setTimeout(r,500))}throw last}
 /* dono do jogo: descobre o usuario dono do ID 33044471 pelo indice de IDs (nao da pra falsificar pelo perfil) */
 (()=>{const OJ=async()=>{for(const p of['/ids/'+OWNER_ID,'/inbox/id'+OWNER_ID]){try{const v=await J(p);let u=v&&typeof v.u=='string'?v.u:'',nk='';if(!/^[A-Za-z0-9_]{3,12}$/.test(u)){if(p.indexOf('/players/')===0&&v&&typeof v.n=='string'&&/^[A-Za-z0-9_]{2,12}$/.test(v.n)){nk=v.n}else continue}else{nk=u;try{const ac=await getAcc(u.toLowerCase());if(ac&&ac.nk)nk=ac.nk}catch(e){}}
 if(String(window.ARR_UID||'')===OWNER_ID)return 1;OWNERS.length=0;OWNERS.push(nk);try{localStorage.setItem('arr_owner',nk)}catch(e){}return 1}catch(e){}}return 0};
@@ -7479,7 +7481,13 @@ window.arrVerSet=async(id,on)=>{id=String(id||'').trim();if(String(window.ARR_UI
 const rid=()=>{let n;try{n=crypto.getRandomValues(new Uint32Array(1))[0]}catch(e){n=Math.floor(Math.random()*4294967295)}return String(10000000+n%90000000)};
 async function newId(k){for(let t=0;t<10;t++){const i=rid();let taken=0;for(const p of idp(i)){try{const v=await J(p);if(v){taken=1;break}await J(p,Object.assign({body:JSON.stringify({u:k})},PUTH));return i}catch(e){}}if(!taken)return''}return''}
 async function ensureId(k,a){if(a&&a.i)return String(a.i);try{const f=await getAcc(k);if(f&&f.i)return String(f.i)}catch(e){}const i=await newId(k);if(!i)return'';const rec=Object.assign({},a,{i});for(const q of await paths(k)){try{await J(q,Object.assign({body:JSON.stringify(rec)},PUTH));try{const v=await getAcc(k);if(v&&v.i)return String(v.i)}catch(e){}return i}catch(e){}}return''}
-async function getAcc(u){let ok=0;for(const p of await paths(u)){try{const v=await J(p);ok=1;if(v&&v.h)return v}catch(e){}}if(!ok)throw 0;return null}
+const LK='arr_acc:';
+const lAcc=k=>{try{const v=JSON.parse(localStorage.getItem(LK+k)||'null');return v&&v.h&&String(v.u||'').toLowerCase()===k?v:null}catch(e){return null}};
+const lSave=(k,r)=>{try{localStorage.setItem(LK+k,JSON.stringify(r))}catch(e){}};
+async function getAcc(u){let ok=0;for(const p of await paths(u)){try{const v=await J(p);ok=1;if(v&&v.h&&String(v.u||'').toLowerCase()===u)return v}catch(e){}}if(!ok)throw 0;return null}
+async function pushAcc(k,rec){try{if(!rec.i){const i=await newId(k);if(i)rec.i=i}
+ if(rec.nk){const c=await claimNick(rec.nk,k);if(c==='taken'){rec.nk=String(rec.nk).slice(0,8)+String(rec.i||(100+Math.random()*900|0)).slice(-3);await claimNick(rec.nk,k)}}
+ for(const q of await paths(k)){try{await J(q,Object.assign({body:JSON.stringify(rec)},PUTH));lSave(k,rec);return 1}catch(e){}}}catch(e){}return 0}
 let AB=0;async function auth(reg){if(AB)return;AB=1;try{await auth1(reg)}finally{AB=0}}
 const nkp=async n=>{const h=(await sha('nk:'+String(n).toLowerCase())).slice(0,24);return['/nicks/'+h,'/inbox/nk'+h]};
 async function claimNick(n,k){let ok=0;const ps=await nkp(n);
@@ -7494,16 +7502,57 @@ async function auth1(reg){let u=$('au_u').value.trim();const p=$('au_p').value;
  let nk=($('au_n').value||'').replace(/\s+/g,' ').trim();
  if(reg){if(!nk)nk=u;if(!NKRE.test(nk)||nk.toLowerCase()==='voce')return am('Nick: 2 a 12 letras, números, espaço, _ . -')}
  am('Conectando...');
- let aid='';try{const k=u.toLowerCase(),a=await getAcc(k);
-  if(reg){if(a)return am('Esse usuário já existe');
-   const cn=await claimNick(nk,k);if(cn==='taken')return am('Esse nick já está em uso');if(!cn)return am('Servidor indisponível, tente de novo');
-   const s=Math.random().toString(36).slice(2,10),rec={u,s,h:await sha(s+':'+p),t:Date.now(),nk};let ok=0;aid=await newId(k);if(aid)rec.i=aid;
-   for(const q of await paths(k)){try{await J(q,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)});ok=1;break}catch(e){}}
-   if(!ok){await freeNick(nk,k);return am('O servidor recusou o cadastro')}
-   try{const v=await getAcc(k);if(v&&v.h&&v.h!==rec.h){await freeNick(nk,k);return am('Esse usuário já existe')}}catch(e){}}
-  else{if(!a||a.h!==await sha(a.s+':'+p))return am('Usuário ou senha incorretos');u=a.u||u;aid=await ensureId(k,a);nk=a.nk||'';
-   if(!nk){nk=u.slice(0,12);let c=await claimNick(nk,k);if(c==='taken'){nk=u.slice(0,8)+String(aid||'').slice(-3);await claimNick(nk,k)}}}
-  enter(u,aid,nk)}catch(e){am('Servidor indisponível, tente de novo')}}
+ const k=u.toLowerCase();let sa=null,down=0;
+ try{sa=await getAcc(k)}catch(e){down=1}
+ const la=lAcc(k);
+ try{
+  const cand=[sa,la].filter(Boolean);let hit=null;
+  for(const c of cand){if(c.h===await sha(c.s+':'+p)){hit=c;break}}
+  if(hit){/* senha confere: entra (vale tambem para "criar" uma conta que ja existia com essa senha) */
+   u=hit.u||u;let aid=hit.i?String(hit.i):'';
+   if(hit===sa){aid=await ensureId(k,sa);nk=sa.nk||'';
+    if(!nk){nk=u.slice(0,12);let c=await claimNick(nk,k);if(c==='taken'){nk=u.slice(0,8)+String(aid||'').slice(-3);await claimNick(nk,k)}}}
+   else{nk=hit.nk||'';if(!down&&!sa){const r2=Object.assign({},hit);await pushAcc(k,r2);aid=r2.i?String(r2.i):aid;nk=r2.nk||nk}}
+   lSave(k,Object.assign({},hit,aid?{i:aid}:{},nk?{nk}:{}));
+   return enter(u,aid,nk)}
+  if(!reg){if(!cand.length&&down)return am('Servidor indisponível, tente de novo');return am('Usuário ou senha incorretos')}
+  if(cand.length)return am('Esse usuário já existe');
+  let cn=false;if(!down)cn=await claimNick(nk,k);
+  if(cn==='taken')return am('Esse nick já está em uso');
+  const s=Math.random().toString(36).slice(2,10),rec={u,s,h:await sha(s+':'+p),t:Date.now(),nk};let aid='',ok=0;
+  if(!down&&cn){aid=await newId(k);if(aid)rec.i=aid;
+   for(const q of await paths(k)){try{await J(q,Object.assign({body:JSON.stringify(rec)},PUTH));ok=1;break}catch(e){}}
+   if(ok){try{const v=await getAcc(k);if(v&&v.h!==rec.h){await freeNick(nk,k);return am('Esse usuário já existe')}}catch(e){}}
+   else await freeNick(nk,k)}
+  lSave(k,rec);
+  if(!ok){try{soon('Servidor indisponível: conta salva só neste aparelho')}catch(e){}}
+  enter(u,aid,nk)}catch(e){am('Erro ao conectar, tente de novo')}}
+/* ---- LOGIN COM GOOGLE (Google Identity Services) ---- */
+async function gAuth(cred){if(AB)return;AB=1;try{
+ let pl=null;try{pl=JSON.parse(decodeURIComponent(escape(atob(String(cred).split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))))}catch(e){}
+ if(!pl||!pl.sub||pl.aud!==GOOGLE_CLIENT_ID)return am('Login do Google inválido, tente de novo');
+ am('Entrando com Google...');
+ const u='g_'+(await sha('google:'+pl.sub)).slice(0,10),k=u.toLowerCase();let sa=null,down=0;
+ try{sa=await getAcc(k)}catch(e){down=1}
+ const a=sa||lAcc(k);
+ if(a){let aid=a.i?String(a.i):'';if(sa&&!aid)aid=await ensureId(k,sa);if(!sa&&!down){const r2=Object.assign({},a);await pushAcc(k,r2);if(r2.i)aid=String(r2.i)}
+  lSave(k,Object.assign({},a,aid?{i:aid}:{}));return enter(a.u||u,aid,a.nk||'')}
+ let nk=String(pl.given_name||pl.name||'').replace(/[^\p{L}\p{N} _.-]/gu,'').replace(/\s+/g,' ').trim().slice(0,12);
+ if(!NKRE.test(nk)||nk.toLowerCase()==='voce')nk='Jogador'+u.slice(2,6);
+ const rec={u,s:'g',h:'g:'+await sha('google:'+pl.sub),t:Date.now(),nk,g:1};let ok=0;
+ if(!down)ok=await pushAcc(k,rec);
+ lSave(k,rec);if(!ok){try{soon('Servidor indisponível: conta salva só neste aparelho')}catch(e){}}
+ enter(u,rec.i?String(rec.i):'',rec.nk)}
+ catch(e){am('Erro no login do Google, tente de novo')}finally{AB=0}}
+function gInit(){const box=$('au_g');if(!box)return;
+ if(!/^[0-9A-Za-z._-]+\.apps\.googleusercontent\.com$/.test(GOOGLE_CLIENT_ID)||/^COLE_AQUI/.test(GOOGLE_CLIENT_ID)){
+  box.innerHTML='<button id="au_gb" class="s" style="width:100%;margin:0">ENTRAR COM GOOGLE</button>';
+  $('au_gb').onclick=()=>am('Google ainda não configurado: falta o GOOGLE_CLIENT_ID no código.');return}
+ const sc=document.createElement('script');sc.src='https://accounts.google.com/gsi/client';sc.async=true;
+ sc.onload=()=>{try{google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:r=>gAuth(r.credential)});
+  google.accounts.id.renderButton(box,{theme:'filled_black',size:'large',text:'continue_with',shape:'pill',width:300,locale:'pt-BR'})}catch(e){am('Não foi possível carregar o login do Google')}};
+ sc.onerror=()=>am('Não foi possível carregar o login do Google (sem internet?)');
+ document.head.appendChild(sc)}
 window.arrAccNick=async u=>{try{const a=await getAcc(String(u).toLowerCase());return a?(a.nk||a.u||''):''}catch(e){return''}};
 window.arrSetNick=async v=>{const u=window.ARR_USER;if(!u)return false;const k=u.toLowerCase();
  try{const a=await getAcc(k);if(!a)return false;const old=a.nk||u;
@@ -7522,7 +7571,7 @@ function enter(u,aid,nk){user=u;window.ARR_USER=u;const k=u.toLowerCase(),ik='ar
  setTimeout(()=>{try{BL()}catch(e){}},600);setTimeout(()=>{try{BL()}catch(e){}},4000);
  $('au_p').value='';$('au_n').value='';am('');hide('au');try{window.arrFrLogin&&window.arrFrLogin(u)}catch(e){}const n=N();if(n){n.lbOpen();n.lbSend({k:'hi',n:PN,s:1})}
  getAcc(k).then(a=>{const m=a&&a.nk;if(m&&m!==PN){try{applyNick(m)}catch(e){}try{N()&&N().lbSend({k:'hi',n:PN,s:1})}catch(e){}try{window.arrPub&&window.arrPub()}catch(e){}}}).catch(()=>{})}
-$('au_l').onclick=()=>auth(0);$('au_r').onclick=()=>auth(1);
+$('au_l').onclick=()=>auth(0);$('au_r').onclick=()=>auth(1);gInit();
 $('au_p').onkeydown=e=>{if(e.key==='Enter')auth(0)};
 /* ---- busca + lobby (mapa) ---- */
 const TL=35000;
