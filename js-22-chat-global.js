@@ -1,5 +1,5 @@
 
-/* ===== CHAT GLOBAL (menu inicial) ===== */
+/* ===== CHAT GLOBAL (menu inicial) v160 ===== */
 (function(){
 const $=id=>document.getElementById(id);
 let ws=null,myid=null,open=false,un=0,lastSend=0,tries=0,rt=0,ready=false;
