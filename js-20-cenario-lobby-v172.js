@@ -307,11 +307,12 @@ window.ARR_KK=(f,m)=>{if(m.n===String(PN).replace(/[<>&"'`]/g,'').slice(0,12)&&!
 window.ARR_SALA=()=>{if(!user||L.s)return;const c='p'+Math.random().toString(36).slice(2,7).padEnd(5,'0');L.tb=0;L.lob=0;
  N().connect(c).then(()=>{L.rm=1;show('sb');$('sbp').style.display='none';$('sbc').textContent='FECHAR'})};
 window.ARR_INV=f=>{say('Você entrou na equipe de @'+f);try{window.frJoin(f)}catch(e){}};
-setInterval(()=>{if(L.rm&&Date.now()>(L.rt||0)){L.rt=Date.now()+4000;try{const M0=window.MP;N().lbSend({k:'rm',c:String(M0.code||''),p:Math.min(8,1+hum())})}catch(e){}}if(!L.rm&&!L.jr)return;const M=window.MP;if(M.arm||M.on){if(L.rm){try{N().lbSend({k:'rc'})}catch(e){}}L.rm=0;L.jr=0;hide('sb');return}$('sbt').textContent=Date.now()<L.ne?L.nt:'SALA PRIVADA • código '+String(M.code||'').slice(1).toUpperCase();tm()},300);
+setInterval(()=>{if(!L.rm)return;const M=window.MP;if(M.arm||M.on){L.rm=0;hide('sb');return}$('sbt').textContent=Date.now()<L.ne?L.nt:'SALA PRIVADA • código '+String(M.code||'').slice(1).toUpperCase();tm()},300);
 async function joinRoom(i){const n=N();Object.assign(L,{i,end:Date.now()+TL,go:0,ls:0});
  try{await n.connect('m'+gm()+'abcd'[i]);n.lbOpen();n.lbSend({k:'hi',n:PN,s:1});sys('Você entrou no lobby ('+['SOLO','DUO','SQUAD'][gm()-1]+')');
   setTimeout(()=>{const M=window.MP;if(!M.bus||L.i!==i)return;const h=1+Object.keys(M.pr).filter(k=>M.pr[k]&&M.pr[k].s==='l').length;if(h>8&&i<3){n.leave();joinRoom(i+1)}},3500)}
  catch(e){sys('Falha ao conectar. Use OFFLINE para jogar com bots.')}}
+setInterval(()=>{if(!L.rm&&!L.jr)return;if(Date.now()<L.ne)return;const M=window.MP;$('sbt').textContent=(L.rm?'SALA ONLINE \u2022 c\u00f3digo ':'NA SALA \u2022 aguarde o dono iniciar \u2022 c\u00f3digo ')+String(M.code||'').slice(1).toUpperCase()},300);
 function botNm(){const used=new Set([user,...B.map(b=>b.n),...Object.values(O).map(o=>o.n)]),a=NMP.filter(n=>n.toLowerCase()!='voce'&&!used.has(n));return a.length?a[Math.random()*a.length|0]:NMP[Math.random()*NMP.length|0]}
 function openLobby(){$('llg').textContent='';B.length=0;L.sd=0;window.ARR_LSD=0;try{lobMap()}catch(e){LM=null}for(const k in O)delete O[k];P.x=320;P.y=300;P.tx=null;show('lo');L.end=Date.now()+TL;L.go=0}
 function draw(){const M=window.MP,rem=Math.max(0,L.end-Date.now());$('lcd').textContent='Partida começa em '+Math.ceil(rem/1000)+'s';
