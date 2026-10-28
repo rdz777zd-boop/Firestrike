@@ -34,9 +34,9 @@ function swap(own,cur){
  /* garante o pacote certo mesmo se algo gravar no ultimo instante */
  const fin=()=>{for(const k of Object.keys(mine))if(!(k in tgt))rem(k);for(const k in tgt){if(isGame(k)&&typeof tgt[k]==='string')set(k,tgt[k])}};
  addEventListener('pagehide',fin,true);addEventListener('beforeunload',fin,true);
- try{localStorage.removeItem}catch(e){}
  setTimeout(()=>location.reload(),60);
  return true}
+let failK='';
 function tick(){
  if(lock)return;
  const cur=String(window.ARR_USER||'').toLowerCase();
@@ -45,6 +45,7 @@ function tick(){
  if(own===null){set('arr_own',cur);return}/* primeira vez nesta versao: os dados atuais ficam com quem esta agora */
  if(own===cur)return;
  if(own===''&&cur&&!get('arr_snap:'+cur)){set('arr_own',cur);return}/* convidado que cria conta nova: leva o que jogou */
- swap(own,cur)}
+ const fk=own+'>'+cur;if(failK===fk)return;
+ if(!swap(own,cur))failK=fk}
 setInterval(tick,300);
 })();
