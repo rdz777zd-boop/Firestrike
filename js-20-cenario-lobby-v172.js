@@ -285,7 +285,7 @@ $('lcs').onclick=send;$('lci').onkeydown=e=>{if(e.key==='Enter')send()};
 const orig=window.startL;
 window.startL=function(){if(!user||window.MP.arm||!orig||window.frWN)return orig&&orig.apply(this,arguments);
  if(party()&&hum()>0){if(!N().amHost()){say('Só o líder da equipe inicia a partida');return}if((TB==0||TB==2)&&gm()<2){say('Com amigos na equipe jogue em Duo ou Squad');return}if(TB==4&&typeof SALA!=='undefined'&&SALA.n<2){say('Com amigos na equipe use 2x2 ou mais');return}}
-if(L.rm){L.rm=0;hide('sb');if(window.MP.bus&&N().amHost()&&hum()>0)N().hostGo();else{N().leave();orig()}return}L.lob=typeof TB!=='undefined'&&(TB==0||TB==2);if(TB==2&&window.frWarBad&&frWarBad().length)return orig.apply(this,arguments);search()};
+if(L.rm){L.rm=0;try{N().lbSend({k:'rc'})}catch(e){}hide('sb');if(window.MP.bus&&N().amHost()&&hum()>0)N().hostGo();else{N().leave();orig()}return}L.lob=typeof TB!=='undefined'&&(TB==0||TB==2);if(TB==2&&window.frWarBad&&frWarBad().length)return orig.apply(this,arguments);search()};
 $('play').onclick=window.startL;$('again').onclick=window.startL;
 const party=()=>/^p[a-z0-9]{3,7}$/.test((window.MP&&window.MP.code)||''),say=t=>{try{soon(t)}catch(e){nota(t)}},hum=()=>{const M=window.MP;return M.bus?Object.keys(M.pr).filter(k=>M.pr[k]&&M.pr[k].s==='l').length:0},nota=t=>{L.nt=t;L.ne=Date.now()+3000};
 function tm(){}
@@ -293,7 +293,7 @@ function search(){if(L.s)return;L.rm=0;show('sb');$('sbp').style.display='';$('s
  L.s=setInterval(()=>{const r=D-(Date.now()-t0);if(party()&&window.MP.bus&&Date.now()-(L.sbs||0)>=900){L.sbs=Date.now();try{window.MP.bus.send({t:'sb',on:1,r:Math.max(0,r),d:D})}catch(e){}}$('sbt').textContent=Date.now()<L.ne?L.nt:'BUSCANDO PARTIDA... '+Math.max(0,Math.ceil(r/1000))+'s';$('sbp').firstChild.style.width=Math.min(100,(Date.now()-t0)/D*100)+'%';tm();
   if(r<=0){stopS(1);if(L.lob)openLobby();else if(window.MP.bus&&N().amHost()&&hum()>0)N().hostGo();else{N().leave();orig()}}},200)}
 function stopS(k){clearInterval(L.s);L.s=0;hide('sb');if(party()&&window.MP.bus){try{window.MP.bus.send({t:'sb',on:0})}catch(e){}}if(!k&&!party())N().leave()}
-$('sbc').onclick=()=>{const pub=L.rm||L.jr;L.rm=0;L.jr=0;stopS();if(pub){try{N().lbSend({k:'rc'})}catch(e){}try{N().leave()}catch(e){}}};
+$('sbc').onclick=()=>{L.rm=0;stopS()};
 window.ARR_REAL=async n=>{try{if(!user)throw 0;if(!window.MP.bus||!party())await N().connect('p'+Math.random().toString(36).slice(2,7).padEnd(5,'0'));
  N().lbOpen();N().lbSend({k:'iv',to:n,r:window.MP.code});const t0=Date.now(),cn=String(n).replace(/[<>&"'`]/g,'').slice(0,12),w=setInterval(()=>{const M=window.MP;
   if(Object.keys(M.pr).some(k=>M.pr[k]&&M.pr[k].s==='l'&&String(M.pr[k].n)===cn)){clearInterval(w);window.frJoin(n)}else if(Date.now()-t0>25000){clearInterval(w);window.frNo(n)}},700)}catch(e){window.frNo(n)}};
