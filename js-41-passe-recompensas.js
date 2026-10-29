@@ -99,7 +99,6 @@ function give(r){
  if(r.c){try{coins+=r.c;svD();var e=$$('coins');if(e)e.textContent=F(coins)}catch(x){}}
  if(r.g){try{gems+=r.g;svG();var g=$$('gemv');if(g)g.textContent=F(gems)}catch(x){}}
  if(r.sk)ensureSk(1);
- if(r.tj)try{window.PE_TJ.give(r.tj)}catch(x){}
  if(r.it)giveIt(r.it)}
 function giveIt(it){
  try{var L=it.t==='sk'?OWN:it.t==='pq'?OWNP:OWNR;if(L.indexOf(it.i)<0){L.push(it.i);svD()}}catch(e){}}
@@ -115,6 +114,7 @@ function claim(k,n,quiet){
  if(s==='cl'){if(!quiet)toast('Ja resgatado');return false}
  if(s!=='ok'){if(!quiet)toast(k==='v'&&!own()&&lvl()>=n?'Exclusivo do Passe VIP':'Alcance o nivel '+n);if(!quiet)sfx(180,.12,'sawtooth',.04,-60);return false}
  if(r.sk&&window.SOMBRIA_IDX==null){if(!quiet)toast('M4A1 SOMBRIA indisponivel: atualize o jogo');return false}
+ if(r.tj&&!window.PE_TJ){if(!quiet)toast('Traje indisponivel: atualize o jogo');return false}
  give(r);C0[k+n]=1;svCl(C0);flush();
  if(!quiet){sfx(700,.15,'triangle',.06,400);sfx(1000,.12,'triangle',.05,300);
   toast(r.sk?'M4A1 SOMBRIA desbloqueada e equipada!':(r.it&&itObj(r.it)?itObj(r.it).n+' desbloqueado! ':'')+(r.c||r.g?'+ ':'')+(r.c?F(r.c)+' moedas ':'')+(r.g?F(r.g)+' gemas':''));render()}
