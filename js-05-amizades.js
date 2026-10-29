@@ -437,7 +437,7 @@ function SALAUI(d){
    h+='<h4>SALAS ONLINE ('+rl.length+')</h4><div class="srl">'+(!window.ARR_USER?'<div class="sre">Entre na sua conta para ver as salas online</div>':rl.length?rl.map(r=>'<button data-j="'+SX(r[0])+'"><span>Sala de '+SX(r[1])+'</span><small>'+(+r[2]||1)+'/8 \u2022 ENTRAR</small></button>').join(''):'<div class="sre">Nenhuma sala online agora</div>')+'</div>'}
   d.innerHTML=h};
  d.onclick=e=>{const t=e.target.closest('button');if(!t)return;const k=t.dataset;
-  if(k.t!==undefined){STAB=+k.t;if(STAB==1)salaRq();draw();return}
+  if(k.t!==undefined){STAB=STAB==1?0:1;if(STAB==1)salaRq();draw();return}
   if(k.c){$('modp').classList.add('hide');salaOpen();window.ARR_SALA&&window.ARR_SALA();return}
   if(k.r){salaRq();draw();return}
   if(k.j){$('modp').classList.add('hide');window.ARR_JOIN&&window.ARR_JOIN(k.j)}};
