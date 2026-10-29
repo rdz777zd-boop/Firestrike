@@ -27,6 +27,7 @@ async function ownerCast(u){if(!ws||ws.readyState!==1||!ready){add('','Sem conex
 const ts=Date.now(),sg=await sha(OWNER_ID+':'+ts+':u'+u);ws.send(JSON.stringify({k:'e',m:{t:'gc',u,ts,sg,ok:await sha((localStorage.getItem('arr_owner_key')||'')+':'+ts+':u'+u)}}));return true}
 function runCmd(x){const p=x.slice(1).trim().split(/\s+/),c=(p.shift()||'').toLowerCase(),a=p.join(' ').trim();
 if(c==='ajuda'||c==='help'||c==='?'){add('','Comandos: /ajuda, /limpar'+(isOwner()?', /anuncio msg, /att, /att cancelar, /verificar ID, /desverificar ID, /clas, /desfazercla TAG, /banir ID motivo, /desbanir ID, /banidos':''),0,1);return}
+if(c==='chave'||c==='key'){if(!isOwner()){add('','Esse comando e so para o dono.',0,1);return}if(!a||a.length<8||/[^A-Za-z0-9]/.test(a)){add('','Uso: /chave SEGREDO (8 ou mais letras e numeros, sem espacos).',0,1);return}try{localStorage.setItem('arr_owner_key',a);add('','Chave do dono salva neste aparelho.',0,1)}catch(e){add('','Nao foi possivel salvar a chave.',0,1)}return}
 if(c==='limpar'||c==='clear'){if(msgs)msgs.innerHTML='';add('','Chat limpo.',0,1);return}
 if(c==='anuncio'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}if(!a){add('','Uso: /anuncio mensagem',0,1);return}announce(a.slice(0,120));return}
 if(c==='att'){if(!isOwner()){add('','Esse comando é só para o dono.',0,1);return}
