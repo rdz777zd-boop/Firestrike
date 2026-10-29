@@ -124,7 +124,22 @@ function close(){cf=0;clearTimeout(cft);pe.classList.remove('on')}
 $$('pex').onclick=close;
 $$('pevip').onclick=buy;
 addEventListener('keydown',function(e){if(e.key==='Escape'&&pe.classList.contains('on'))close()});
-var eb=$$('elitepb');
-if(eb){eb.classList.remove('soon');eb.onclick=open}
+var eb=$('elitepb');
+if(eb){eb.classList.remove('soon');eb.onclick=open;
+ /* banner do passe (imagem) no lugar do botao de texto; se a imagem falhar, volta o botao normal */
+ if(!$('pq-bn-css')){var bs=document.createElement('style');bs.id='pq-bn-css';bs.textContent=
+  '#menu#menu#menu#menu #elitepb.bn{position:absolute!important;left:50%!important;top:calc(var(--v)*100)!important;right:auto!important;bottom:auto!important;'+
+  'width:calc(var(--v)*560)!important;height:auto!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important;'+
+  'transform:translateX(-50%)!important;display:block!important;background:none!important;border:0!important;box-shadow:none!important;border-radius:0!important;'+
+  'font-size:0!important;line-height:0!important;z-index:6!important;cursor:pointer;-webkit-tap-highlight-color:transparent}'+
+  '#menu#menu#menu#menu #elitepb.bn>span{display:none!important}'+
+  '#menu#menu#menu#menu #elitepb.bn img{display:block;width:100%;height:auto;pointer-events:none;filter:drop-shadow(0 0 calc(var(--v)*8) #8a4bff88)}'+
+  '#menu#menu#menu#menu #elitepb.bn:active{transform:translateX(-50%) scale(.97)!important}';
+  document.head.appendChild(bs)}
+ var ob=eb.innerHTML,im=new Image();
+ im.alt='Passe de Elite - Sombras do Abismo - Temporada 1';im.draggable=false;
+ im.onload=function(){eb.innerHTML='';eb.appendChild(im);eb.classList.add('bn')};
+ im.onerror=function(){eb.innerHTML=ob;eb.classList.remove('bn')};
+ im.src='banner-passe-t1.webp?v=1'}
 window.peOpen=open;window.peClose=close;window.vipBadge=vipBadge;
 })();
