@@ -6,6 +6,8 @@
 try{if(new URLSearchParams(location.search).get('menuvelho')==='1')return}catch(e){}
 const $=id=>document.getElementById(id);
 const DATA={
+ 'MODO APOSTADO':{cat:'APOSTA \u2022 CONTRA SQUAD',chips:['IGUAL \u00c0 SALA','VALE GEMAS','1x1 A 5x5'],
+  st:[['FORMATO','Igual \u00e0 Sala'],['APOSTA','a partir de 10 gemas'],['MELHOR DE','1, 3 ou 5 rounds'],['PR\u00caMIO','Leva a aposta do outro']]},
  'BR RANQUEADO':{cat:'RANQUEADO',chips:['40 JOGADORES','SOLO • DUO • SQUAD','VALE RP'],
   st:[['JOGADORES','40'],['FORMATO','Solo / Duo / Squad'],['MAPA','Vila Assombrada'],['TOP 1','+60 RP']]},
  'CONTRA SQUAD':{cat:'TÁTICO 4x4',chips:['8 JOGADORES','4 ROUNDS','COMPRAS'],
