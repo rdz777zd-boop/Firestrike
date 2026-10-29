@@ -22,11 +22,7 @@ function wrap(b){
  if(!b._as){b._as=1;const s0=b.send;
   b.send=function(m){if(m&&typeof m==='object'&&m.t==='go')LAST={m:Object.assign({},m)};return s0.apply(this,arguments)}}
  if(!b._asw&&b.cb&&b.cb.ev){b._asw=1;const e0=b.cb.ev;
-  b.cb.ev=function(from,m){try{
-   if(m&&m.t==='go'&&m.as&&m.as===b.me()&&!MP.on&&!MP.arm&&m.sl&&m.sl[m.as]!=null){
-    if(m.jm==='T'||m.jm==='C'){PLAY={idx:m.sl[m.as],k:0,t:Date.now()};SPEC=null}else{SPEC={idx:m.sl[m.as],k:0};PLAY=null}}
-   if(m&&m.t==='asj'&&from===MP.hpid)applyJ(m)
-  }catch(x){}return e0.apply(this,arguments)}}}
+  b.cb.ev=function(from,m){try{if(m&&m.t==='go'&&m.as&&m.as===b.me()&&!MP.on&&!MP.arm&&m.sl&&m.sl[m.as]!=null)SPEC={idx:m.sl[m.as],k:0}}catch(x){}return e0.apply(this,arguments)}}}
 
 /* dono: da uma vaga (bot ja morto) a quem pediu pra assistir */
 setInterval(()=>{try{
@@ -43,7 +39,8 @@ setInterval(()=>{try{
 
 /* espectador: morre em silencio e segue os outros jogadores */
 setInterval(()=>{try{
- if(!MP.on){SPEC=null;return}
+ if(!MP.on){SPEC=null;PLAY=null;return}
+ if(PLAY&&typeof G!=='undefined'&&G&&G.f)playTick();
  if(!SPEC||typeof G==='undefined'||!G||!G.f)return;
  const me=G.f[SPEC.idx];if(!me)return;
  if(G.p===me&&!me.dead&&!SPEC.k){SPEC.k=1;me.mpd=1;
