@@ -4,6 +4,11 @@
    com v = número seguinte. Todo jogador recebe um aviso novo em AVISOS automaticamente.
    Tipos: NOVO, CORRIGIDO, MELHORADO, REMOVIDO. */
 var ARR_NOTAS=[
+ {v:161,d:'28/10/2026',t:'Contra Squad e Sala online com amigos',i:[
+  ['CORRIGIDO','<b>Contra Squad com amigos agora \u00e9 na mesma partida.</b> Antes cada um entrava numa partida separada, s\u00f3 contra bots. Agora quem convidou e quem foi convidado jogam juntos: mesmo mapa, mesmos rounds, mesmo placar. O dono da equipe decide as fases (compra, luta, fim do round).'],
+  ['CORRIGIDO','<b>Sala (2x2 ou mais) com amigos</b> tamb\u00e9m entra na mesma partida.'],
+  ['CORRIGIDO','<b>Vit\u00f3ria e derrota no Contra Squad</b> agora contam para o seu time (quem joga no time 2 via sempre DERROTA).'],
+  ['CORRIGIDO','<b>Halloween City com amigos na equipe</b> avisa que ainda \u00e9 solo, em vez de abrir uma partida separada para cada um.']]},
  {v:160,d:'28/10/2026',t:'Comando /online',i:[
   ['NOVO','<b>Comando do dono: /online</b> lista os jogadores online (no lobby ou em partida) com o ID verdadeiro de cada um. Use o ID com /verificar, /banir e /desbanir.']]},
  {v:159,d:'28/10/2026',t:'Anti-trapaça no multiplayer e correção do /verificar',i:[
