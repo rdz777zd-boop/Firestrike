@@ -1590,12 +1590,9 @@ for(let i=1;i<=10;i++){const o=gp+(hw-gp)*i/11,t=i%5==0?7:4;ln(cx-o,cy-t,cx-o,cy
 const l0=cy+22,st=14;ln(cx,l0,cx,l0+12*st,1.5,'#fff');
 for(let i=1;i<=12;i++){const hh=i%4==0?11:6;ln(cx-hh,l0+i*st,cx+hh,l0+i*st,2,'#fff')}
 X.shadowColor='#00FF88';X.shadowBlur=14;X.strokeStyle='#00FF88';X.lineWidth=3.5;X.lineCap='round';X.lineJoin='round';X.beginPath();X.moveTo(cx-13,cy+9);X.lineTo(cx,cy-5);X.lineTo(cx+13,cy+9);X.stroke();X.stroke();X.shadowBlur=0}
-else if(k==1){/* MIRA 2x: ponto vermelho central com borda preta + 4 tracos diagonais em X + circulo vazado (fundo transparente) */
-X.globalAlpha=cl((a-.2)/.5,0,1);X.lineCap='butt';
-const d0=12/Math.SQRT2,d1=26/Math.SQRT2,dg=(w,c)=>{X.strokeStyle=c;X.lineWidth=w;X.beginPath();for(const[ux,uy]of[[1,1],[-1,1],[1,-1],[-1,-1]]){X.moveTo(cx+ux*d0,cy+uy*d0);X.lineTo(cx+ux*d1,cy+uy*d1)}X.stroke()};
-dg(4,'#000');dg(2,'#FF2B2B');
-X.strokeStyle='#000';X.lineWidth=3.5;X.beginPath();X.arc(cx,cy,10,0,7);X.stroke();X.strokeStyle='#FF2B2B';X.lineWidth=1.6;X.beginPath();X.arc(cx,cy,10,0,7);X.stroke();
-X.fillStyle='#000';X.beginPath();X.arc(cx,cy,2.5,0,7);X.fill();X.fillStyle='#FF2B2B';X.beginPath();X.arc(cx,cy,1.5,0,7);X.fill()}
+else if(k==1){/* MIRA 2x: so a bolinha vermelha central com borda preta, dentro da luneta */
+X.globalAlpha=cl((a-.2)/.5,0,1);
+X.fillStyle='#000';X.beginPath();X.arc(cx,cy,4.2,0,7);X.fill();X.fillStyle='#FF2B2B';X.beginPath();X.arc(cx,cy,2.8,0,7);X.fill()}
 else{const gr=X.createRadialGradient(cx,cy,m*.34,cx,cy,Math.max(W,H)*.78);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,'+(.5*cl(a,0,1)).toFixed(3)+')');X.fillStyle=gr;X.fillRect(0,0,W,H);X.fillStyle='#ff2a2a';X.beginPath();X.arc(cx,cy,1.9,0,7);X.fill()}
 X.restore()}
 function specAim(P,c){if(!specLock()||!c||c.isP||c.dead||c.st!='ground')return;const cx=Math.round(W/2),cy=Math.round(H/2),ak=c.adsK||0,k=sgOf(c);X.save();const on=k==0?ak>.05:ak>.2;if(on)sgDraw(k,ak);if(k==0||!on){X.strokeStyle='rgba(0,0,0,.45)';X.lineWidth=3.2;X.beginPath();X.arc(cx,cy,7,0,7);X.stroke();X.strokeStyle='#fff';X.lineWidth=1.4;X.beginPath();X.arc(cx,cy,7,0,7);X.stroke();X.fillStyle='#fff';X.beginPath();X.arc(cx,cy,1.3,0,7);X.fill()}X.restore()}
