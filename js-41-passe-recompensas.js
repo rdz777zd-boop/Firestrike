@@ -10,13 +10,16 @@ var NIV=30,NEED=200,KV='arr_vip',KL='arr_pelv',KX='arr_pexp',KC='arr_pecl';
 var C=function(n){return{c:n}},Gm=function(n){return{g:n}};
 /* ---------- TABELAS DE RECOMPENSA (indice 0 = nivel 1) ---------- */
 var I=function(t,i,o){o=o||{};o.it={t:t,i:i};return o};
-/* it: item (sk = skin de arma, pq = paraquedas, rs = rastro) - numeros = posicao nas listas SK, PQ, RS do jogo */
-var FREE=[C(500),C(800),Gm(20),I('rs',1),Gm(30),C(1200),C(1500),I('pq',1),C(1800),I('sk',7),
- C(2000),Gm(50),I('sk',11),C(2500),{c:5000,g:100,big:1},C(2800),I('pq',2),C(3000),C(3200),I('sk',13),
- C(3500),I('rs',4),Gm(90),C(4000),I('sk',1),C(5000),I('pq',3),C(5500),C(6000),I('sk',12,{c:10000,g:200,big:1})];
-var VIP=[null,C(1500),Gm(50),I('pq',6),Gm(80),C(2500),I('sk',6),Gm(100),C(3500),I('rs',5),
- C(4000),I('sk',8),C(4500),C(5000),{sk:1,big:1},C(5500),Gm(150),I('pq',8),I('rs',6),Gm(200),
- I('sk',10),C(7500),I('pq',10),C(8000),I('sk',3),I('rs',9),Gm(300),I('pq',9),I('sk',9),I('sk',21,{c:25000,g:500,big:1})];
+/* it: item (sk = skin de arma, pq = paraquedas, rs = rastro). Os itens do passe sao EXCLUSIVOS (criados no js-42, nao existem na loja).
+   PI('sk',0) = 1a skin exclusiva do passe, PI('pq',2) = 3o paraquedas exclusivo, etc. (ordem definida no js-42). tj = traje exclusivo. */
+var X=window.PASS_X||{sk:[],pq:[],rs:[]};
+var PI=function(t,n,o){var i=X[t]&&X[t][n];return i==null?C(1000):I(t,i,o)};
+var FREE=[C(500),C(800),Gm(20),PI('rs',0),Gm(30),C(1200),C(1500),PI('pq',0),C(1800),PI('sk',0),
+ C(2000),Gm(50),PI('rs',1),C(2500),{c:5000,g:100,big:1},C(2800),PI('pq',1),C(3000),C(3200),PI('sk',1),
+ C(3500),Gm(70),Gm(90),C(4000),PI('sk',2),C(5000),PI('pq',2),C(5500),C(6000),PI('sk',3,{c:10000,g:200,big:1})];
+var VIP=[null,C(1500),Gm(50),PI('pq',3),Gm(80),C(2500),PI('sk',4),Gm(100),C(3500),PI('rs',2),
+ C(4000),PI('sk',5),C(4500),C(5000),{sk:1,big:1},C(5500),Gm(150),PI('pq',4),PI('rs',3),Gm(200),
+ PI('sk',6),C(7500),PI('pq',5),C(8000),PI('sk',7),PI('rs',4),Gm(300),C(9000),PI('sk',8),{tj:'abismo',c:25000,g:500,big:1}];
 
 var $$=function(id){return document.getElementById(id)};
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k)||'';localStorage.setItem(k,v)}catch(e){}return''}
