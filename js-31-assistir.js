@@ -58,6 +58,7 @@ function btn(){
   d.onclick=async()=>{
    const c=(prompt('Codigo da sala para assistir:')||'').trim().toLowerCase();if(!c)return;
    if(!window.ARR_NET){say('Online indisponivel');return}
+   const o=(prompt('1 = Jogar CONTRA\n2 = Jogar NA EQUIPE\n3 = ASSISTIR','3')||'').trim(),jm=o==='1'?'C':o==='2'?'T':'S';
    try{await window.ARR_NET.connect(c);if(!MP.bus){say('Nao consegui entrar na sala');return}
     MP.bus.state({as:1});say('Na sala. Aguardando uma vaga de espectador...')}catch(e){say('Nao consegui entrar na sala')}};
   document.body.appendChild(d)}
