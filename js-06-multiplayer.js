@@ -66,7 +66,7 @@ const inWall=(x,y)=>{try{return typeof wallAt==='function'&&!!(wallAt(x,y)&&wall
 {const onEv0=onEv;onEv=function(from,m){try{
  if(m&&typeof m==='object'&&MP.on&&G){
   if(m.t==='ic'){const f=G.f[m.i];if(!f||!f.mx||!owns(from,m.i))return;const x=+m.x,y=+m.y,a=+m.a;if(!isFinite(x)||!isFinite(y)||!isFinite(a)||typeof iceMake!=='function')return;if(!G.iw)G.iw=[];if(!G.ig)G.ig=[];MP.icr=1;try{iceMake({tx:x,ty:y,a,o:f,tm:f.tm})}catch(e){}MP.icr=0;return}
-  if(m.t==='sh'&&Array.isArray(m.a))m.a=m.a.filter(e=>{const f=G.f[e[0]];return!(f&&f.hum&&inWall(e[3],e[4]))});
+  if(m.t==='sh'&&Array.isArray(m.a))m.a=m.a.slice(0,80).filter(e=>{if(!Array.isArray(e)||typeof e[1]!=='number'||!WP[e[1]]||typeof e[2]!=='number'||typeof e[3]!=='number'||typeof e[4]!=='number'||!isFinite(e[2])||!isFinite(e[3])||!isFinite(e[4])||Math.abs(e[3])>1e6||Math.abs(e[4])>1e6)return false;const f=G.f[e[0]];return!(f&&f.hum&&inWall(e[3],e[4]))});
   if(m.t==='ht'&&MP.host){const si=MP.slots[from],sf=G.f[si],t=G.f[m.v];
    if(sf&&t){const w0=WP[sf.ws[0]||0]||{},dx0=sf.x-t.x,dy0=sf.y-t.y,mr=(w0.rg||0)*1.6+250;
     if(w0.rg&&dx0*dx0+dy0*dy0>mr*mr)return;if(inWall(sf.x,sf.y))return;if(typeof los==='function'&&!los(sf,t))return}}}
