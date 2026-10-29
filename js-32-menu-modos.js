@@ -13,7 +13,11 @@ const DATA={
  'GUERRA DE CLÃS':{cat:'ESPECTADOR',chips:['CLÃS','CÂMERA LIVRE','+1 VITÓRIA E XP'],
   st:[['MODO','Espectador'],['CÂMERA','Livre ou seguir'],['TROCAR','Tecla TAB'],['PRÊMIO','+1 vitória e XP']]},
  'HALLOWEEN CITY':{cat:'EVENTO • PvE',chips:['TIME DE 4','ONDAS DE ZUMBIS','EVENTO'],
-  st:[['TIME','4 jogadores'],['TIPO','Sobrevivência PvE'],['CHEFE','Gigante a cada 5 ondas'],['LOJA','Gaste os doces']]}
+  st:[['TIME','4 jogadores'],['TIPO','Sobrevivência PvE'],['CHEFE','Gigante a cada 5 ondas'],['LOJA','Gaste os doces']]},
+ 'SALA':{cat:'TREINO • SALA',chips:['1x1 A 5x5','JOGUE OU ASSISTA','NADA CONTA'],
+  st:[['TAMANHO','1x1 a 5x5'],['EQUIPES','2 equipes de bots'],['ARMAS','5 armas'],['RANK','Nada conta']]},
+ 'MODO APOSTADO':{cat:'APOSTA • 1x1',chips:['1x1','VALE GEMAS','ALEATÓRIO OU FORMADO'],
+  st:[['FORMATO','Duelo 1x1'],['APOSTA','a partir de 10 gemas'],['MELHOR DE','1, 3 ou 5 rounds'],['PRÊMIO','Leva a aposta do outro']]}
 };
 function dress(){try{
  const p=$('modp'),g=$('modg'),mdc=$('mdc');if(!p||!g)return;
