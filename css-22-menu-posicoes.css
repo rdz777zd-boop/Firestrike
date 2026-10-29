@@ -1,0 +1,58 @@
+/* css-22-menu-posicoes.css - posicoes dos botoes do menu inicial iguais a imagem de referencia
+   (base 1040 de altura: 1 unidade = var(--v)). Carrega por ultimo e sobrescreve css-16. */
+
+/* ---------- fundo do painel da esquerda ---------- */
+#menu#menu#menu#menu #stage:before{left:var(--L);top:calc(var(--v)*135);width:calc(var(--v)*317);height:calc(var(--v)*665)}
+#menu#menu#menu#menu #stage:after{display:none}
+
+/* ---------- coluna da esquerda: LOJA / MISSOES / DAILY / RANKINGS / INVENTARIO / PERSONAGENS / CHAT (+ CLA embaixo) ---------- */
+#menu#menu#menu#menu :is(#shopb,#misb,#dlyb,#rkmb,#armb,#chb,#clb,#gchb){
+ position:absolute!important;left:calc(var(--L) + var(--v)*22)!important;right:auto!important;bottom:auto!important;
+ width:calc(var(--v)*272)!important;height:calc(var(--v)*72)!important;min-width:0!important;max-width:none!important;margin:0!important;
+ transform:none!important;display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important;
+ gap:calc(var(--v)*20);padding:0 calc(var(--v)*16)!important;text-align:left;
+ background:#1a1612!important;border:2px solid #2f2520!important;border-radius:calc(var(--v)*6)!important;box-shadow:none!important;
+ font-size:calc(var(--v)*24)!important;letter-spacing:0!important;color:#f2e6da!important;overflow:visible;z-index:3}
+#menu#menu#menu#menu :is(#shopb,#misb,#dlyb,#rkmb,#armb,#chb,#clb)>span{
+ display:flex!important;align-items:center;justify-content:center;flex:none;
+ width:calc(var(--v)*48);height:calc(var(--v)*48);font-size:calc(var(--v)*42)!important;color:#ff9a2a!important}
+#menu#menu#menu#menu #clb canvas{width:calc(var(--v)*46)!important;height:calc(var(--v)*46)!important}
+#menu#menu#menu#menu #shopb{top:calc(var(--v)*168)!important}
+#menu#menu#menu#menu #misb{top:calc(var(--v)*254)!important}
+#menu#menu#menu#menu #dlyb{top:calc(var(--v)*340)!important}
+#menu#menu#menu#menu #rkmb{top:calc(var(--v)*427)!important}
+#menu#menu#menu#menu #armb{top:calc(var(--v)*513)!important}
+#menu#menu#menu#menu #chb{top:calc(var(--v)*599)!important}
+#menu#menu#menu#menu #gchb{top:calc(var(--v)*685)!important}
+#menu#menu#menu#menu #clb{top:calc(var(--v)*835)!important}
+/* icone do CHAT (balao) */
+#menu#menu#menu#menu #gchb:before{content:'';flex:none;width:calc(var(--v)*44);height:calc(var(--v)*34);border-radius:calc(var(--v)*14);
+ background:radial-gradient(circle at 28% 50%,#1a1612 0 calc(var(--v)*3.5),transparent calc(var(--v)*4.2)),radial-gradient(circle at 50% 50%,#1a1612 0 calc(var(--v)*3.5),transparent calc(var(--v)*4.2)),radial-gradient(circle at 72% 50%,#1a1612 0 calc(var(--v)*3.5),transparent calc(var(--v)*4.2)),#ff9a2a}
+#menu#menu#menu#menu #gchb em{margin-left:auto}
+
+/* ---------- topo direita: CONFIG. / AVISOS / AMIGOS ---------- */
+#menu#menu#menu#menu .ib{top:calc(var(--v)*38)!important;height:calc(var(--v)*54)!important}
+#menu#menu#menu#menu #frb2{right:var(--R)!important;width:calc(var(--v)*215)!important}
+#menu#menu#menu#menu #ntfb{right:calc(var(--R) + var(--v)*216)!important;width:calc(var(--v)*178)!important}
+#menu#menu#menu#menu #gear{right:calc(var(--R) + var(--v)*396)!important;width:calc(var(--v)*180)!important}
+body #upb{top:calc(var(--v)*38)!important;right:calc(var(--R) + var(--v)*590)!important;height:calc(var(--v)*54)!important}
+
+/* ---------- painel SQUAD (equipe): agora na direita, em cima do seletor SOLO / DUO / SQUAD ---------- */
+#menu#menu#menu#menu #sqp{left:auto!important;right:var(--R)!important;top:calc(var(--v)*160)!important;width:calc(var(--v)*415)!important;height:calc(var(--v)*525)!important;padding:calc(var(--v)*18) calc(var(--v)*22) 0!important}
+#menu#menu#menu#menu #sqp h3{display:block;width:fit-content;height:calc(var(--v)*44);line-height:calc(var(--v)*44);margin:0 0 calc(var(--v)*9);padding:0 calc(var(--v)*16);font-size:calc(var(--v)*24);background:#ff8a1f;color:#fff!important;border-radius:calc(var(--v)*6);letter-spacing:calc(var(--v)*2)}
+#menu#menu#menu#menu #sqp .sl{height:calc(var(--v)*76)!important;margin-bottom:calc(var(--v)*14)!important}
+#menu#menu#menu#menu #sqp .sl i{width:calc(var(--v)*62)!important;height:calc(var(--v)*62)!important}
+#menu#menu#menu#menu #sqi{height:calc(var(--v)*50)!important;margin:calc(var(--v)*7) 0 0!important}
+
+/* ---------- seletor SOLO / DUO / SQUAD ---------- */
+#menu#menu#menu#menu #subm{left:auto!important;right:var(--R)!important;top:calc(var(--v)*775)!important;width:calc(var(--v)*630)!important;height:calc(var(--v)*62)!important;border-radius:calc(var(--v)*31)}
+#menu#menu#menu#menu .mb{font-size:calc(var(--v)*28)!important;border-radius:calc(var(--v)*26)!important}
+#menu#menu#menu#menu #alone{top:calc(var(--v)*-64);height:calc(var(--v)*50);font-size:calc(var(--v)*24)!important}
+
+/* ---------- MODOS / rank / JOGAR ---------- */
+#menu#menu#menu#menu .tabs{right:calc(var(--R) + var(--v)*209)!important;top:calc(var(--v)*842)!important;width:calc(var(--v)*227)!important;height:calc(var(--v)*50)!important}
+#menu#menu#menu#menu #modb{font-size:calc(var(--v)*24)}
+#menu#menu#menu#menu #rkbd1{left:auto!important;right:calc(var(--R) + var(--v)*521)!important;top:calc(var(--v)*843)!important;bottom:auto!important;width:calc(var(--v)*100)!important;height:calc(var(--v)*107)!important}
+#menu#menu#menu#menu #rkbd1 canvas{width:calc(var(--v)*56)!important;height:calc(var(--v)*56)!important}
+#menu#menu#menu#menu #play{left:auto!important;right:calc(var(--R) + var(--v)*12)!important;top:calc(var(--v)*900)!important;bottom:auto!important;width:calc(var(--v)*490)!important;height:calc(var(--v)*102)!important}
+#menu#menu#menu#menu #play b{font-size:calc(var(--v)*60)!important}
