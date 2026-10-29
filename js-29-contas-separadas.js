@@ -42,9 +42,9 @@ function tick(){
  const cur=String(window.ARR_USER||'').toLowerCase();
  if(!cur&&get('arr_sess'))return;/* sessao salva ainda entrando */
  const own=get('arr_own');
- if(own===null){set('arr_slotuser',cur);return}/* primeira vez nesta versao: os dados atuais ficam com quem esta agora */
+ if(own===null){set('arr_own',cur);return}/* primeira vez nesta versao: os dados atuais ficam com quem esta agora */
  if(own===cur)return;
- if(own===''&&cur&&!get('arr_snap:'+cur)){set('arr_own',cur);return}/* convidado que cria conta nova: leva o que jogou */
+ if(own===''&&cur&&!get('arr_snap:'+cur)){set('arr_slotuser',cur);return}/* convidado que cria conta nova: leva o que jogou */
  const fk=own+'>'+cur;if(failK===fk)return;
  if(!swap(own,cur))failK=fk}
 /* RESET GERAL (uma unica vez por aparelho, versao r1): apaga progresso, contas guardadas e sessao deste aparelho.
@@ -61,6 +61,4 @@ function resetAll(){
 /* v2: o reset geral NAO roda mais (ele apagaria o progresso atual do aparelho ao ativar este arquivo) */
 if(get('arr_rst')!==RST)set('arr_rst',RST);
 setInterval(tick,300);
-setInterval(()=>{cloud().catch(()=>{cloudBusy=0})},5000);
-document.addEventListener('visibilitychange',()=>{if(document.hidden)cloud(true).catch(()=>{cloudBusy=0})});
 })();
