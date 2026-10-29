@@ -24,6 +24,9 @@ addSk('Rubi Abissal',2,['#2a0a1a','#ff4a7a'],['#ff4a7a','#9a4dff','#ffd2e0'],'#f
 addSk('Coroa Sombria',3,['#120a24','#ffd23b'],['#ffd23b','#b36bff','#ffffff'],'#ffd23b','abyss','Segurando: cristais de sombra e ouro orbitando a arma.');
 addSk('Olho do Abismo',3,['#07030d','#b36bff'],['#b36bff','#e0b0ff','#ffd23b'],'#b36bff','abyss','Segurando: orbes violeta orbitando a arma.');
 addSk('Trono Sombrio',3,['#0b0614','#ffd23b'],['#9a4dff','#ffd23b','#ffffff'],'#9a4dff','abyss','Preto e dourado com energia do abismo orbitando a arma.');
+addSk('Lamina Umbral',2,['#0a1230','#5ad0ff'],['#5ad0ff','#9a6bff','#ffffff'],'#5ad0ff',0,'Faiscas azul-gelo cortando a escuridao.');
+addSk('Furia Carmesim',3,['#1a0508','#ff3b5c'],['#ff3b5c','#ffd23b','#ffffff'],'#ff3b5c','abyss','Segurando: energia do abismo orbitando a arma, com tiros carmesim.');
+addSk('Senhor das Sombras',3,['#050309','#ffd23b'],['#b36bff','#ffd23b','#ffffff'],'#ffd23b','abyss','Preto absoluto com ouro e energia do abismo orbitando a arma.');
 
 /* ---------- 2) paraquedas exclusivos ---------- */
 function addPq(n,ra,c,em,d){var o={n:n,ra:ra,pr:0,pass:1,c:c,d:d+' Exclusivo do Passe de Elite.'};if(em)o.em=em;PQ.push(o);X.pq.push(PQ.length-1)}
