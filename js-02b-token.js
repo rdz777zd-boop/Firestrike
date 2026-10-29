@@ -28,6 +28,7 @@ window.fetch=function(u,o){
    if(dev)h['X-Arr-Dev']=dev;
    const a=pending||ls('arr_tk:'+String(window.ARR_USER||'').toLowerCase());
    if(a&&OK.test(a))h['X-Arr-Acc']=a;
+   {const ok=ls('arr_owner_key');if(ok&&/\/inbox\/(banlist|verlist)(\?|$|\/)/.test(u))h['X-Arr-Owner']=ok}
    if(dev||h['X-Arr-Acc'])o2=Object.assign({},o,{headers:h})}
  }catch(e){}
  if(!o2)return of(u,o);
