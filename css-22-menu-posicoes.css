@@ -65,10 +65,10 @@ body #upb{top:calc(var(--v)*38)!important;right:calc(var(--R) + var(--v)*590)!im
 /* ---------- PASSE ELITE: banner "SOMBRAS DO ABISMO - TEMPORADA 1" no canto inferior esquerdo ---------- */
 #menu#menu#menu#menu#menu #elitepb{
  position:absolute!important;display:block!important;left:calc(var(--L) - var(--v)*13)!important;right:auto!important;top:calc(var(--v)*825)!important;bottom:auto!important;
- width:calc(var(--v)*669)!important;height:calc(var(--v)*175)!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important;transform:none!important;
+ width:calc(var(--v)*810)!important;height:calc(var(--v)*175)!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important;transform:none!important;
  font-size:0!important;text-align:left;overflow:hidden;z-index:4;
- background:#0a0716 url(banner-passe-t1.webp) center/100% 100% no-repeat!important;
- border:calc(var(--v)*4) solid #c9a24a!important;border-radius:calc(var(--v)*12)!important;
+ background:linear-gradient(120deg,#1b1233 0%,#0f0a1f 60%,#1b1233 100%)!important;
+ border:0!important;border-radius:calc(var(--v)*10)!important;
  box-shadow:0 0 calc(var(--v)*24) #8a3cff99,inset 0 0 calc(var(--v)*34) #6a2cff66!important;opacity:1!important;filter:none!important}
 /* emblema da coroa */
 #menu#menu#menu#menu#menu #elitepb>span{
