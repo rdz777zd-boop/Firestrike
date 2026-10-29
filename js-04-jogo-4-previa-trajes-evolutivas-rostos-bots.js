@@ -1567,7 +1567,20 @@ function sgSet(k){const p=G&&G.p;if(!p||p.dead||G.room)return;const wi=p.ws[p.cu
 function sgTap(x,y){if(!G||G.room||G.p.dead||G.p.st!='ground')return 0;for(const b of SGB)if(Math.hypot(x-b.x,y-b.y)<b.r*1.4){sgSet(b.i);return 1}return 0}
 function FPV(){if(!G||(G.room&&!fc.w))return null;const c=cfo();if(!c||c.dead||c.st!='ground'||c.dn>0)return null;if(c===G.p)return(ads&&adsK>.2&&sgFP(c))?c:null;return(specLock()&&(c.adsK||0)>.2&&sgFP(c))?c:null}
 function sgChips(){SGB=[];const p=G.p;if(G.room||p.dead||p.st!='ground'||!(p.ws[p.cur]))return;const q=BT.ads(),k=sgOf(p),fx=!!WP[p.ws[p.cur]].sc;Tx('Mira: '+['Ponto','2x','4x','Luneta'][k]+(fx?' (fixa)':''),q.x,q.y-q.r-10*U,10*U,'#ffd93b')}
-function sgDraw(k,a){const cx=Math.round(W/2),cy=Math.round(H/2),m=Math.min(W,H);X.save();
+/* LUNETA 2x/4x/sniper: vinheta preta 80% fora, circulo no meio com a visao ampliada, borda preta grossa e efeito de olho; a reticula fica clipada dentro do circulo */
+function sgScope(k,a,cx,cy,m){
+const al=cl((a-.2)/.5,0,1);if(al<=0)return;
+const r=m*.4,bw=Math.max(10,m*.04);
+X.save();X.globalAlpha=al;
+X.fillStyle='rgba(0,0,0,.8)';X.beginPath();X.rect(0,0,W,H);X.arc(cx,cy,r,0,7);X.fill('evenodd');
+X.strokeStyle='#000';X.lineWidth=bw;X.beginPath();X.arc(cx,cy,r+bw/2,0,7);X.stroke();
+X.lineWidth=1.5;X.strokeStyle='rgba(255,255,255,.22)';X.beginPath();X.arc(cx,cy,r+.75,0,7);X.stroke();
+X.strokeStyle='rgba(255,255,255,.1)';X.beginPath();X.arc(cx,cy,r+bw,0,7);X.stroke();
+const g=X.createRadialGradient(cx,cy,r*.62,cx,cy,r);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.55)');
+X.fillStyle=g;X.beginPath();X.arc(cx,cy,r,0,7);X.fill();
+X.restore();
+X.beginPath();X.arc(cx,cy,r,0,7);X.clip()}
+function sgDraw(k,a){const cx=Math.round(W/2),cy=Math.round(H/2),m=Math.min(W,H);X.save();if(k>=1)sgScope(k,a,cx,cy,m);
 if(k==3){X.globalAlpha=cl((a-.2)/.5,0,1);const r=m*.4;X.fillStyle='rgba(0,0,0,.92)';X.beginPath();X.rect(0,0,W,H);X.arc(cx,cy,r,0,7);X.fill('evenodd');X.strokeStyle='#000';X.lineWidth=3;X.beginPath();X.arc(cx,cy,r,0,7);X.moveTo(cx-r,cy);X.lineTo(cx+r,cy);X.moveTo(cx,cy-r);X.lineTo(cx,cy+r);X.stroke();X.strokeStyle='#fff';X.lineWidth=1.5;X.beginPath();X.arc(cx,cy,3,0,7);X.stroke()}
 else if(k==2){/* MIRA 4x: chevron verde-limao com glow + linha horizontal com ticks + escada de queda de bala (fundo transparente) */
 X.globalAlpha=cl((a-.2)/.5,0,1);X.lineCap='butt';X.lineJoin='miter';
