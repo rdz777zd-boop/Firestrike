@@ -466,11 +466,11 @@ function plist(){const l=SL(),r=avail(l.pf,l.pq);PKR=r.slice(0,40);const e=docum
 function salaR(){const l=SL(),n=SALA.n;
 if(l.pk){P2.innerHTML='<div class="bx2"><div class="hd"><h3>CONVIDAR BOT \u2022 EQUIPE '+(l.pk=='A'?1:2)+'</h3><button class="x" data-back="1">\u2715</button></div><div class="row">'+[['a','TODOS'],['c','COM CL\u00c3'],['n','SEM CL\u00c3']].map(q=>'<button data-pf="'+q[0]+'"'+(l.pf==q[0]?' class="on"':'')+'>'+q[1]+'</button>').join('')+'<button data-rand="1">ALEAT\u00d3RIO</button></div><div id="salapl"></div></div>';plist();return}
 const col=(k,t)=>{const it=[];if(l.me==k)it.push('<div class="sl me"><em>'+esc(PN)+'</em><b>ANFITRI\u00c3O</b></div>');l[k].forEach((e,i)=>it.push('<div class="sl"><em>'+esc(lbl(e))+ytB(e.n)+'</em><b>'+inf(e)+'</b><button data-rm="'+k+i+'">\u2715</button></div>'));while(it.length<n)it.push('<div class="sl e" data-add="'+k+'">+ CONVIDAR BOT</div>');return '<div class="sc"><h5>'+t+'<i>'+sc(k)+'/'+n+'</i></h5>'+it.join('')+'</div>'};
-P2.innerHTML='<div class="bx2'+(BL?' bet':'')+'"><div class="hd"><h3>'+(BL?'MODO APOSTADO':'SALA')+' \u2022 CONTRA SQUAD</h3><small>'+(BL?fmt(gems)+' GEMAS':'ID '+l.id)+'</small><button class="x" data-x="1">\u2715</button></div>'
+P2.innerHTML='<div class="bx2"><div class="hd"><h3>SALA \u2022 CONTRA SQUAD</h3><small>ID '+l.id+'</small><button class="x" data-x="1">\u2715</button></div>'
 +'<div class="row"><span>PERSONAGEM: RUNER (FIXO) \u2022 ARMAS: ESCOPETA, MP5, SMG, CANO DUPLO, SPAS</span></div><div class="row"><span>VAGAS POR EQUIPE</span>'+[1,2,3,4,5].map(q=>'<button data-n="'+q+'"'+(n==q?' class="on"':'')+'>'+q+'</button>').join('')+'</div>'
 +'<div class="row"><span>VOC\u00ca</span>'+[['A','EQUIPE 1'],['B','EQUIPE 2'],['S','ESPECTADOR']].map(q=>'<button data-me="'+q[0]+'"'+(l.me==q[0]?' class="on"':'')+'>'+q[1]+'</button>').join('')+'</div>'
 +'<div class="cols">'+col('A','EQUIPE 1')+col('B','EQUIPE 2')+'</div>'
-+'<div class="go2"><button data-fill="1">PREENCHER COM BOTS</button><button data-clr="1">LIMPAR</button><button class="st" data-go="1">INICIAR PARTIDA</button></div></div>'}
++betRows()+'<div class="go2"><button data-fill="1">PREENCHER COM BOTS</button><button data-clr="1">LIMPAR</button><button class="st" data-go="1">'+(BL?'APOSTAR E JOGAR':'INICIAR PARTIDA')+'</button></div></div>'}
 P2.oninput=e=>{if(e.target.id=='salaq'){SL().pq=e.target.value;plist()}};
 P2.onclick=e=>{const t=e.target.closest('[data-x],[data-n],[data-me],[data-add],[data-rm],[data-fill],[data-clr],[data-go],[data-pick],[data-back],[data-rand],[data-pf]');if(!t)return;const l=SL(),d=t.dataset;
 if(d.x){P2.classList.remove('on');return}
