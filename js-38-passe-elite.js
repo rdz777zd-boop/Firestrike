@@ -47,7 +47,7 @@ if(!$$('pq-css')){var st=document.createElement('style');st.id='pq-css';st.textC
 '#pe .pqc.bg .pqn{color:var(--g1)}'+
 '#pe .pql{height:calc(var(--s)*30);display:flex;align-items:center;justify-content:center;border-radius:calc(var(--s)*1.4);font:800 calc(var(--s)*4)/1 Rajdhani,Arial,sans-serif;letter-spacing:calc(var(--s)*.3);background:#16102a;border:1px solid var(--bd);color:#b99aff}'+
 '#pe .pql.v{color:var(--g1);border-color:#6a5421}'+
-'#pe .pqf,#pe .pqv{position:relative;height:calc(var(--s)*32);border-radius:calc(var(--s)*1.6);background:#110b23;border:2px dashed #3b2f63;overflow:hidden}'+
+'#pe .pqf,#pe .pqv{position:relative;height:calc(var(--s)*20);border-radius:calc(var(--s)*1.6);background:#110b23;border:2px dashed #3b2f63;overflow:hidden}'+
 '#pe .pqv{border-color:#6a5421;background:#150f1f}'+
 '#pe .pqv .lk{position:absolute;right:calc(var(--s)*1);top:calc(var(--s)*1);width:calc(var(--s)*4.2);height:calc(var(--s)*4.2);color:var(--g2)}'+
 '#pe.own .pqv .lk{display:none}'+
@@ -57,7 +57,7 @@ if(!$$('pq-css')){var st=document.createElement('style');st.id='pq-css';st.textC
 '#pe .pqf.big:before,#pe .pqv.big:before{content:"\\2605";position:absolute;left:calc(var(--s)*1);top:calc(var(--s)*.4);font:700 calc(var(--s)*4)/1 Arial;color:var(--g1)}'+
 /* emblema VIP na coluna 1 */
 '#pe .pqv .em{position:absolute;left:0;right:0;top:calc(var(--s)*3.6);bottom:calc(var(--s)*5.6);display:flex;align-items:center;justify-content:center}'+
-'#pe .pqv .em img{display:block;width:calc(var(--s)*11.5);height:calc(var(--s)*11.5);object-fit:contain;image-rendering:pixelated;filter:grayscale(.85) brightness(.65)}'+
+'#pe .pqv .em img{display:block;width:calc(var(--s)*14.5);height:calc(var(--s)*14.5);object-fit:contain;image-rendering:pixelated;filter:grayscale(.85) brightness(.65)}'+
 '#pe.own .pqv .em img{filter:none;drop-shadow:none}'+
 '#pe .pqv .ec{position:absolute;left:0;right:0;bottom:calc(var(--s)*1.2);text-align:center;font:800 calc(var(--s)*2.9)/1 Rajdhani,Arial,sans-serif;letter-spacing:calc(var(--s)*.2);color:#9fd0ff}'+
 '#pe .pqv .ok{display:none;position:absolute;right:calc(var(--s)*1);top:calc(var(--s)*.6);font:800 calc(var(--s)*4.2)/1 Arial;font-style:normal;color:#5bd68a}'+
