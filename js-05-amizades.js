@@ -432,7 +432,7 @@ const SX=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','
 function salaRq(){try{const n=window.ARR_NET;if(!n)return;if(n.lbOn())n.lbSend({k:'rq'});else n.lbOpen()}catch(e){}}
 function SALAUI(d){
  const draw=()=>{let h='<div class="stb"><button data-t="0"'+(STAB==0?' class="on"':'')+'>CRIAR</button><button data-t="1"'+(STAB==1?' class="on"':'')+'>SALAS</button></div>';
-  if(STAB==0)h+='<h4>SALA PERSONALIZADA</h4><div class="go"><button data-c="1">CRIAR SALA</button></div>';
+  if(STAB==0){/* o botao CRIAR fica na barra de cima */}
   else{const me=(window.MP&&window.MP.code)||'',rl=window.ARR_USER?(window.ARR_RL||[]).filter(r=>r&&r[0]!==me&&(+r[2]||1)<8):[];
    h+='<h4>SALAS ONLINE ('+rl.length+')</h4><div class="srl">'+(!window.ARR_USER?'<div class="sre">Entre na sua conta para ver as salas online</div>':rl.length?rl.map(r=>'<button data-j="'+SX(r[0])+'"><span>Sala de '+SX(r[1])+'</span><small>'+(+r[2]||1)+'/8 \u2022 ENTRAR</small></button>').join(''):'<div class="sre">Nenhuma sala online agora</div>')+'</div>'}
   d.innerHTML=h};
@@ -555,8 +555,8 @@ else if(d.go!==undefined){betLaunch();return}
 betR()};
 const sc0=startCS;startCS=function(room,N,sala){const b=window.__BET;if(!(b&&b.pending&&sala))return sc0.apply(this,arguments);b.pending=0;let r;try{r=sc0.apply(this,arguments)}catch(err){const q0=b.restore;SALA.L=q0.oldL;SALA.w=q0.oldW;SALA.n=q0.oldN;TB=q0.oldTB;b.paid=1;gems+=b.stake;svG();try{$('gemv').textContent=fmt(gems);localStorage.removeItem('arr_bet_open')}catch(e){}throw err}
 const q=b.restore;SALA.L=q.oldL;SALA.w=q.oldW;SALA.n=q.oldN;TB=q.oldTB;try{mref()}catch(e){}G.bet=b;G.cs.tgt=b.tgt;soon('APOSTA: '+fmt(b.stake)+' gemas contra '+lbl(b.opp));return r};
-try{if(typeof LD!='undefined'&&LD&&LD.open){const lo=LD.open;LD.open=function(a,c){const bt=window.__BET;if(bt&&bt.pending)return lo.call(this,'MODO APOSTADO \u2022 '+fmt(bt.stake)+' GEMAS','1x1 \u2022 vs '+bt.opp.n+' \u2022 melhor de '+(bt.tgt*2-1));return lo.apply(this,arguments)}}}catch(e){}
-function betEnd(){const g=G;if(!g||!g.bet||g.bet.paid||!g.cs)return;const b=g.bet,c=g.cs,d=b.side?c.sc[1]-c.sc[0]:c.sc[0]-c.sc[1],res=d>0?'W':d<0?'L':(c.over?'D':'L');b.paid=1;const m=betPay(b,res);try{$('est').textContent=$('est').textContent.replace(' (treino \u2022 nada conta)','')+'   \u2022 APOSTA: '+m}catch(e){}}
+try{if(typeof LD!='undefined'&&LD&&LD.open){const lo=LD.open;LD.open=function(a,c){const bt=window.__BET;if(bt&&bt.pending)return lo.call(this,'MODO APOSTADO \u2022 '+fmt(bt.stake)+' GEMAS',(bt.lbl||'1x1')+' \u2022 vs '+bt.opp.n+' \u2022 melhor de '+(bt.tgt*2-1));return lo.apply(this,arguments)}}}catch(e){}
+function betEnd(){const g=G;if(!g||!g.bet||g.bet.paid||!g.cs)return;const b=g.bet,c=g.cs,d=c.sc[0]-c.sc[1],res=d>0?'W':d<0?'L':(c.over?'D':'L');b.paid=1;const m=betPay(b,res);try{$('est').textContent+='   \u2022 APOSTA: '+m}catch(e){}}
 const fb0=finish2;finish2=function(){const r=fb0.apply(this,arguments);try{betEnd()}catch(e){console.error(e)}return r};
 
 })();
