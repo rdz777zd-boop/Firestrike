@@ -550,6 +550,7 @@ else if(d.amt){BT.amt=d.amt=='max'?Math.max(0,gems|0):+d.amt}
 else if(d.rd){BT.rd=+d.rd}
 else if(d.me){BT.me=d.me}
 else if(d.live!==undefined){BT.live=+d.live}
+else if(d.mode==='online'){P3.classList.remove('on');if(window.betOnline)window.betOnline();else soon('Aposta online indisponível');return}
 else if(d.mode!==undefined){BT.mode=d.mode||null;BT.pk=null}
 else if(d.go!==undefined){betLaunch();return}
 betR()};
