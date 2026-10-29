@@ -45,7 +45,7 @@ let T='v',pg=0,cf=0,cfT=0,iv=0;
 function card(t,l,sm){
  const r=rw(t,l),done=M(t)[l],ok=can(t,l),lk=!done&&(l>P.lv||(t==='v'&&!P.vip));
  return'<div class="pc'+(sm?' sm':'')+(done?' cl':'')+(ok?' ok':'')+(l===P.lv?' cur':'')+(lk?' lk':'')+'" data-a="c" data-t="'+t+'" data-l="'+l+'">'
- +'<i class="pb">'+l+'</i><div class="pa">'+ART[r.k]+'</div><b class="pnm">'+NAME(r)+'</b>'
+ +'<i class="pb">'+l+'</i><div class="pa">'+ART[r.k]+'</div><b class="pn">'+NAME(r)+'</b>'
  +(done?CHECK:lk?LOCK:'')+(ok?'<span class="pcl">COLETAR</span>':'')+'</div>'}
 
 function render(){
@@ -125,7 +125,14 @@ function onClick(e){
 }
 
 /* ---------- liga o banner do menu ---------- */
-{const b=$('elitepb');if(b)b.classList.remove('soon')}
+{const b=$('elitepb');if(b){b.classList.remove('soon');
+ /* banner = a imagem (estilos inline com !important vencem qualquer CSS do menu) */
+ const S=(k,v)=>b.style.setProperty(k,v,'important');
+ b.innerHTML='<img src="banner-passe-t1.webp?v=1" alt="Passe Elite - Sombras do Abismo" draggable="false" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:fill;display:block;pointer-events:none;border-radius:inherit">';
+ S('background','#0a0716');S('border','0');S('padding','0');S('overflow','hidden');S('font-size','0');S('opacity','1');S('box-shadow','0 0 14px #8a3cff88');
+ const im=b.firstChild;
+ if(im)im.onerror=()=>{b.innerHTML='<span style="display:block;font:900 22px Arial;color:#ffd25a;text-align:center;line-height:1.2;padding:14px">SOMBRAS DO ABISMO - TEMPORADA 1<br><small style="font-size:16px;color:#fff">TOQUE PARA ABRIR</small></span>';S('font-size','16px')}}}
+addEventListener('keydown',e=>{if(e.key==='Escape')close()});
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('#elitepb');if(!b)return;e.stopImmediatePropagation();e.preventDefault();open()},true);
 
 /* ---------- XP ao terminar partida ---------- */
