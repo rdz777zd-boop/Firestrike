@@ -519,7 +519,7 @@ h='<div class="bx2"><div class="hd"><h3>'+(BT.mode=='rand'?'ALEAT\u00d3RIO':'FOR
 +'<div class="row"><span>FORMATO</span></div><div class="row">'+[[1,'1 ROUND'],[2,'MELHOR DE 3'],[3,'MELHOR DE 5']].map(q=>'<button data-rd="'+q[0]+'"'+(BT.rd==q[0]?' class="on"':'')+'>'+q[1]+'</button>').join('')+'</div>'
 +'<div class="row"><span>SEU TIME</span></div><div class="row"><button data-me="me"'+(BT.me=='me'?' class="on"':'')+'>EU JOGO</button><button data-me="bot"'+(BT.me=='bot'?' class="on"':'')+'>BOT JOGA POR MIM</button></div>'
 +(BT.me=='bot'?'<button class="pkb" data-pk="proxy">'+(px?'<b>'+esc(lbl(px))+'</b><small>'+inf(px)+'</small>':'<b>+ ESCOLHER O BOT DO SEU TIME</b>')+'</button><div class="row"><button data-live="1"'+(BT.live?' class="on"':'')+'>ASSISTIR AO VIVO</button><button data-live="0"'+(!BT.live?' class="on"':'')+'>RESULTADO R\u00c1PIDO</button></div>':'')
-+'<div class="go2"><button data-go="1">APOSTAR CONTRA BOT</button></div><div class="go2"><button data-online="1" style="background:linear-gradient(#7dff8a,#1fa35a);box-shadow:0 4px 0 #0f6b38">APOSTAR CONTRA JOGADOR (ONLINE)</button></div></div>';P3.innerHTML=h}
++'<div class="go2"><button data-go="1">APOSTAR E JOGAR</button></div></div>';P3.innerHTML=h}
 function betOpen(){try{const o=JSON.parse(localStorage.getItem('arr_bet_open')||'null');if(o){localStorage.removeItem('arr_bet_open');const H=bLoad();H.push({r:'L',a:o.stake,o:o.opp,t:Date.now()});bSave(H);soon('Aposta anterior abandonada: -'+fmt(o.stake)+' gemas')}}catch(e){}
 BT.pk=null;BT.res=null;BT.mode=null;betR();P3.classList.add('on')}
 window.betOpen=betOpen;
@@ -538,7 +538,7 @@ window.__BET=b;b.restore={oldL:SALA.L,oldW:SALA.w,oldN:SALA.n,oldTB:TB};
 SALA.L={me:b.sub?'S':'A',A:b.sub?[b.proxy]:[],B:[b.opp],id:'APOSTA',go:1,lbl:'1x1',pk:null,pq:'',pf:'a'};SALA.w=b.sub?1:0;SALA.n=1;TB=4;
 P3.classList.remove('on');$('modp').classList.add('hide');startL()}
 P3.oninput=e=>{const t=e.target;if(t.id=='betq'){BT.pq=t.value;betPL()}else if(t.id=='betamt'){BT.amt=Math.max(0,Math.floor(+t.value||0));const q=document.getElementById('betsum');if(q)q.innerHTML=betSum();for(const x of P3.querySelectorAll('[data-amt]'))x.classList.toggle('on',+x.dataset.amt==BT.amt)}};
-P3.onclick=e=>{const t=e.target.closest('[data-x],[data-back],[data-mode],[data-pk],[data-pf],[data-pick],[data-rand],[data-amt],[data-rd],[data-me],[data-live],[data-go],[data-rv]');if(!t)return;const d=t.dataset;
+P3.onclick=e=>{const t=e.target.closest('[data-x],[data-back],[data-mode],[data-pk],[data-pf],[data-pick],[data-rand],[data-amt],[data-rd],[data-me],[data-live],[data-go],[data-rv],[data-online],[data-clropp]');if(!t)return;const d=t.dataset;
 if(d.x!==undefined){P3.classList.remove('on');return}
 if(d.rv!==undefined){BT.res=null}
 else if(d.back!==undefined){BT.pk=null}
