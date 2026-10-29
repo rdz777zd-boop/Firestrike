@@ -1,0 +1,89 @@
+/* css-21-menu-modos.css - menu de MODOS redesenhado (so visual; tudo sob #modp.mv2)
+   Para voltar ao menu antigo: abra o jogo com ?menuvelho=1 */
+#modp.mv2 .mdx{
+ background:radial-gradient(120% 90% at 0% 0%,#2b1a0e 0%,#120d0a 55%,#0a0807 100%);
+ border:1px solid #ff7a1a66;
+ box-shadow:0 0 0 1px #000,0 0 40px #ff7a1a33,0 20px 60px #000c,inset 0 0 60px #ff7a1a0d}
+#modp.mv2 .ph h2{letter-spacing:5px;background:linear-gradient(90deg,#ffd93b,#ff7a1a);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:none}
+#modp.mv2 .ph small{color:#cfb69f;letter-spacing:1.5px;font-weight:700}
+
+/* ---------- lista de modos ---------- */
+#modp.mv2 .mdk{
+ position:relative;overflow:hidden;
+ border:1px solid #ffffff24;border-left:4px solid var(--c);
+ border-radius:4px 14px 4px 14px;
+ background:linear-gradient(100deg,#2a1c12 0%,#120e0b 72%);
+ transition:transform .18s ease,box-shadow .18s ease,filter .18s ease}
+@supports (color:color-mix(in srgb,red 50%,blue)){
+ #modp.mv2 .mdk{
+  border-color:color-mix(in srgb,var(--c) 40%,#000);border-left-color:var(--c);
+  background:linear-gradient(100deg,color-mix(in srgb,var(--c) 24%,#17110d) 0%,#120e0b 74%)}}
+#modp.mv2 .mdk:active{transform:scale(.985)}
+#modp.mv2 .mdk.on{
+ transform:translateX(4px);
+ box-shadow:0 0 0 1px var(--c),0 0 20px #ff7a1a66,inset 0 0 26px #ffffff0a}
+@supports (color:color-mix(in srgb,red 50%,blue)){
+ #modp.mv2 .mdk.on{box-shadow:0 0 0 1px var(--c),0 0 22px color-mix(in srgb,var(--c) 55%,transparent),inset 0 0 26px #ffffff0a}}
+#modp.mv2 .mdk.on::before{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(110deg,transparent 30%,#ffffff1c 50%,transparent 70%);
+ transform:translateX(-100%);animation:mv2s 3s ease-in-out infinite}
+@keyframes mv2s{60%,100%{transform:translateX(100%)}}
+#modp.mv2 .mdk:not(.on){filter:saturate(.8) brightness(.92)}
+
+#modp.mv2 .mi2{
+ color:#fff;border-radius:12px;
+ background:radial-gradient(circle at 30% 25%,var(--c),#000000aa 120%);
+ box-shadow:inset 0 0 0 1px #ffffff40,0 0 14px var(--c)}
+#modp.mv2 .mi2 .ic{filter:drop-shadow(0 1px 2px #000a)}
+#modp.mv2 .mn{letter-spacing:1.6px;text-shadow:0 1px 0 #000;color:#fff}
+#modp.mv2 .ms2{color:#cfb69f;font-weight:600}
+#modp.mv2 .mtag{
+ background:var(--c);color:#120a04;border-radius:8px;padding:1px 7px;margin-left:6px;
+ font-weight:900;letter-spacing:1px;font-size:10px;box-shadow:0 0 10px var(--c)}
+#modp.mv2 .mnv{
+ background:linear-gradient(#ff5a5a,#c4001a);color:#fff;border-radius:4px 10px 4px 10px;
+ padding:2px 8px;font-weight:900;letter-spacing:1px;box-shadow:0 0 12px #ff3b3b99;animation:mv2p 1.6s ease-in-out infinite}
+@keyframes mv2p{50%{transform:scale(1.08)}}
+
+/* etiquetas de detalhe dentro de cada card */
+#modp.mv2 .mv2c{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+#modp.mv2 .mv2c i{
+ font-style:normal;font:800 9.5px/1 'Rajdhani','Trebuchet MS',Arial,sans-serif;letter-spacing:.9px;
+ padding:3px 7px;border-radius:9px;background:#0008;border:1px solid #ffffff2a;color:#ffe3c7}
+@supports (color:color-mix(in srgb,red 50%,blue)){
+ #modp.mv2 .mv2c i{border-color:color-mix(in srgb,var(--c) 65%,#000)}}
+
+/* ---------- painel de detalhes ---------- */
+#modp.mv2 .mdr{
+ background:linear-gradient(180deg,#241710,#0e0b09 62%);
+ border:1px solid #ffffff22;border-radius:6px 18px 6px 18px;
+ box-shadow:inset 0 0 40px #ff7a1a14}
+@supports (color:color-mix(in srgb,red 50%,blue)){
+ #modp.mv2 .mdr{
+  background:linear-gradient(180deg,color-mix(in srgb,var(--c) 18%,#18110d),#0e0b09 62%);
+  border-color:color-mix(in srgb,var(--c) 55%,#000);
+  box-shadow:inset 0 0 40px color-mix(in srgb,var(--c) 14%,transparent)}}
+#modp.mv2 .pv{position:relative;overflow:hidden;border-radius:10px;border:1px solid var(--c);box-shadow:0 0 18px #ff7a1a55}
+#modp.mv2 .pv::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,#000c);pointer-events:none}
+#modp.mv2 .mv2tt{position:absolute;left:10px;bottom:7px;z-index:2;display:flex;flex-direction:column;gap:1px;pointer-events:none}
+#modp.mv2 .mv2tt b{font:900 19px/1 'Rajdhani','Trebuchet MS',Arial,sans-serif;letter-spacing:2px;color:#fff;text-shadow:0 2px 6px #000}
+#modp.mv2 .mv2tt span{font:800 10px/1 'Rajdhani','Trebuchet MS',Arial,sans-serif;letter-spacing:2px;color:var(--c);text-shadow:0 1px 3px #000}
+#modp.mv2 .tgl{color:#ffe3c7;font-weight:700}
+
+/* quadro de numeros do modo */
+#modp.mv2 .mv2s{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:8px 0}
+#modp.mv2 .mv2s div{
+ background:#0009;border:1px solid #ffffff1a;border-left:3px solid var(--c);
+ border-radius:3px 10px 3px 10px;padding:5px 8px;min-width:0}
+#modp.mv2 .mv2s small{display:block;font:800 9.5px/1.1 'Rajdhani','Trebuchet MS',Arial,sans-serif;letter-spacing:1.6px;color:#b9a08a}
+#modp.mv2 .mv2s b{display:block;font:900 15px/1.15 'Rajdhani','Trebuchet MS',Arial,sans-serif;color:#fff;overflow:hidden;text-overflow:ellipsis}
+
+#modp.mv2 .inf>div{background:#0006;border:1px solid #ffffff12;border-radius:3px 10px 3px 10px}
+#modp.mv2 .inf>div>span{color:var(--c)}
+#modp.mv2 .inf>div.rp{border-color:#ffd93b55;background:#ffd93b12}
+#modp.mv2 .tip{
+ background:#ffd93b12;border-left:3px solid var(--c);border-radius:3px 10px 3px 10px;color:#ffe9c9}
+
+@media (max-height:380px){#modp.mv2 .mv2c{display:none}}
+@media (prefers-reduced-motion:reduce){#modp.mv2 .mdk.on::before,#modp.mv2 .mnv{animation:none}}
