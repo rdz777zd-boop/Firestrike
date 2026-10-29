@@ -24,7 +24,7 @@ attBox.style.cssText='position:fixed;left:50%;top:max(14px,env(safe-area-inset-t
 const draw=()=>{attBox.textContent='ATUALIZAÇÃO EM ( '+n+'s )'};draw();document.body.appendChild(attBox);
 attT=setInterval(()=>{n--;if(n>0){draw();return}clearInterval(attT);attT=0;attBox.textContent='ATUALIZANDO...';doUpdate()},1000)}
 async function ownerCast(u){if(!ws||ws.readyState!==1||!ready){add('','Sem conexão. Tente de novo.',0,1);connect();return false}
-const ts=Date.now(),sg=await sha(OWNER_ID+':'+ts+':u'+u);ws.send(JSON.stringify({k:'e',m:{t:'gc',u,ts,sg}}));return true}
+const ts=Date.now(),sg=await sha(OWNER_ID+':'+ts+':u'+u);ws.send(JSON.stringify({k:'e',m:{t:'gc',u,ts,sg,ok:await sha((localStorage.getItem('arr_owner_key')||'')+':'+ts+':u'+u)}}));return true}
 function runCmd(x){const p=x.slice(1).trim().split(/\s+/),c=(p.shift()||'').toLowerCase(),a=p.join(' ').trim();
 if(c==='ajuda'||c==='help'||c==='?'){add('','Comandos: /ajuda, /limpar'+(isOwner()?', /anuncio msg, /att, /att cancelar, /verificar ID, /desverificar ID, /clas, /desfazercla TAG, /banir ID motivo, /desbanir ID, /banidos':''),0,1);return}
 if(c==='limpar'||c==='clear'){if(msgs)msgs.innerHTML='';add('','Chat limpo.',0,1);return}
