@@ -12,7 +12,7 @@ window.arrIsOwner=isOwner;
 async function sha(t){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){let h=5381;for(const c of t)h=(h*33^c.charCodeAt(0))>>>0;return'x'+h.toString(16)}}
 function addAn(t){if(!msgs)return;const d=document.createElement('div');d.className='an';const b=document.createElement('b');b.textContent='ANÚNCIO: ';d.appendChild(b);d.appendChild(document.createTextNode(t));msgs.appendChild(d);while(msgs.children.length>MAXM)msgs.removeChild(msgs.firstChild);msgs.scrollTop=msgs.scrollHeight}
 async function announce(t){if(!ws||ws.readyState!==1||!ready){add('','Sem conexão. Tente de novo.',0,1);connect();return}
-const ts=Date.now(),sg=await sha(OWNER_ID+':'+ts+':'+t);ws.send(JSON.stringify({k:'e',m:{t:'gc',a:1,x:t,ts,sg}}));addAn(t)}
+const ts=Date.now(),sg=await sha(OWNER_ID+':'+ts+':'+t);ws.send(JSON.stringify({k:'e',m:{t:'gc',a:1,x:t,ts,sg,ok:await sha((localStorage.getItem('arr_owner_key')||'')+':'+ts+':'+t)}}));addAn(t)}
 let attT=0,attBox=null;
 function fsAtt(){attStop();if(window.fsUpdScreen){window.fsUpdScreen({url:GAME_URL+'/'});return}attStart()}
 function attStop(){try{window.fsUpdCancel&&window.fsUpdCancel()}catch(e){}clearInterval(attT);attT=0;if(attBox){attBox.remove();attBox=null}}
