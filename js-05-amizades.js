@@ -485,7 +485,6 @@ else if(d.rm){const k=d.rm[0],i=+d.rm.slice(1);l[k].splice(i,1)}
 else if(d.fill){for(const k of['A','B'])while(sc(k)<SALA.n){const r=avail('a','');if(!r.length)break;l[k].push(r[Math.random()*r.length|0])}}
 else if(d.clr){l.A=[];l.B=[]}
 else if(d.go){if(sc('A')<1||sc('B')<1){soon('Convide bots para as duas equipes');return}
-if(BL){betGo();return}
 l.go=1;l.lbl=sc('A')+'x'+sc('B');SALA.w=l.me=='S'?1:0;sv();TB=4;MS=sMS;AL=sAL;mref();P2.classList.remove('on');$('modp').classList.add('hide');startL();return}
 salaR()};
 const f0=finish2;finish2=function(){if(!(G&&G.sala&&G.cs))return f0.apply(this,arguments);const c=G.cs,w=c.sc[0]==c.sc[1]?-1:c.sc[0]>c.sc[1]?0:1,N=G.teams[0].m.length+'x'+G.teams[1].m.length,tt=' (treino \u2022 nada conta)';
@@ -498,7 +497,7 @@ $('end').classList.remove('hide')};
 const BKEY='arr_bets',bLoad=()=>{try{return JSON.parse(localStorage.getItem(BKEY)||'[]')}catch(e){return[]}},bSave=h=>{try{localStorage.setItem(BKEY,JSON.stringify(h.slice(-30)))}catch(e){}};
 const lvOf=e=>{try{const q=frPl(e.n);if(q&&q.lv)return q.lv}catch(x){}let h=0;for(const c of String(e.n))h=(h*31+c.charCodeAt(0))|0;return 8+Math.abs(h)%40};
 const BT={opp:null,proxy:null,amt:100,me:'me',rd:2,live:1,pk:null,pq:'',pf:'a',res:null,mode:null};let BTL=[];
-QMN.push('MODO APOSTADO');QMS.push('Aleatorio ou formado \u2022 valendo gemas');QMC.push('#ffc83a');PVI.push(PVI[1]);
+QMN.push('MODO APOSTADO');QMS.push('Igual \u00e0 Sala \u2022 valendo gemas');QMC.push('#ffc83a');PVI.push(PVI[1]);
 QMD.push({t:5,i:ic('gem'),n:'MODO APOSTADO',s:'Aleatorio ou formado \u2022 duelo 1x1 valendo gemas',tg:'Aposte gemas em um duelo 1x1. Quem vencer leva a aposta do outro',b:[[ic('gem'),'ALEATORIO: voce aposta e escolhe so o seu time - o inimigo e um bot sorteado quando a partida comeca'],[ic('swords'),'FORMADO: voce escolhe o time inimigo e o seu time'],[ic('user'),'Seu time pode ser voce jogando ou um bot jogando por voce']],tip:'Dica: se sair da partida no meio, a aposta e perdida'});
 const qs0=qmSel;qmSel=function(t){if(t==5){$('modp').classList.add('hide');betOpen();return}return qs0.apply(this,arguments)};
 const q2=qmR;qmR=function(){q2();const g=$('modg'),c=g&&g.children[5];if(c&&!c.querySelector('.mnv')){const n=document.createElement('span');n.className='mnv';n.textContent='NOVO';c.appendChild(n)}};
