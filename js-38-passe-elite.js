@@ -45,7 +45,7 @@ let T='v',pg=0,cf=0,cfT=0,iv=0;
 function card(t,l,sm){
  const r=rw(t,l),done=M(t)[l],ok=can(t,l),lk=!done&&(l>P.lv||(t==='v'&&!P.vip));
  return'<div class="pc'+(sm?' sm':'')+(done?' cl':'')+(ok?' ok':'')+(l===P.lv?' cur':'')+(lk?' lk':'')+'" data-a="c" data-t="'+t+'" data-l="'+l+'">'
- +'<i class="pb">'+l+'</i><div class="pa">'+ART[r.k]+'</div><b class="pn">'+NAME(r)+'</b>'
+ +'<i class="pb">'+l+'</i><div class="pa">'+ART[r.k]+'</div><b class="pnm">'+NAME(r)+'</b>'
  +(done?CHECK:lk?LOCK:'')+(ok?'<span class="pcl">COLETAR</span>':'')+'</div>'}
 
 function render(){
