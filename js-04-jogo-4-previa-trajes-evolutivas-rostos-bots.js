@@ -1561,7 +1561,7 @@ function SA(){const c=G&&cfo();return !!c&&specLock()&&!c.isP&&!c.dead&&(c.adsK|
 
 var lastShot=0,pFP=0,SGB=[],aimTan=0,lockPit=.25,AR0=0,_blt=null,_bkz=0,_blk=0;
 function sgOf(f){const wi=f.ws[f.cur]||0,w=WP[wi];if(!wi)return 0;if(w.sc)return 3;return Math.min(2,f.sgk|0)}
-function sgFov(f){const k=sgOf(f),w=WP[f.ws[f.cur]||0];return k==0?60:k==1?65/1.5:k==2?65/2:30}
+function sgFov(f){const k=sgOf(f),w=WP[f.ws[f.cur]||0];return k==0?60:k==1?65/1.25:k==2?65/1.5:65/1.58}
 function sgFP(f){return sgOf(f)>=1}
 function sgSet(k){const p=G&&G.p;if(!p||p.dead||G.room)return;const wi=p.ws[p.cur]||0;if(!wi)return;if(!p.sgs)p.sgs=[null,null];p.sgs[p.cur]={w:wi,k:k};snd(700,.06,'triangle',.05,200)}
 function sgTap(x,y){if(!G||G.room||G.p.dead||G.p.st!='ground')return 0;for(const b of SGB)if(Math.hypot(x-b.x,y-b.y)<b.r*1.4){sgSet(b.i);return 1}return 0}
