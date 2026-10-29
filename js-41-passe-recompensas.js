@@ -17,9 +17,9 @@ var PI=function(t,n,o){var i=X[t]&&X[t][n];return i==null?C(1000):I(t,i,o)};
 var FREE=[C(500),C(800),Gm(20),PI('rs',0),Gm(30),C(1200),C(1500),PI('pq',0),C(1800),PI('sk',0),
  C(2000),Gm(50),PI('rs',1),C(2500),{c:5000,g:100,big:1},C(2800),PI('pq',1),C(3000),C(3200),PI('sk',1),
  C(3500),Gm(70),Gm(90),C(4000),PI('sk',2),C(5000),PI('pq',2),C(5500),C(6000),PI('sk',3,{c:10000,g:200,big:1})];
-var VIP=[null,C(1500),Gm(50),PI('pq',3),Gm(80),PI('rs',5,{c:2500}),PI('sk',4),Gm(100),PI('sk',9,{c:3500}),PI('rs',2),
- PI('pq',6,{c:4000}),PI('sk',5),C(4500),PI('rs',6,{c:5000}),{sk:1,big:1},PI('sk',10,{c:5500}),Gm(150),PI('pq',4),PI('rs',3),Gm(200),
- PI('sk',6),PI('pq',7,{c:7500}),PI('pq',5),C(8000),PI('sk',7),PI('rs',4),Gm(300),PI('sk',11,{c:9000}),PI('sk',8),{tj:'abismo',c:25000,g:500,big:1}];
+var VIP=[null,C(1500),Gm(50),PI('pq',3),Gm(80),C(2500),PI('sk',4),Gm(100),C(3500),PI('rs',2),
+ C(4000),PI('sk',5),C(4500),C(5000),{sk:1,big:1},C(5500),Gm(150),PI('pq',4),PI('rs',3),Gm(200),
+ PI('sk',6),C(7500),PI('pq',5),C(8000),PI('sk',7),PI('rs',4),Gm(300),C(9000),PI('sk',8),{tj:'abismo',c:25000,g:500,big:1}];
 
 var $$=function(id){return document.getElementById(id)};
 function ls(k,v){try{if(v===undefined)return localStorage.getItem(k)||'';localStorage.setItem(k,v)}catch(e){}return''}
@@ -69,26 +69,42 @@ function itObj(it){try{return(it.t==='sk'?SK:it.t==='pq'?PQ:RS)[it.i]||null}catc
 function itIcon(it){
  try{var o=itObj(it);if(!o)return null;
   return it.t==='sk'?skCv(14,it.i,150,80):it.t==='pq'?pqCv(o,150,80):rsCv(o,150,80)}catch(e){return null}}
+var tjCv=null;
+function tjIcon(){
+ try{if(!tjCv&&window.PE_TJ)tjCv=window.PE_TJ.icon()}catch(e){}
+ return tjCv}
+function amtH(r){
+ var h='';
+ if(r.c)h+='<span class="k"><svg class="ic"><use href="#i-coin"/></svg>'+F(r.c)+'</span>';
+ if(r.g)h+='<span><svg class="ic"><use href="#i-gem"/></svg>'+F(r.g)+'</span>';
+ return h?'<div class="ra">'+h+'</div>':''}
 function cell(k,n,r,C0){
  var s=stOf(k,n,C0),el=pe.querySelector('.pqc[data-n="'+n+'"] '+(k==='f'?'.pqf':'.pqv'));if(!el)return;
+ var hasTj=!!(r.tj&&window.PE_TJ);
  el.classList.remove('ok');if(s==='ok')el.classList.add('ok');
- el.classList.toggle('som',!!r.sk);
+ el.classList.toggle('som',!!(r.sk||hasTj));
  el.innerHTML='';
  var w=document.createElement('div');w.className='rw '+s;
+ var im=document.createElement('div');im.className='rimg';
+ var t=document.createElement('div');t.className='rt';
+ var io=r.it&&itObj(r.it),h='';
  if(r.sk){
-  var cv=skIcon();if(cv)w.appendChild(cv);
-  var t=document.createElement('div');t.className='rt';t.innerHTML='<b style="color:#fff">M4A1 SOMBRIA</b><i class="k" style="color:#c07bff">EVOLUTIVA</i>';w.appendChild(t)}
+  var cv=skIcon();if(cv)im.appendChild(cv);
+  h='<b style="color:#fff">M4A1 SOMBRIA</b><u style="color:#c07bff">EVOLUTIVA</u>'}
+ else if(hasTj){
+  var tc=tjIcon();if(tc)im.appendChild(tc);
+  h='<b style="color:#ffd23b">'+window.PE_TJ.name+'</b><u style="color:#c07bff">TRAJE EXCLUSIVO</u>'}
+ else if(io){
+  var ic=itIcon(r.it);if(ic)im.appendChild(ic);
+  var rc='#fff';try{rc=RCOL[io.ra]||'#fff'}catch(e){}
+  h='<b style="color:'+rc+'">'+io.n+'</b><u>'+TN[r.it.t]+'</u>'}
  else{
-  var it=r.it,io=it&&itObj(it),ic=io&&itIcon(it),h='';
-  if(ic)w.appendChild(ic);
-  else if(!io){h+='<div class="ri">';
-   if(r.c)h+='<svg class="ic"><use href="#i-coin"/></svg>';
-   if(r.g)h+='<svg class="ic"><use href="#i-gem"/></svg>';
-   h+='</div>'}
-  h+='<div class="rt">';
-  if(io){var rc='#fff';try{rc=RCOL[io.ra]||'#fff'}catch(e){}h+='<b style="color:'+rc+'">'+io.n+'</b><u>'+TN[it.t]+'</u>'}
-  h+=(r.c?'<i class="k">'+F(r.c)+'</i>':'')+(r.g?'<i>'+F(r.g)+'</i>':'')+'</div>';
-  w.innerHTML=h;if(ic)w.insertBefore(ic,w.firstChild)}
+  var ri='<div class="ri">';
+  if(r.c)ri+='<svg class="ic"><use href="#i-coin"/></svg>';
+  if(r.g)ri+='<svg class="ic"><use href="#i-gem"/></svg>';
+  im.innerHTML=ri+'</div>';t.classList.add('only')}
+ t.innerHTML=h+amtH(r);
+ w.appendChild(im);w.appendChild(t);
  var lab=s==='cl'?'RESGATADO':s==='ok'?'RESGATAR':(k==='v'&&!own()&&lvl()>=n?'VIP':'NIVEL '+n);
  var bar=document.createElement('div');bar.className='rb';bar.textContent=lab;w.appendChild(bar);
  w.onclick=function(){claim(k,n)};
