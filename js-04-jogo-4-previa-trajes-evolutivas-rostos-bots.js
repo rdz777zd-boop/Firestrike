@@ -1569,15 +1569,13 @@ function FPV(){if(!G||(G.room&&!fc.w))return null;const c=cfo();if(!c||c.dead||c
 function sgChips(){SGB=[];const p=G.p;if(G.room||p.dead||p.st!='ground'||!(p.ws[p.cur]))return;const q=BT.ads(),k=sgOf(p),fx=!!WP[p.ws[p.cur]].sc;Tx('Mira: '+['Ponto','2x','4x','Luneta'][k]+(fx?' (fixa)':''),q.x,q.y-q.r-10*U,10*U,'#ffd93b')}
 function sgDraw(k,a){const cx=Math.round(W/2),cy=Math.round(H/2),m=Math.min(W,H);X.save();
 if(k==3){X.globalAlpha=cl((a-.2)/.5,0,1);const r=m*.4;X.fillStyle='rgba(0,0,0,.92)';X.beginPath();X.rect(0,0,W,H);X.arc(cx,cy,r,0,7);X.fill('evenodd');X.strokeStyle='#000';X.lineWidth=3;X.beginPath();X.arc(cx,cy,r,0,7);X.moveTo(cx-r,cy);X.lineTo(cx+r,cy);X.moveTo(cx,cy-r);X.lineTo(cx,cy+r);X.stroke();X.strokeStyle='#fff';X.lineWidth=1.5;X.beginPath();X.arc(cx,cy,3,0,7);X.stroke()}
-else if(k==2){/* MIRA 4x: chevron verde-limao com glow + linha horizontal com ticks + escada de queda de bala (fundo transparente) */
-X.globalAlpha=cl((a-.2)/.5,0,1);X.lineCap='butt';X.lineJoin='miter';
-const hw=Math.round(m*.3),gp=Math.round(m*.05),ln=(x1,y1,x2,y2,w,c)=>{X.beginPath();X.moveTo(x1,y1);X.lineTo(x2,y2);X.lineWidth=w+2;X.strokeStyle='rgba(0,0,0,.55)';X.stroke();X.lineWidth=w;X.strokeStyle=c;X.stroke()};
-ln(cx-hw,cy,cx-gp,cy,4,'#fff');ln(cx+gp,cy,cx+hw,cy,4,'#fff');
-for(let i=1;i<=10;i++){const o=gp+(hw-gp)*i/11,t=i%5==0?7:4;ln(cx-o,cy-t,cx-o,cy+t,1.5,'#fff');ln(cx+o,cy-t,cx+o,cy+t,1.5,'#fff')}
-const l0=cy+22,st=14;ln(cx,l0,cx,l0+12*st,1.5,'#fff');
-for(let i=1;i<=12;i++){const hh=i%4==0?11:6;ln(cx-hh,l0+i*st,cx+hh,l0+i*st,2,'#fff')}
-X.shadowColor='#00FF88';X.shadowBlur=14;X.strokeStyle='#00FF88';X.lineWidth=3.5;X.lineCap='round';X.lineJoin='round';X.beginPath();X.moveTo(cx-13,cy+9);X.lineTo(cx,cy-5);X.lineTo(cx+13,cy+9);X.stroke();X.stroke();X.shadowBlur=0}
-else if(k==1){X.globalAlpha=cl((a-.2)/.5,0,1);const gr=X.createRadialGradient(cx,cy,m*.3,cx,cy,Math.max(W,H)*.7);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,.6)');X.fillStyle=gr;X.fillRect(0,0,W,H);X.strokeStyle='#ff3b3b';X.lineWidth=1.8;X.beginPath();X.arc(cx,cy,13,0,7);X.stroke();X.fillStyle='#ff2a2a';X.beginPath();X.arc(cx,cy,2,0,7);X.fill()}
+else if(k==2){X.globalAlpha=cl((a-.2)/.5,0,1);const r=m*.5;X.fillStyle='rgba(0,0,0,.45)';X.beginPath();X.rect(0,0,W,H);X.arc(cx,cy,r,0,7);X.fill('evenodd');X.strokeStyle='#111';X.lineWidth=4;X.beginPath();X.arc(cx,cy,r,0,7);X.stroke();X.lineWidth=1.6;X.beginPath();for(const[ux,uy]of[[1,0],[-1,0],[0,1],[0,-1]]){X.moveTo(cx+ux*10,cy+uy*10);X.lineTo(cx+ux*r*.55,cy+uy*r*.55)}X.stroke();X.fillStyle='#ff2a2a';X.beginPath();X.arc(cx,cy,2.2,0,7);X.fill()}
+else if(k==1){/* MIRA 2x: ponto vermelho central com borda preta + 4 tracos diagonais em X + circulo vazado (fundo transparente) */
+X.globalAlpha=cl((a-.2)/.5,0,1);X.lineCap='butt';
+const d0=12/Math.SQRT2,d1=26/Math.SQRT2,dg=(w,c)=>{X.strokeStyle=c;X.lineWidth=w;X.beginPath();for(const[ux,uy]of[[1,1],[-1,1],[1,-1],[-1,-1]]){X.moveTo(cx+ux*d0,cy+uy*d0);X.lineTo(cx+ux*d1,cy+uy*d1)}X.stroke()};
+dg(4,'#000');dg(2,'#FF2B2B');
+X.strokeStyle='#000';X.lineWidth=3.5;X.beginPath();X.arc(cx,cy,10,0,7);X.stroke();X.strokeStyle='#FF2B2B';X.lineWidth=1.6;X.beginPath();X.arc(cx,cy,10,0,7);X.stroke();
+X.fillStyle='#000';X.beginPath();X.arc(cx,cy,2.5,0,7);X.fill();X.fillStyle='#FF2B2B';X.beginPath();X.arc(cx,cy,1.5,0,7);X.fill()}
 else{const gr=X.createRadialGradient(cx,cy,m*.34,cx,cy,Math.max(W,H)*.78);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,'+(.5*cl(a,0,1)).toFixed(3)+')');X.fillStyle=gr;X.fillRect(0,0,W,H);X.fillStyle='#ff2a2a';X.beginPath();X.arc(cx,cy,1.9,0,7);X.fill()}
 X.restore()}
 function specAim(P,c){if(!specLock()||!c||c.isP||c.dead||c.st!='ground')return;const cx=Math.round(W/2),cy=Math.round(H/2),ak=c.adsK||0,k=sgOf(c);X.save();const on=k==0?ak>.05:ak>.2;if(on)sgDraw(k,ak);if(k==0||!on){X.strokeStyle='rgba(0,0,0,.45)';X.lineWidth=3.2;X.beginPath();X.arc(cx,cy,7,0,7);X.stroke();X.strokeStyle='#fff';X.lineWidth=1.4;X.beginPath();X.arc(cx,cy,7,0,7);X.stroke();X.fillStyle='#fff';X.beginPath();X.arc(cx,cy,1.3,0,7);X.fill()}X.restore()}
