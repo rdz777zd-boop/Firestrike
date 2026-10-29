@@ -56,3 +56,33 @@ body #upb{top:calc(var(--v)*38)!important;right:calc(var(--R) + var(--v)*590)!im
 #menu#menu#menu#menu #rkbd1 canvas{width:calc(var(--v)*56)!important;height:calc(var(--v)*56)!important}
 #menu#menu#menu#menu #play{left:auto!important;right:calc(var(--R) + var(--v)*12)!important;top:calc(var(--v)*900)!important;bottom:auto!important;width:calc(var(--v)*490)!important;height:calc(var(--v)*102)!important}
 #menu#menu#menu#menu #play b{font-size:calc(var(--v)*60)!important}
+
+/* ---------- CLA: vai para o topo, ao lado das gemas ---------- */
+#menu#menu#menu#menu#menu #clb{left:calc(var(--L) + var(--v)*872)!important;top:calc(var(--v)*38)!important;width:calc(var(--v)*170)!important;height:calc(var(--v)*54)!important;gap:calc(var(--v)*10);padding:0 calc(var(--v)*12)!important;font-size:calc(var(--v)*22)!important;border-color:#6b3513!important;border-radius:calc(var(--v)*16)!important}
+#menu#menu#menu#menu#menu #clb>span{width:calc(var(--v)*36);height:calc(var(--v)*36)}
+#menu#menu#menu#menu#menu #clb canvas{width:calc(var(--v)*34)!important;height:calc(var(--v)*34)!important}
+
+/* ---------- PASSE ELITE: banner "SOMBRAS DO ABISMO - TEMPORADA 1" no canto inferior esquerdo ---------- */
+#menu#menu#menu#menu#menu #elitepb{
+ position:absolute!important;display:block!important;left:calc(var(--L) - var(--v)*13)!important;right:auto!important;top:calc(var(--v)*825)!important;bottom:auto!important;
+ width:calc(var(--v)*810)!important;height:calc(var(--v)*175)!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important;transform:none!important;
+ font-size:0!important;text-align:left;overflow:hidden;z-index:4;
+ background:linear-gradient(120deg,#1b1233 0%,#0f0a1f 60%,#1b1233 100%)!important;
+ border:calc(var(--v)*4) solid #c9a24a!important;border-radius:calc(var(--v)*12)!important;
+ box-shadow:0 0 calc(var(--v)*24) #8a3cff99,inset 0 0 calc(var(--v)*34) #6a2cff66!important;opacity:1!important;filter:none!important}
+/* emblema da coroa */
+#menu#menu#menu#menu#menu #elitepb>span{
+ position:absolute;left:calc(var(--v)*46);top:calc(var(--v)*24);width:calc(var(--v)*110);height:calc(var(--v)*110);display:flex!important;align-items:center;justify-content:center;
+ border-radius:50%;background:radial-gradient(circle at 35% 30%,#9a4dff,#4a1496 70%);border:calc(var(--v)*5) solid #e0b64f;box-shadow:0 0 calc(var(--v)*20) #a15cff;
+ font-size:calc(var(--v)*58)!important;color:#ffd25a!important}
+/* titulo */
+#menu#menu#menu#menu#menu #elitepb:before{
+ content:'SOMBRAS DO ABISMO - TEMPORADA 1';position:absolute;left:calc(var(--v)*186);top:calc(var(--v)*26);right:calc(var(--v)*16);height:calc(var(--v)*44);line-height:calc(var(--v)*44);
+ font:900 calc(var(--v)*36)/calc(var(--v)*44) 'Rajdhani','Trebuchet MS',Arial,sans-serif;letter-spacing:calc(var(--v)*1);color:#fff;white-space:nowrap;text-shadow:0 calc(var(--v)*2) calc(var(--v)*6) #000;
+ background:none;border:0;width:auto;transform:none}
+/* botao ABRIR */
+#menu#menu#menu#menu#menu #elitepb:after{
+ content:'ABRIR';position:absolute;left:calc(var(--v)*186);top:calc(var(--v)*84);right:auto;bottom:auto;width:calc(var(--v)*320);height:calc(var(--v)*62);display:flex;align-items:center;justify-content:center;
+ font:900 calc(var(--v)*34)/1 'Rajdhani','Trebuchet MS',Arial,sans-serif;letter-spacing:calc(var(--v)*2);color:#fff;
+ background:linear-gradient(#b35cff,#7a2cff 60%,#5b1fd1);border:calc(var(--v)*2) solid #d3a6ff;border-radius:calc(var(--v)*10);box-shadow:0 0 calc(var(--v)*14) #8a3cffaa;transform:none;margin:0;padding:0}
+
