@@ -426,7 +426,7 @@ const ic=n=>'<svg class="ic"><use href="#i-'+n+'"/></svg>',sv=()=>{try{localStor
 QMN.push('SALA');QMS.push('Treino \u2022 Contra Squad de 1x1 a 5x5');QMC.push('#2ecc71');PVI.push(PVI[1]);
 QMD.push({t:4,i:ic('group'),n:'SALA',s:'Treino \u2022 Contra Squad de 1x1 a 5x5',tg:'Treine ou assista os bots lutando em Contra Squad no tamanho que voc\u00ea escolher',b:[[ic('group'),'Escolha 1x1, 2x2, 3x3, 4x4 ou 5x5'],[ic('video'),'Jogue ou assista os bots lutando entre si com c\u00e2mera livre'],[ic('trophy'),'Nada conta: sem moedas, vit\u00f3rias, abates ou rank']],tip:'Dica: todos usam o Runer e s\u00f3 h\u00e1 5 armas: Escopeta, MP5, SMG, Cano Duplo e SPAS'});
 const st=document.createElement('style');st.textContent='.salacfg{margin:8px 0 4px;display:flex;flex-direction:column;gap:8px}.salacfg h4{margin:0;font:900 12px Trebuchet MS,Arial;color:#7fb9c4;letter-spacing:1px}.salacfg .sz{display:flex;gap:6px;flex-wrap:wrap}.salacfg .sz button{flex:1;min-width:46px;padding:8px 4px;border-radius:10px;border:2px solid #00ff8888;background:#0d1a13;color:#fff;font:900 15px Trebuchet MS,Arial}.salacfg .sz button.on{background:#00ff88;color:#032a18;border-color:#fff}.salacfg .go{display:flex;gap:8px}.salacfg .go button{flex:1;padding:12px 6px;border-radius:12px;border:2px solid #141211;font:900 15px Trebuchet MS,Arial;color:#fff;background:linear-gradient(#ff6600,#b54800);box-shadow:0 4px 0 #4d392b}.salacfg .go button.w{background:linear-gradient(#ff6600,#b54800);box-shadow:0 4px 0 #4d392b}';document.head.appendChild(st);
-let STAB=1,STM=0;
+let STAB=0,STM=0;
 const SX=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 {const sst=document.createElement('style');sst.textContent='.stb{display:flex;gap:6px}.stb button{flex:1;padding:10px 4px;border-radius:10px;border:2px solid #ff660088;background:#1f1b19;color:#fff;font:900 14px Trebuchet MS,Arial;letter-spacing:1px}.stb button.on{background:linear-gradient(#ff6600,#b54800);border-color:#fff}.srl{display:flex;flex-direction:column;gap:4px;max-height:210px;overflow:auto}.srl button{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px;border-radius:8px;border:0;background:#1f1b19;color:#fff;font:900 13px Trebuchet MS,Arial;text-align:left}.srl button small{color:#ff6600;font-size:11px;white-space:nowrap}.sre{color:#8a96b4;padding:8px;font:700 13px Trebuchet MS,Arial}';document.head.appendChild(sst)}
 function salaRq(){try{const n=window.ARR_NET;if(!n)return;if(n.lbOn())n.lbSend({k:'rq'});else n.lbOpen()}catch(e){}}
@@ -434,7 +434,7 @@ function SALAUI(d){
  const draw=()=>{let h='<div class="stb"><button data-t="0"'+(STAB==0?' class="on"':'')+'>CRIAR</button><button data-t="1"'+(STAB==1?' class="on"':'')+'>SALAS</button></div>';
   if(STAB==0)h+='<h4>SALA PERSONALIZADA</h4><div class="go"><button data-c="1">CRIAR SALA</button></div>';
   else{const me=(window.MP&&window.MP.code)||'',rl=window.ARR_USER?(window.ARR_RL||[]).filter(r=>r&&r[0]!==me&&(+r[2]||1)<8):[];
-   h+='<h4>SALAS ONLINE ('+rl.length+')</h4><div class="srl">'+(!window.ARR_USER?'<div class="sre">Entre na sua conta para ver as salas online</div>':rl.length?rl.map(r=>'<button data-j="'+SX(r[0])+'"><span>Sala de '+SX(r[1])+'</span><small>'+(+r[2]||1)+'/8 \u2022 ENTRAR</small></button>').join(''):'<div class="sre">Nenhuma sala online agora</div>')+'</div>'}
+   h+='<h4>SALAS ONLINE ('+rl.length+')</h4><div class="srl">'+(!window.ARR_USER?'<div class="sre">Entre na sua conta para ver as salas online</div>':rl.length?rl.map(r=>'<button data-j="'+SX(r[0])+'"><span>Sala de '+SX(r[1])+'</span><small>'+(+r[2]||1)+'/8 \u2022 ENTRAR</small></button>').join(''):'<div class="sre">Nenhuma sala online agora</div>')+'</div><div class="go"><button data-r="1">ATUALIZAR</button></div>'}
   d.innerHTML=h};
  d.onclick=e=>{const t=e.target.closest('button');if(!t)return;const k=t.dataset;
   if(k.t!==undefined){STAB=+k.t;if(STAB==1)salaRq();draw();return}
@@ -519,14 +519,14 @@ h='<div class="bx2"><div class="hd"><h3>'+(BT.mode=='rand'?'ALEAT\u00d3RIO':'FOR
 +'<div class="row"><span>FORMATO</span></div><div class="row">'+[[1,'1 ROUND'],[2,'MELHOR DE 3'],[3,'MELHOR DE 5']].map(q=>'<button data-rd="'+q[0]+'"'+(BT.rd==q[0]?' class="on"':'')+'>'+q[1]+'</button>').join('')+'</div>'
 +'<div class="row"><span>SEU TIME</span></div><div class="row"><button data-me="me"'+(BT.me=='me'?' class="on"':'')+'>EU JOGO</button><button data-me="bot"'+(BT.me=='bot'?' class="on"':'')+'>BOT JOGA POR MIM</button></div>'
 +(BT.me=='bot'?'<button class="pkb" data-pk="proxy">'+(px?'<b>'+esc(lbl(px))+'</b><small>'+inf(px)+'</small>':'<b>+ ESCOLHER O BOT DO SEU TIME</b>')+'</button><div class="row"><button data-live="1"'+(BT.live?' class="on"':'')+'>ASSISTIR AO VIVO</button><button data-live="0"'+(!BT.live?' class="on"':'')+'>RESULTADO R\u00c1PIDO</button></div>':'')
-+'<div class="go2"><button data-go="1">APOSTAR E JOGAR</button></div></div>';P3.innerHTML=h}
++'<div class="go2"><button data-go="1">APOSTAR CONTRA BOT</button></div><div class="go2"><button data-online="1" style="background:linear-gradient(#7dff8a,#1fa35a);box-shadow:0 4px 0 #0f6b38">APOSTAR CONTRA JOGADOR (ONLINE)</button></div></div>';P3.innerHTML=h}
 function betOpen(){try{const o=JSON.parse(localStorage.getItem('arr_bet_open')||'null');if(o){localStorage.removeItem('arr_bet_open');const H=bLoad();H.push({r:'L',a:o.stake,o:o.opp,t:Date.now()});bSave(H);soon('Aposta anterior abandonada: -'+fmt(o.stake)+' gemas')}}catch(e){}
 BT.pk=null;BT.res=null;BT.mode=null;betR();P3.classList.add('on')}
 window.betOpen=betOpen;
 function betPay(b,res){let net;if(res=='W'){gems+=b.stake*2;net=b.stake}else if(res=='D'){gems+=b.stake;net=0}else net=-b.stake;svG();try{$('gemv').textContent=fmt(gems)}catch(e){}try{localStorage.removeItem('arr_bet_open')}catch(e){}
 const H=bLoad();H.push({r:res,a:b.stake,o:b.opp.n,t:Date.now()});bSave(H);const m=res=='W'?'VOCE GANHOU +'+fmt(b.stake)+' GEMAS':res=='D'?'EMPATE - aposta devolvida':'VOCE PERDEU -'+fmt(b.stake)+' GEMAS';soon(m);return m}
 function betLaunch(){try{if(typeof LD!='undefined'&&LD.busy){soon('Aguarde o carregamento');return}}catch(e){}
-const stake=BT.amt|0,rnd=!BT.opp;if(stake<10){soon('Aposta minima: 10 gemas');return}if(stake>gems){soon('Gemas insuficientes');return}
+const stake=BT.amt|0,rnd=BT.mode=='rand';if(!rnd&&!BT.opp){soon('Escolha o time inimigo');return}if(stake<10){soon('Aposta minima: 10 gemas');return}if(stake>gems){soon('Gemas insuficientes');return}
 if(BT.me=='bot'&&!BT.proxy){soon('Escolha o bot do seu time');return}
 let opp=BT.opp;if(rnd){const ex=new Set();if(BT.me=='bot'&&BT.proxy)ex.add(BT.proxy.n);const r=bAvail('a','',ex);if(!r.length){soon('Nenhum bot disponivel');return}opp=r[Math.random()*r.length|0]}
 if(BT.me=='bot'&&BT.proxy.n===opp.n){soon('Escolha outro bot');return}
