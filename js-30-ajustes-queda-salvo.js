@@ -5,7 +5,7 @@
       o aviso "salvou" nunca era gerado na sua tela. Agora detectamos derrubado -> de pe e avisamos. */
 (function(){
  if(typeof upd!=='function')return;
- const u0=upd,dnPrev=new Map();
+ const u0=upd,dnPrev=new WeakMap();
  upd=function(dt){
   const r=u0.apply(this,arguments);
   try{
