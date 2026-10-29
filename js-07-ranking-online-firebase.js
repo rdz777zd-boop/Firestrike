@@ -54,6 +54,15 @@ async function picPoll(){
   if(ch.length){const x=await picLoad(ch.slice(0,20),1);if(x)refreshUI()}}catch(e){}
  pollB=0}
 setInterval(picPoll,5000);
+/* checa so a caixa de entrada (pedidos de amizade) a cada 4s com o menu aberto, sem esperar o ciclo de 20s do ranking */
+let ibB=0;
+async function ibPoll(){
+ if(ibB||document.hidden||!window.ARR_USER||!ON)return;
+ const m=document.getElementById('menu');if(!m||m.classList.contains('hide'))return;
+ ibB=1;
+ try{const ib=await J('/inbox/'+UID+'.json');if(ib&&typeof ib=='object')await friendInbox(ib)}catch(e){}
+ ibB=0}
+setInterval(ibPoll,4000);
 window.arrPlayers=()=>Object.values(REM.players||{});
 const encq=v=>encodeURIComponent(JSON.stringify(v));
 window.arrFind=async q=>{q=sn(q,12);if(!q)return[];
