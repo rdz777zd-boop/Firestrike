@@ -52,7 +52,21 @@ var st=document.createElement('style');st.id='pr-css';st.textContent=
 '#pe .pqf.ok,#pe .pqv.ok{border-style:solid;border-color:var(--g2);box-shadow:0 0 calc(var(--s)*3) #f6d77a99;animation:pepl 1.6s ease-in-out infinite}'+
 '#pe .pqv.som{border-color:#9a4dff;background:radial-gradient(circle at 50% 40%,#3a1670,#0e0820 75%)}'+
 '#pe .pqall{margin-top:calc(var(--s)*1);width:100%;padding:calc(var(--s)*1.8) calc(var(--s)*2);border:2px solid #f8e39a;border-radius:calc(var(--s)*1.4);background:linear-gradient(#f9df8c,#e4b84e 55%,#c9962f);color:#2a1608;font:900 calc(var(--s)*4.6)/1 Rajdhani,Arial,sans-serif;letter-spacing:calc(var(--s)*.2)}'+
-'#pe .pqall[disabled]{background:#1d1635;border-color:#3b2f63;color:#8a82a6}';
+'#pe .pqall[disabled]{background:#1d1635;border-color:#3b2f63;color:#8a82a6}'+
+/* layout dos cards: imagem em cima (ocupa o espaco que sobra), nome/valores no meio, barra embaixo */
+'#pe .rw{justify-content:flex-start;gap:calc(var(--s)*.6);padding:calc(var(--s)*4.8) calc(var(--s)*.8) calc(var(--s)*5.6)}'+
+'#pe .rw .rimg{flex:1 1 0;min-height:0;width:100%;display:flex;align-items:center;justify-content:center}'+
+'#pe .rw .rimg canvas{width:100%;height:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 0 calc(var(--s)*1) #9a4dff)}'+
+'#pe .rw .rt{flex:none;width:100%;display:flex;flex-direction:column;align-items:center;gap:calc(var(--s)*.4)}'+
+'#pe .rw .rt b{font-size:calc(var(--s)*3);line-height:1.05;text-align:center;word-break:break-word}'+
+'#pe .rw .rt u{font-size:calc(var(--s)*2.3);line-height:1;text-align:center}'+
+'#pe .rw .ra{display:flex;flex-wrap:wrap;justify-content:center;gap:calc(var(--s)*.2) calc(var(--s)*1);font:800 calc(var(--s)*3.2)/1.1 Rajdhani,Arial,sans-serif}'+
+'#pe .rw .ra span{display:flex;align-items:center;gap:calc(var(--s)*.4);color:#7fd6ff}'+
+'#pe .rw .ra span.k{color:#ffd45a}'+
+'#pe .rw .ra svg{width:calc(var(--s)*3.2);height:calc(var(--s)*3.2);flex:none}'+
+'#pe .rw .rt.only .ra{font-size:calc(var(--s)*4.6);flex-direction:column;align-items:center}'+
+'#pe .rw .rt.only .ra svg{width:calc(var(--s)*4.4);height:calc(var(--s)*4.4)}'+
+'#pe .rw .rb{padding:calc(var(--s)*1.2) 0;font-size:calc(var(--s)*3)}';
 document.head.appendChild(st);
 
 /* ---------- dados ---------- */
@@ -69,42 +83,26 @@ function itObj(it){try{return(it.t==='sk'?SK:it.t==='pq'?PQ:RS)[it.i]||null}catc
 function itIcon(it){
  try{var o=itObj(it);if(!o)return null;
   return it.t==='sk'?skCv(14,it.i,150,80):it.t==='pq'?pqCv(o,150,80):rsCv(o,150,80)}catch(e){return null}}
-var tjCv=null;
-function tjIcon(){
- try{if(!tjCv&&window.PE_TJ)tjCv=window.PE_TJ.icon()}catch(e){}
- return tjCv}
-function amtH(r){
- var h='';
- if(r.c)h+='<span class="k"><svg class="ic"><use href="#i-coin"/></svg>'+F(r.c)+'</span>';
- if(r.g)h+='<span><svg class="ic"><use href="#i-gem"/></svg>'+F(r.g)+'</span>';
- return h?'<div class="ra">'+h+'</div>':''}
 function cell(k,n,r,C0){
  var s=stOf(k,n,C0),el=pe.querySelector('.pqc[data-n="'+n+'"] '+(k==='f'?'.pqf':'.pqv'));if(!el)return;
- var hasTj=!!(r.tj&&window.PE_TJ);
  el.classList.remove('ok');if(s==='ok')el.classList.add('ok');
- el.classList.toggle('som',!!(r.sk||hasTj));
+ el.classList.toggle('som',!!r.sk);
  el.innerHTML='';
  var w=document.createElement('div');w.className='rw '+s;
- var im=document.createElement('div');im.className='rimg';
- var t=document.createElement('div');t.className='rt';
- var io=r.it&&itObj(r.it),h='';
  if(r.sk){
-  var cv=skIcon();if(cv)im.appendChild(cv);
-  h='<b style="color:#fff">M4A1 SOMBRIA</b><u style="color:#c07bff">EVOLUTIVA</u>'}
- else if(hasTj){
-  var tc=tjIcon();if(tc)im.appendChild(tc);
-  h='<b style="color:#ffd23b">'+window.PE_TJ.name+'</b><u style="color:#c07bff">TRAJE EXCLUSIVO</u>'}
- else if(io){
-  var ic=itIcon(r.it);if(ic)im.appendChild(ic);
-  var rc='#fff';try{rc=RCOL[io.ra]||'#fff'}catch(e){}
-  h='<b style="color:'+rc+'">'+io.n+'</b><u>'+TN[r.it.t]+'</u>'}
+  var cv=skIcon();if(cv)w.appendChild(cv);
+  var t=document.createElement('div');t.className='rt';t.innerHTML='<b style="color:#fff">M4A1 SOMBRIA</b><i class="k" style="color:#c07bff">EVOLUTIVA</i>';w.appendChild(t)}
  else{
-  var ri='<div class="ri">';
-  if(r.c)ri+='<svg class="ic"><use href="#i-coin"/></svg>';
-  if(r.g)ri+='<svg class="ic"><use href="#i-gem"/></svg>';
-  im.innerHTML=ri+'</div>';t.classList.add('only')}
- t.innerHTML=h+amtH(r);
- w.appendChild(im);w.appendChild(t);
+  var it=r.it,io=it&&itObj(it),ic=io&&itIcon(it),h='';
+  if(ic)w.appendChild(ic);
+  else if(!io){h+='<div class="ri">';
+   if(r.c)h+='<svg class="ic"><use href="#i-coin"/></svg>';
+   if(r.g)h+='<svg class="ic"><use href="#i-gem"/></svg>';
+   h+='</div>'}
+  h+='<div class="rt">';
+  if(io){var rc='#fff';try{rc=RCOL[io.ra]||'#fff'}catch(e){}h+='<b style="color:'+rc+'">'+io.n+'</b><u>'+TN[it.t]+'</u>'}
+  h+=(r.c?'<i class="k">'+F(r.c)+'</i>':'')+(r.g?'<i>'+F(r.g)+'</i>':'')+'</div>';
+  w.innerHTML=h;if(ic)w.insertBefore(ic,w.firstChild)}
  var lab=s==='cl'?'RESGATADO':s==='ok'?'RESGATAR':(k==='v'&&!own()&&lvl()>=n?'VIP':'NIVEL '+n);
  var bar=document.createElement('div');bar.className='rb';bar.textContent=lab;w.appendChild(bar);
  w.onclick=function(){claim(k,n)};
