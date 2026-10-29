@@ -445,7 +445,7 @@ function SALAUI(d){
  clearInterval(STM);STM=setInterval(()=>{if(!d.isConnected){clearInterval(STM);return}const m=$('modp');if(STAB==1&&m&&!m.classList.contains('hide'))salaRq()},4000);
  draw();if(STAB==1)salaRq()}
 const q0=qmR;qmR=function(){q0();const g=$('modg'),c=g&&g.children[4];if(c&&!c.querySelector('.mnv')){const n=document.createElement('span');n.className='mnv';n.textContent='NOVO';c.appendChild(n)}
-if(TB!=4)return;const d=document.createElement('div');d.className='salacfg';d.innerHTML='<h4>SALA PERSONALIZADA</h4><div class="go"><button data-w="0">CRIAR SALA</button></div>';SALAUI(d);
+if(TB!=4)return;const d=document.createElement('div');d.className='salacfg';SALAUI(d);
 
 $('mdc').appendChild(d)};
 
