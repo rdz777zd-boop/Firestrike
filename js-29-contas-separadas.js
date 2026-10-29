@@ -13,7 +13,7 @@ const get=k=>{try{return sg.call(LS,k)}catch(e){return null}};
 const set=(k,v)=>{try{ss.call(LS,k,v);return 1}catch(e){return 0}};
 const rem=k=>{try{sr.call(LS,k)}catch(e){}};
 const KEEP=new Set(['arr_sess','arr_uid','arr_dtk','arr_own','arr_pn','arr_dburl','arr_ban','arr_owner','arr_vers']);
-const KP=['arr_tk:','arr_acc:','arr_uid:','arr_nk:','arr_snap:'];
+const KP=['arr_tk:','arr_acc:','arr_uid:','arr_nk:','arr_snap:','arr_cloudt:','arr_bak:'];
 const isGame=k=>typeof k==='string'&&(k.indexOf('arr_')===0||k.indexOf('fs_')===0)&&!KEEP.has(k)&&!KP.some(p=>k.indexOf(p)===0);
 let lock=0,warned=0;
 /* durante a troca, o jogo nao consegue regravar o progresso antigo por cima */
