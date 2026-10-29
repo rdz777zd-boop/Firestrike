@@ -103,7 +103,7 @@ async function publish(force){
  try{
   await ownDead();
   const m=PRS.me||{},ck=myKey();
-  const rec={n:sn(PN,12)||'Jogador',k:num(m.k,1e7),w:num(m.w,1e7),g:num(m.g,1e7),rp:num(m.rp,1e6),rg:num(m.rg,1e7),rw:num(m.rw,1e7),rt:num(m.rt,1e7)};
+  const rec={n:sn(PN,12)||'Jogador',k:num(m.k,1e7),w:num(m.w,1e7),g:num(m.g,1e7),rp:num(m.rp,1e6),rg:num(m.rg,1e7),rw:num(m.rw,1e7),rt:num(m.rt,1e7)};rec.nl=rec.n.toLowerCase();
   try{const cq=Math.floor(+CH);if(cq>=0&&cq<100)rec.ch=cq;const tq=trajeOf(CH);if(tq)rec.tj=tq;const qe={};let qn=0;for(const k in EQ){const a=Math.floor(+k),b=Math.floor(+EQ[k]);if(a>0&&a<100&&b>0&&b<1000&&qn<40){qe[a]=b;qn++}}if(qn)rec.eq=qe;if(EQP>0&&EQP<1000)rec.ep=Math.floor(EQP);if(EQR>0&&EQR<1000)rec.er=Math.floor(EQR)}catch(e){}
   if(PC&&ck){rec.cid=ck;rec.cn=sn(PC.n,20);rec.ct=tagc(PC.tag);rec.cc=colr(PC.col);rec.cs=symc(PC.sym)}
   if(window.__picH)rec.pv=window.__picH;
