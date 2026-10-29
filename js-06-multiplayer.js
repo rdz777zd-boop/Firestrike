@@ -83,7 +83,7 @@ function onEv(from,m){if(!m||typeof m!=='object')return;if(m.t==='chat'){if(wind
  case 'sh':if(!MP.on||!G||!Array.isArray(m.a))break;for(const e of m.a){const f=G.f[e[0]];if(!f||!f.mx||f.dead||!owns(from,e[0]))continue;
    const aimMe=!MP.host&&!f.hum&&e[5]===MP.me&&G.p&&!G.p.dead;if(!aimMe){f.x=e[3];f.y=e[4]}
    f.st='ground';f.ws[0]=e[1];f.cur=0;f.mg[0]=99;f.cd=0;f.rl=0;f.dn=0;f.pf=0;f.lgh=0;f.hl=null;MP.rp=1;try{shoot(f,aimMe?aimG(f):e[2])}catch(x){}MP.rp=0}break;
- case 'sn':if(!MP.on||!G||MP.host||from!==MP.hpid||!Array.isArray(m.b)||!Array.isArray(m.z))break;try{snap(m)}catch(x){console.warn('[mp] snapshot invalido',x)}break;
+ case 'sn':if(!MP.on||!G||MP.host||from!==MP.hpid)break;snap(m);break;
  case 'ht':{if(!MP.on||!G||!MP.host)break;const si=MP.slots[from];if(si==null)break;const sf=G.f[si],t=G.f[m.v];
    if(!sf||!t||sf.dead||t.dead||t.mx||t.isP||t.hum||t.st!='ground'||sf.tm===t.tm)break;const d=+m.d;if(!(d>0)||d>400)break;
    MP.ht=1;_crit=m.c?1:0;try{hurt(t,d,sf)}catch(x){console.error(x)}_crit=0;MP.ht=0;break}
@@ -219,7 +219,9 @@ function view(){}
 function leave(){const b=MP.bus;if(b){try{b.state({s:'x'});b.leave()}catch(e){}}MP.bus=null;MP.pr={};MP.host=0;MP.on=0}
 async function connect(code){setMsg('Conectando...');leave();MP.code=code;view();let bus=null;
  try{bus=await roomBus(code)}catch(e){console.warn(e)}
- if(!bus){try{bus=await wsBus(code)}catch(e){console.warn(e)}}
+ if(!bus){try{bus=await wsBus(code)}catch(e){console.warn(e)}
+  /* sala publica cheia (o servidor recusa a 9a conexao): tenta as proximas salas em vez de cair no PeerJS e ficar sozinho */
+  if(!bus){const ri=ROOMS.indexOf(code);if(ri>=0)for(let j=ri+1;j<ROOMS.length&&!bus;j++){try{bus=await wsBus(ROOMS[j]);if(bus)MP.code=ROOMS[j]}catch(e){}}}}
  if(!bus){try{bus=await peerBus(code,1)}catch(e){try{bus=await peerBus(code,0)}catch(e2){setMsg('Online indisponivel aqui.');return}}}
  bus.cb={ev:onEv,st:onSt,join:onJoin,left:onLeft};MP.bus=bus;MP.t0=Date.now();MP.host=1;
  bus.state({s:'l',n:clean(PN),c:CH,j:MP.t0});setMsg('');view();
