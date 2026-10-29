@@ -22,7 +22,11 @@ function wrap(b){
  if(!b._as){b._as=1;const s0=b.send;
   b.send=function(m){if(m&&typeof m==='object'&&m.t==='go')LAST={m:Object.assign({},m)};return s0.apply(this,arguments)}}
  if(!b._asw&&b.cb&&b.cb.ev){b._asw=1;const e0=b.cb.ev;
-  b.cb.ev=function(from,m){try{if(m&&m.t==='go'&&m.as&&m.as===b.me()&&!MP.on&&!MP.arm&&m.sl&&m.sl[m.as]!=null)SPEC={idx:m.sl[m.as],k:0}}catch(x){}return e0.apply(this,arguments)}}}
+  b.cb.ev=function(from,m){try{
+   if(m&&m.t==='go'&&m.as&&m.as===b.me()&&!MP.on&&!MP.arm&&m.sl&&m.sl[m.as]!=null){
+    if(m.jm==='T'||m.jm==='C'){PLAY={idx:m.sl[m.as],k:0,t:Date.now()};SPEC=null}else{SPEC={idx:m.sl[m.as],k:0};PLAY=null}}
+   if(m&&m.t==='asj'&&from===MP.hpid)applyJ(m)
+  }catch(x){}return e0.apply(this,arguments)}}}
 
 /* dono: da uma vaga (bot ja morto) a quem pediu pra assistir */
 setInterval(()=>{try{
@@ -30,18 +34,11 @@ setInterval(()=>{try{
  if(!(MP.on&&MP.host&&LAST&&typeof G!=='undefined'&&G&&G.f))return;
  const sl=LAST.m.sl||{};
  for(const id in MP.pr){const o=MP.pr[id];if(!o||!o.as||sl[id]!=null||id===b.me())continue;
-  const jm=o.jm==='T'||o.jm==='C'?o.jm:'S',ht=G.p?G.p.tm:0;
-  const idx=G.f.findIndex((f,i)=>{if(f.hum||f.isP||used[i])return false;
-   if(jm==='S')return !!f.dead;
-   if(f.dead||f.dn>0)return false;
-   return jm==='T'?f.tm===ht:f.tm!==ht});
-  if(idx<0)continue;
+  const idx=G.f.findIndex((f,i)=>f.dead&&!f.hum&&!f.isP&&!used[i]);if(idx<0)continue;
   used[idx]=1;
-  const nm=String(o.n||'Jogador').slice(0,12),ch=+o.c||0;
-  const m2=Object.assign({},LAST.m,{sl:Object.assign({},sl,{[id]:idx}),pl:Object.assign({},LAST.m.pl,{[idx]:[nm,jm==='S'?0:ch]}),as:id,jm});
+  const m2=Object.assign({},LAST.m,{sl:Object.assign({},sl,{[id]:idx}),pl:Object.assign({},LAST.m.pl,{[idx]:[String(o.n||'Espectador').slice(0,12),0]}),as:id});
   LAST={m:m2};b.send(m2);setTimeout(()=>b.send(m2),500);setTimeout(()=>b.send(m2),1300);
-  if(jm!=='S'){const a={t:'asj',id,idx,n:nm,c:ch};applyJ(a);b.send(a);setTimeout(()=>b.send(a),500);setTimeout(()=>b.send(a),1300)}
-  console.log('[assistir] vaga',idx,jm,'para',id)}
+  console.log('[assistir] vaga',idx,'para',id)}
 }catch(e){console.warn('[assistir]',e)}},700);
 
 /* espectador: morre em silencio e segue os outros jogadores */
