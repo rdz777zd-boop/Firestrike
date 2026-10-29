@@ -71,10 +71,10 @@ function cell(k,n,r,C0){
  el.classList.remove('ok');if(s==='ok')el.classList.add('ok');
  el.classList.toggle('som',!!r.sk);
  el.innerHTML='';
- var w=document.createElement('div');w.className='rw '+s+((r.it&&(r.c||r.g))?' mx':'');
+ var w=document.createElement('div');w.className='rw '+s;
  if(r.sk){
   var cv=skIcon();if(cv)w.appendChild(cv);
-  var t=document.createElement('div');t.className='rt';t.innerHTML='M4A1 SOMBRIA<i class="k" style="color:#c07bff">EVOLUTIVA</i>';w.appendChild(t)}
+  var t=document.createElement('div');t.className='rt';t.innerHTML='<b style="color:#fff">M4A1 SOMBRIA</b><i class="k" style="color:#c07bff">EVOLUTIVA</i>';w.appendChild(t)}
  else{
   var it=r.it,io=it&&itObj(it),ic=io&&itIcon(it),h='';
   if(ic)w.appendChild(ic);
