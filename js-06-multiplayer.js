@@ -115,7 +115,10 @@ setInterval(()=>{const b=MP.bus;if(!MP.on||!b||b.kind!=='ws')return;let U='';try
  fetch(U+'/ping?'+Date.now(),{mode:'no-cors',cache:'no-store'}).then(()=>{const r=Math.round(performance.now()-t);netMs=netMs?Math.round(netMs*.5+r*.5):r}).catch(()=>{})},3000);
 /* ---------- presenca / lobby ---------- */
 function amHost(){const b=MP.bus,me=b&&b.me();if(!me)return 0;const mj=MP.t0||0;for(const k in MP.pr){const o=MP.pr[k];if(!o||o.s!=='l')continue;if(o.j<mj||(o.j===mj&&k<me))return 0}return 1}
-function onSt(id,o,direct){MP.pr[id]=o||{};if(!direct&&o&&o.s==='g'&&Array.isArray(o.xv)&&MP.bus&&o.xv.indexOf(MP.bus.me())>=0)return;if(MP.on&&o&&o.s==='g'&&MP.slots[id]===o.i&&typeof o.x==='number'){const nw=performance.now(),pv=MP.st[o.i];
+function onSt(id,o,direct){MP.pr[id]=o||{};if(!direct&&o&&o.s==='g'&&Array.isArray(o.xv)&&MP.bus&&o.xv.indexOf(MP.bus.me())>=0)return;if(MP.on&&o&&o.s==='g'&&MP.slots[id]===o.i&&typeof o.x==='number'){
+  /* protecao: ignora estado invalido/absurdo vindo da rede (evita NaN/Infinity e arma inexistente travarem a partida de todos) */
+  if(!(isFinite(o.x)&&isFinite(o.y)&&Math.abs(o.x)<1e6&&Math.abs(o.y)<1e6&&isFinite(o.a||0)&&isFinite(o.hp||0)&&Math.abs(o.vx||0)<1e5&&Math.abs(o.vy||0)<1e5&&(o.w==null||(typeof o.w==='number'&&!!WP[o.w]))))return;
+  const nw=performance.now(),pv=MP.st[o.i];
   if(typeof o.vx!=='number'){o.vx=0;o.vy=0;if(pv&&pv._t&&typeof pv.x==='number'){const dt=(nw-pv._t)/1000;if(dt>.02&&dt<.5){o.vx=(o.x-pv.x)/dt;o.vy=(o.y-pv.y)/dt}}}
   o._t=nw;MP.st[o.i]=o}}
 function onJoin(id,o){MP.pr[id]=o||{}}
@@ -219,9 +222,7 @@ function view(){}
 function leave(){const b=MP.bus;if(b){try{b.state({s:'x'});b.leave()}catch(e){}}MP.bus=null;MP.pr={};MP.host=0;MP.on=0}
 async function connect(code){setMsg('Conectando...');leave();MP.code=code;view();let bus=null;
  try{bus=await roomBus(code)}catch(e){console.warn(e)}
- if(!bus){try{bus=await wsBus(code)}catch(e){console.warn(e)}
-  /* sala publica cheia (o servidor recusa a 9a conexao): tenta as proximas salas em vez de cair no PeerJS e ficar sozinho */
-  if(!bus){const ri=ROOMS.indexOf(code);if(ri>=0)for(let j=ri+1;j<ROOMS.length&&!bus;j++){try{bus=await wsBus(ROOMS[j]);if(bus)MP.code=ROOMS[j]}catch(e){}}}}
+ if(!bus){try{bus=await wsBus(code)}catch(e){console.warn(e)}}
  if(!bus){try{bus=await peerBus(code,1)}catch(e){try{bus=await peerBus(code,0)}catch(e2){setMsg('Online indisponivel aqui.');return}}}
  bus.cb={ev:onEv,st:onSt,join:onJoin,left:onLeft};MP.bus=bus;MP.t0=Date.now();MP.host=1;
  bus.state({s:'l',n:clean(PN),c:CH,j:MP.t0});setMsg('');view();
