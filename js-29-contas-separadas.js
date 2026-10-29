@@ -20,7 +20,7 @@ let lock=0,warned=0;
 SP.setItem=function(k){if(lock&&this===LS&&isGame(String(k)))return;return ss.apply(this,arguments)};
 SP.removeItem=function(k){if(lock&&this===LS&&isGame(String(k)))return;return sr.apply(this,arguments)};
 function collect(){const o={};for(let i=0;i<LS.length;i++){const k=LS.key(i);if(k&&isGame(k))o[k]=get(k)}return o}
-function swap(own,cur){
+function swap(own,cur){try{const now=Date.now(),t=+sessionStorage.getItem('arr_swt')||0,n=+sessionStorage.getItem('arr_swn')||0;if(now-t<20000){if(n>=2)return false;sessionStorage.setItem('arr_swn',n+1)}else{sessionStorage.setItem('arr_swt',now);sessionStorage.setItem('arr_swn',1)}}catch(e){}
  const mine=collect();
  if(!set('arr_snap:'+(own||'~g'),JSON.stringify(mine))){
   if(!warned){warned=1;try{soon('Memória do aparelho cheia: não deu para separar os dados desta conta')}catch(e){}}
@@ -30,7 +30,7 @@ function swap(own,cur){
  for(const k of Object.keys(mine))rem(k);
  for(const k in tgt){if(isGame(k)&&typeof tgt[k]==='string')set(k,tgt[k])}
  if(!cur)rem('arr_pn');
- set('arr_slotuser',cur);
+ set('arr_own',cur);
  /* garante o pacote certo mesmo se algo gravar no ultimo instante */
  const fin=()=>{for(const k of Object.keys(mine))if(!(k in tgt))rem(k);for(const k in tgt){if(isGame(k)&&typeof tgt[k]==='string')set(k,tgt[k])}};
  addEventListener('pagehide',fin,true);addEventListener('beforeunload',fin,true);
@@ -61,4 +61,6 @@ function resetAll(){
 /* v2: o reset geral NAO roda mais (ele apagaria o progresso atual do aparelho ao ativar este arquivo) */
 if(get('arr_rst')!==RST)set('arr_rst',RST);
 setInterval(tick,300);
+setInterval(()=>{cloud().catch(()=>{cloudBusy=0})},5000);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)cloud(true).catch(()=>{cloudBusy=0})});
 })();
