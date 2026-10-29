@@ -15,7 +15,23 @@ try{const q=new URLSearchParams(location.search).get('assistir');if(q==='1')loca
 if(!ON)return;
 const MP=window.MP;if(!MP)return;
 const say=t=>{try{soon(t)}catch(e){console.log('[assistir]',t)}};
-let LAST=null,SPEC=null;const used={};
+let LAST=null,SPEC=null,PLAY=null;const used={};
+
+/* todos: um bot vira jogador humano (entrada no meio da partida) */
+function applyJ(a){try{
+ if(!MP.on||typeof G==='undefined'||!G||!G.f)return;
+ const f=G.f[a.idx];if(!f||f.dead||f.isP)return;
+ MP.slots[a.id]=a.idx;MP.pl[a.idx]=[a.n,a.c];
+ f.name=a.n;f.bn=a.n;f.ch=a.c;f.hum=1;f.al=0;f.mx=1;f.mi=0
+}catch(e){console.warn('[assistir]',e)}}
+
+/* quem entrou como jogador: assume a posicao e a vida do bot, com 3s de protecao */
+function playTick(){
+ const me=G.f[PLAY.idx];if(!me||G.p!==me||PLAY.k)return;
+ const t=MP.bs[PLAY.idx];if(!t&&Date.now()-PLAY.t<4000)return;
+ PLAY.k=1;
+ if(t&&!t.d){me.x=t.x;me.y=t.y;if(t.hp>0)me.hp=t.hp;me.ar=t.ar||0}
+ me.st='ground';me.jh=0;me.jv=0;me.vx=0;me.vy=0;me.dn=0;me.inv=Math.max(me.inv||0,3)}
 
 /* liga os ganchos em cada conexao nova */
 function wrap(b){
