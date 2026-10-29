@@ -65,7 +65,7 @@ body #upb{top:calc(var(--v)*38)!important;right:calc(var(--R) + var(--v)*590)!im
 /* ---------- PASSE ELITE: banner "SOMBRAS DO ABISMO - TEMPORADA 1" no canto inferior esquerdo ---------- */
 #menu#menu#menu#menu#menu #elitepb{
  position:absolute!important;display:block!important;left:calc(var(--L) - var(--v)*13)!important;right:auto!important;top:calc(var(--v)*825)!important;bottom:auto!important;
- width:calc(var(--v)*810)!important;height:calc(var(--v)*175)!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important;transform:none!important;
+ width:calc(var(--v)*669)!important;height:calc(var(--v)*175)!important;min-width:0!important;max-width:none!important;margin:0!important;padding:0!important;transform:none!important;
  font-size:0!important;text-align:left;overflow:hidden;z-index:4;
  background:linear-gradient(120deg,#1b1233 0%,#0f0a1f 60%,#1b1233 100%)!important;
  border:calc(var(--v)*4) solid #c9a24a!important;border-radius:calc(var(--v)*12)!important;
