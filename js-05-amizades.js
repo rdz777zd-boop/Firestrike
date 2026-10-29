@@ -71,7 +71,7 @@ if(rel(n)=='r'){accept(n);return}if(rel(n)=='f'){soon('@'+n+' j\u00e1 \u00e9 seu
 if(window.ARR_USER){if(!(window.arrPlayerByName&&window.arrPlayerByName(n))){soon('Jogador não encontrado');return}S.sent.push({n,t:9e15});sv();if(isOpen())render();(window.arrFrSend?window.arrFrSend(n,'req'):Promise.reject()).then(()=>{soon('Pedido enviado para @'+n);sfx()}).catch(()=>{S.sent=S.sent.filter(x=>x.n!=n);sv();soon('Falha ao enviar o pedido. Tente de novo');if(isOpen())render()});return}
 S.sent.push({n,t:Date.now()+3500+Math.random()*7000});sv();soon('Pedido enviado para @'+n);sfx();if(isOpen())render()}
 function accept(n){if(!S.rq.includes(n))return;S.rq=S.rq.filter(x=>x!=n);if(!S.fr.includes(n))S.fr.push(n);sv();if(window.ARR_USER&&window.arrFrSend)window.arrFrSend(n,'acc').catch(()=>{});soon('@'+n+' agora \u00e9 seu amigo!');sfx();fillSG();if(isOpen())render();else badge()}
-function decline(n){S.rq=S.rq.filter(x=>x!=n);sv();soon('Solicita\u00e7\u00e3o recusada');if(isOpen())render();else badge()}
+function decline(n){if(window.ARR_USER&&window.arrFrSend)window.arrFrSend(n,'dec').catch(()=>{});S.rq=S.rq.filter(x=>x!=n);sv();soon('Solicita\u00e7\u00e3o recusada');if(isOpen())render();else badge()}
 function search(){const i=$('frin'),q=(i?i.value:typed).trim().replace(/^@/,'').replace(/^\[[^\]]*\]\s*/,'').replace(/^\*/,'').trim();typed=q;if(!q){soon('Digite o nick do jogador');return}
 const lq=q.toLowerCase();if(lq==String(PN).toLowerCase()){soon('Esse \u00e9 voc\u00ea!');return}
 const sc=n=>{const l=n.toLowerCase();return l==lq?0:l.startsWith(lq)?1:2};
