@@ -154,7 +154,7 @@ function rebuild(){
  const pl={},byN={};
  for(const u in P){if(!UIDRE.test(u)||u===UID)continue;const r=P[u];if(!r||typeof r!='object')continue;const n=sn(r.n,12);if(!n)continue;
   if(window.ARR_USER&&n.toLowerCase()===String(PN).toLowerCase())continue;
-  const o={key:u,n,k:num(r.k,1e7),w:num(r.w,1e7),g:num(r.g,1e7),rp:num(r.rp,1e6),rg:num(r.rg,1e7),rw:num(r.rw,1e7),rt:num(r.rt,1e7),c:null,av:imgc(r.av)||picA(u),bn:imgc(r.bn)||picB(u),ch:chc(r.ch),tj:tjc(r.tj),eq:eqc(r.eq),ep:idc(r.ep),er:idc(r.er),t:+r.t||0};
+  const o={key:u,n,k:num(r.k,1e7),w:num(r.w,1e7),g:num(r.g,1e7),rp:num(r.rp,1e6),rg:num(r.rg,1e7),rw:num(r.rw,1e7),rt:num(r.rt,1e7),c:null,av:imgc(r.av)||picA(u),bn:imgc(r.bn)||picB(u),ch:chc(r.ch),tj:tjc(r.tj),eq:eqc(r.eq),ep:idc(r.ep),er:idc(r.er),aid:/^\d{6,10}$/.test(String(r.aid||''))?String(r.aid):'',t:+r.t||0};
   if(r.cid&&KEYRE.test(r.cid))o.c={id:lid(r.cid),n:sn(r.cn,20)||'Clã',tag:tagc(r.ct)||'CLA',col:colr(r.cc),sym:symc(r.cs)};
   {const nk=n.toLowerCase(),pv=byN[nk];if(pv){if((pv.t||0)>=(o.t||0))continue;delete pl[pv.key]}byN[nk]=o}
   pl[u]=o}
