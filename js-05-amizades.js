@@ -471,8 +471,8 @@ P2.innerHTML='<div class="bx2"><div class="hd"><h3>SALA \u2022 CONTRA SQUAD</h3>
 +'<div class="row"><span>VOC\u00ca</span>'+[['A','EQUIPE 1'],['B','EQUIPE 2'],['S','ESPECTADOR']].map(q=>'<button data-me="'+q[0]+'"'+(l.me==q[0]?' class="on"':'')+'>'+q[1]+'</button>').join('')+'</div>'
 +'<div class="cols">'+col('A','EQUIPE 1')+col('B','EQUIPE 2')+'</div>'
 +'<div class="go2"><button data-fill="1">PREENCHER COM BOTS</button><button data-clr="1">LIMPAR</button><button class="st" data-go="1">INICIAR PARTIDA</button></div></div>'}
-P2.oninput=e=>{const t=e.target;if(t.id=='salaq'){SL().pq=t.value;plist()}else if(t.id=='betamt'){BT.amt=Math.max(0,Math.floor(+t.value||0));const q=document.getElementById('betsum');if(q)q.innerHTML=betSum();for(const x of P2.querySelectorAll('[data-bamt]'))x.classList.toggle('on',+x.dataset.bamt==BT.amt)}};
-P2.onclick=e=>{const t=e.target.closest('[data-x],[data-n],[data-me],[data-add],[data-rm],[data-fill],[data-clr],[data-go],[data-pick],[data-back],[data-rand],[data-pf]');if(!t)return;const l=SL(),d=t.dataset;
+P2.oninput=e=>{if(e.target.id=='salaq'){SL().pq=e.target.value;plist()}};
+P2.onclick=e=>{const t=e.target.closest('[data-x],[data-n],[data-me],[data-add],[data-rm],[data-fill],[data-clr],[data-go],[data-pick],[data-back],[data-rand],[data-pf],[data-bamt],[data-brd],[data-bside]');if(!t)return;const l=SL(),d=t.dataset;
 if(d.x){P2.classList.remove('on');return}
 if(d.back){l.pk=null}
 else if(d.pf){l.pf=d.pf}
