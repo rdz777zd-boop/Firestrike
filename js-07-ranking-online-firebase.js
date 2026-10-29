@@ -67,7 +67,7 @@ window.arrFrSend=async(n,kind)=>{let t=window.arrPlayerByName(n);if(!t){await wi
  if(!t||!UIDRE.test(t.key))throw new Error('x');
  await put('/inbox/'+t.key+'/'+UID,{f:kind,n:sn(PN,12)||'Jogador',t:Date.now()})};
 async function friendInbox(I){if(!window.ARR_USER||!window.arrFrIn||!I||typeof I!='object')return;
- for(const u in I){if(!UIDRE.test(u)||u===UID)continue;const r=I[u];if(!r||typeof r!='object'||(r.f!=='req'&&r.f!=='acc'))continue;
+ for(const u in I){if(!UIDRE.test(u)||u===UID)continue;const r=I[u];if(!r||typeof r!='object'||(r.f!=='req'&&r.f!=='acc'&&r.f!=='dec'&&r.f!=='rem'))continue;
   const n=sn(r.n,12);if(n){try{window.arrFrIn(n,r.f)}catch(e){}}try{await del('/inbox/'+UID+'/'+u)}catch(e){}}}
 
 let UID=ls('arr_uid');
