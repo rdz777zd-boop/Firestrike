@@ -30,7 +30,7 @@ function swap(own,cur){
  for(const k of Object.keys(mine))rem(k);
  for(const k in tgt){if(isGame(k)&&typeof tgt[k]==='string')set(k,tgt[k])}
  if(!cur)rem('arr_pn');
- set('arr_own',cur);
+ set('arr_ownacc',cur);
  /* garante o pacote certo mesmo se algo gravar no ultimo instante */
  const fin=()=>{for(const k of Object.keys(mine))if(!(k in tgt))rem(k);for(const k in tgt){if(isGame(k)&&typeof tgt[k]==='string')set(k,tgt[k])}};
  addEventListener('pagehide',fin,true);addEventListener('beforeunload',fin,true);
@@ -41,10 +41,10 @@ function tick(){
  if(lock)return;
  const cur=String(window.ARR_USER||'').toLowerCase();
  if(!cur&&get('arr_sess'))return;/* sessao salva ainda entrando */
- const own=get('arr_own');
- if(own===null){set('arr_own',cur);return}/* primeira vez nesta versao: os dados atuais ficam com quem esta agora */
+ const own=get('arr_ownacc');
+ if(own===null){set('arr_ownacc',cur);return}/* primeira vez nesta versao: os dados atuais ficam com quem esta agora */
  if(own===cur)return;
- if(own===''&&cur&&!get('arr_snap:'+cur)){set('arr_own',cur);return}/* convidado que cria conta nova: leva o que jogou */
+ if(own===''&&cur&&!get('arr_snap:'+cur)){set('arr_ownacc',cur);return}/* convidado que cria conta nova: leva o que jogou */
  const fk=own+'>'+cur;if(failK===fk)return;
  if(!swap(own,cur))failK=fk}
 /* RESET GERAL (uma unica vez por aparelho, versao r1): apaga progresso, contas guardadas e sessao deste aparelho.
