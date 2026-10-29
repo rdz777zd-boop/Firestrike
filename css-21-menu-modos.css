@@ -86,4 +86,13 @@
  background:#ffd93b12;border-left:3px solid var(--c);border-radius:3px 10px 3px 10px;color:#ffe9c9}
 
 @media (max-height:380px){#modp.mv2 .mv2c{display:none}}
+/* ---------- modo SALA: abas, botoes e lista de salas ---------- */
+#modp.mv2 .salacfg{margin:10px 0 4px;padding:10px;gap:8px;border-radius:4px 14px 4px 14px;background:#0008;border:1px solid #ffffff1f;border-left:3px solid var(--c)}
+#modp.mv2 .salacfg h4{color:var(--c);letter-spacing:2px;font:900 12px 'Rajdhani','Trebuchet MS',Arial,sans-serif}
+#modp.mv2 .salacfg .stb button{border-radius:4px 10px 4px 10px;border:1px solid #ffffff2a;background:#17110d;color:#d8cfc7;letter-spacing:1.5px}
+#modp.mv2 .salacfg .stb button.on{background:linear-gradient(#ffd93b,#ff7a1a);color:#1a0f05;border-color:#fff}
+#modp.mv2 .salacfg .go button{border:0;border-radius:4px 12px 4px 12px;background:linear-gradient(#ffd93b,#ff7a1a);color:#1a0f05;letter-spacing:2px;box-shadow:0 0 14px #ff7a1a88,0 4px 0 #8a3a00}
+#modp.mv2 .salacfg .srl button{border-radius:4px 10px 4px 10px;background:#17110d;border:1px solid #ffffff1a;border-left:3px solid var(--c)}
+#modp.mv2 .salacfg .srl button small{color:var(--c)}
+
 @media (prefers-reduced-motion:reduce){#modp.mv2 .mdk.on::before,#modp.mv2 .mnv{animation:none}}
