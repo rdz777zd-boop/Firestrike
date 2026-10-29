@@ -195,5 +195,9 @@ const _vd=vicDraw;vicDraw=function(){const v=G.vic;if(v&&v.louca&&vsc){return lo
  const fv=Math.tan(42*Math.PI/360),asp=W/H,need=(Math.max(120,(v.ch.length>1?100:80))/(fv*Math.min(asp,2)))*1.15,vn=75/fv,zoom=Math.min(1,t/1.2),e=1-Math.pow(1-zoom,3),dist=Math.max(230,need,vn)*(1.5-.5*e);
  vcam.aspect=asp;vcam.updateProjectionMatrix();vcam.position.set(Math.sin(t*.45)*24*e,95+25*(1-e),30+dist);vcam.lookAt(0,38,30);
  ren.render(vsc,vcam);if(t>=8&&!v.ok)vicEnd()};
+/* anti-travamento (assistindo amigo): a tela de vitoria sempre termina e libera o menu, mesmo se uma cena der erro */
+{const _vsA=vicStart;vicStart=function(T){const r=_vsA.apply(this,arguments);try{const v0=G&&G.vic;if(v0)setTimeout(()=>{try{if(G&&G.vic===v0&&!v0.ok)vicEnd()}catch(e){console.error(e)}},12000)}catch(e){}return r}}
+{const _vdA=vicDraw;vicDraw=function(){try{return _vdA.apply(this,arguments)}catch(e){console.error('vicDraw',e);try{vicEnd()}catch(e2){console.error(e2)}}}}
+{const _vbA=vicBoard;vicBoard=function(){try{return _vbA.apply(this,arguments)}catch(e){console.error('vicBoard',e);try{$('vsb').classList.add('hide');$('end').classList.remove('hide')}catch(e2){}}}}
 })();
 
