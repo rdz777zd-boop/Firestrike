@@ -26,6 +26,11 @@ function swap(own,cur){
   if(!warned){warned=1;try{soon('Memória do aparelho cheia: não deu para separar os dados desta conta')}catch(e){}}
   return false}
  let tgt={};try{const s=get('arr_snap:'+(cur||'~g'));if(s)tgt=JSON.parse(s)||{}}catch(e){tgt={}}
+ /* ID do ranking (arr_uid) separado por conta: cada conta tem o seu proprio registro no ranking online.
+    A conta que esta saindo guarda o ID dela (arr_uid:<usuario>); a que entra recupera o seu, ou, se for nova,
+    fica sem ID e o ranking gera um novo ao recarregar (assim nao sobrescreve a conta anterior). */
+ {const oldU=get('arr_uid');if(oldU)set('arr_uid:'+(own||'~g'),oldU);
+  const newU=get('arr_uid:'+(cur||'~g'));if(newU)set('arr_uid',newU);else rem('arr_uid')}
  lock=1;
  for(const k of Object.keys(mine))rem(k);
  for(const k in tgt){if(isGame(k)&&typeof tgt[k]==='string')set(k,tgt[k])}
