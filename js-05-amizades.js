@@ -521,7 +521,7 @@ h='<div class="bx2"><div class="hd"><h3>'+(BT.mode=='rand'?'ALEAT\u00d3RIO':'FOR
 +(BT.me=='bot'?'<button class="pkb" data-pk="proxy">'+(px?'<b>'+esc(lbl(px))+'</b><small>'+inf(px)+'</small>':'<b>+ ESCOLHER O BOT DO SEU TIME</b>')+'</button><div class="row"><button data-live="1"'+(BT.live?' class="on"':'')+'>ASSISTIR AO VIVO</button><button data-live="0"'+(!BT.live?' class="on"':'')+'>RESULTADO R\u00c1PIDO</button></div>':'')
 +'<div class="go2"><button data-go="1">APOSTAR E JOGAR</button></div></div>';P3.innerHTML=h}
 function betOpen(){try{const o=JSON.parse(localStorage.getItem('arr_bet_open')||'null');if(o){localStorage.removeItem('arr_bet_open');const H=bLoad();H.push({r:'L',a:o.stake,o:o.opp,t:Date.now()});bSave(H);soon('Aposta anterior abandonada: -'+fmt(o.stake)+' gemas')}}catch(e){}
-BT.pk=null;BT.res=null;BT.mode=null;betR();P3.classList.add('on')}
+BT.pk=null;BT.res=null;BT.mode='form';betR();P3.classList.add('on')}
 window.betOpen=betOpen;
 function betPay(b,res){let net;if(res=='W'){gems+=b.stake*2;net=b.stake}else if(res=='D'){gems+=b.stake;net=0}else net=-b.stake;svG();try{$('gemv').textContent=fmt(gems)}catch(e){}try{localStorage.removeItem('arr_bet_open')}catch(e){}
 const H=bLoad();H.push({r:res,a:b.stake,o:b.opp.n,t:Date.now()});bSave(H);const m=res=='W'?'VOCE GANHOU +'+fmt(b.stake)+' GEMAS':res=='D'?'EMPATE - aposta devolvida':'VOCE PERDEU -'+fmt(b.stake)+' GEMAS';soon(m);return m}
