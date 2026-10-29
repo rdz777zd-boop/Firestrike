@@ -472,9 +472,12 @@ P2.innerHTML='<div class="bx2"><div class="hd"><h3>SALA \u2022 CONTRA SQUAD</h3>
 +'<div class="cols">'+col('A','EQUIPE 1')+col('B','EQUIPE 2')+'</div>'
 +'<div class="go2"><button data-fill="1">PREENCHER COM BOTS</button><button data-clr="1">LIMPAR</button><button class="st" data-go="1">INICIAR PARTIDA</button></div></div>'}
 P2.oninput=e=>{if(e.target.id=='salaq'){SL().pq=e.target.value;plist()}};
-P2.onclick=e=>{const t=e.target.closest('[data-x],[data-n],[data-me],[data-add],[data-rm],[data-fill],[data-clr],[data-go],[data-pick],[data-back],[data-rand],[data-pf],[data-bamt],[data-brd],[data-bside]');if(!t)return;const l=SL(),d=t.dataset;
+P2.onclick=e=>{const t=e.target.closest('[data-x],[data-n],[data-me],[data-add],[data-rm],[data-fill],[data-clr],[data-go],[data-pick],[data-back],[data-rand],[data-pf]');if(!t)return;const l=SL(),d=t.dataset;
 if(d.x){P2.classList.remove('on');return}
-if(d.back){l.pk=null}
+if(d.bamt){BT.amt=d.bamt=='max'?Math.max(0,gems|0):+d.bamt}
+else if(d.brd){BT.rd=+d.brd}
+else if(d.bside!==undefined){BT.side=+d.bside}
+else if(d.back){l.pk=null}
 else if(d.pf){l.pf=d.pf}
 else if(d.pick!==undefined){const x=PKR[+d.pick];if(x&&sc(l.pk)<SALA.n&&!used().has(x.n)){l[l.pk].push(x);soon(lbl(x)+' entrou na sala')}l.pk=null}
 else if(d.rand){const r=avail(l.pf,l.pq);if(r.length&&sc(l.pk)<SALA.n){const x=r[Math.random()*r.length|0];l[l.pk].push(x);soon(lbl(x)+' entrou na sala')}l.pk=null}
