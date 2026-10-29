@@ -33,8 +33,6 @@ addPq('Lua Dourada',2,['#1d0f3d','#ffd23b','#fff3a0'],.25,'Noite profunda com li
 addPq('Corvo Sombrio',2,['#0e0820','#7a4aff','#c9b8ff'],0,'Preto de corvo com listras violeta.');
 addPq('Portal do Abismo',3,['#150b24','#9a4dff','#ffd23b'],.5,'Brilha como um portal roxo e dourado.');
 addPq('Eclipse Real',3,['#07030d','#ffd23b','#b36bff'],.6,'Dossel de eclipse com brilho real.');
-addPq('Asa Negra',2,['#0a0612','#9a4dff','#e0d0ff'],.2,'Preto profundo com listras violeta e brilho suave.');
-addPq('Coroa Celeste',3,['#1a0f3d','#ffd23b','#ffffff'],.7,'Dossel dourado e violeta brilhando como uma coroa.');
 
 /* ---------- 3) rastros exclusivos ---------- */
 function addRs(n,ra,o,d){o.n=n;o.ra=ra;o.pr=0;o.pass=1;o.d=d+' Exclusivo do Passe de Elite.';RS.push(o);X.rs.push(RS.length-1)}
@@ -43,6 +41,8 @@ addRs('Almas Perdidas',2,{c:['#d9a8ff','#ffffff','#9a4dff'],sz:9,lf:1.6,rt:38,sp
 addRs('Brasas Sombrias',2,{c:['#ffd23b','#9a4dff','#2a0f4a'],sz:10,lf:1.5,rt:40,sp:30,vy:16},'Brasas douradas e violeta.');
 addRs('Raios Violeta',3,{c:['#fff27a','#b36bff','#ffffff'],sz:8,lf:1,rt:50,sp:40,vy:0,sh:'long',spin:1},'Raios girando no ar.');
 addRs('Estrelas do Abismo',3,{c:['#ffd23b','#ffffff','#b36bff'],sz:9,lf:1.8,rt:40,sp:34,vy:-8,sh:'long',spin:1},'Estrelas cadentes douradas.');
+addRs('Chamas Violeta',2,{c:['#b36bff','#ff7ad9','#2a0f4a'],sz:11,lf:1.4,rt:42,sp:30,vy:18},'Chamas violeta subindo atras de voce.');
+addRs('Cometa Real',3,{c:['#ffd23b','#ffffff','#9a4dff'],sz:10,lf:1.6,rt:46,sp:38,vy:-4,sh:'long',spin:1},'Cometa dourado deixando faiscas.');
 
 /* ---------- 4) fora da loja (so aparecem la depois de resgatados) ---------- */
 if(typeof shItems==='function'&&typeof shOwn==='function'&&!shItems.__pass){
