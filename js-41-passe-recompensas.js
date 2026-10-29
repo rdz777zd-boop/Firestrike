@@ -116,14 +116,14 @@ function claim(k,n,quiet){
  if(r.sk&&window.SOMBRIA_IDX==null){if(!quiet)toast('M4A1 SOMBRIA indisponivel: atualize o jogo');return false}
  give(r);C0[k+n]=1;svCl(C0);flush();
  if(!quiet){sfx(700,.15,'triangle',.06,400);sfx(1000,.12,'triangle',.05,300);
-  toast(r.sk?'M4A1 SOMBRIA desbloqueada e equipada!':r.tj?'Traje SOBERANO DO ABISMO desbloqueado! Equipe em PERSONAGENS. ':(r.it&&itObj(r.it)?itObj(r.it).n+' desbloqueado! ':'')+(r.c||r.g?'+ ':'')+(r.c?F(r.c)+' moedas ':'')+(r.g?F(r.g)+' gemas':''));render()}
+  toast(r.sk?'M4A1 SOMBRIA desbloqueada e equipada!':(r.it&&itObj(r.it)?itObj(r.it).n+' desbloqueado! ':'')+(r.c||r.g?'+ ':'')+(r.c?F(r.c)+' moedas ':'')+(r.g?F(r.g)+' gemas':''));render()}
  return true}
 function pending(){var C0=cl(),n=0;for(var i=1;i<=NIV;i++){if(stOf('f',i,C0)==='ok')n++;if(VIP[i-1]&&stOf('v',i,C0)==='ok')n++}return n}
 function claimAll(){
  var t=0,c=0,g=0,sk=0,ni=0,C0;
  for(var i=1;i<=NIV;i++){['f','v'].forEach(function(k){
   var r=rewOf(k,i);if(!r)return;C0=cl();
-  if(stOf(k,i,C0)==='ok'&&claim(k,i,1)){t++;c+=r.c||0;g+=r.g||0;if(r.sk)sk=1;if(r.it)ni++}})}
+  if(stOf(k,i,C0)==='ok'&&claim(k,i,1)){t++;c+=r.c||0;g+=r.g||0;if(r.sk)sk=1;if(r.it||r.tj)ni++}})}
  if(!t){toast('Nada para resgatar agora');return}
  sfx(700,.15,'triangle',.06,400);sfx(1000,.15,'triangle',.05,300);
  toast('Resgatado: '+(c?F(c)+' moedas ':'')+(g?F(g)+' gemas ':'')+(ni?ni+' item(ns) ':'')+(sk?'+ M4A1 SOMBRIA':''));render()}
