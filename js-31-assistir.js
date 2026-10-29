@@ -39,8 +39,7 @@ setInterval(()=>{try{
 
 /* espectador: morre em silencio e segue os outros jogadores */
 setInterval(()=>{try{
- if(!MP.on){SPEC=null;PLAY=null;return}
- if(PLAY&&typeof G!=='undefined'&&G&&G.f)playTick();
+ if(!MP.on){SPEC=null;return}
  if(!SPEC||typeof G==='undefined'||!G||!G.f)return;
  const me=G.f[SPEC.idx];if(!me)return;
  if(G.p===me&&!me.dead&&!SPEC.k){SPEC.k=1;me.mpd=1;
@@ -53,14 +52,13 @@ setInterval(()=>{try{
 /* botao ASSISTIR no menu */
 function btn(){
  let d=document.getElementById('asbtn');
- if(!d){d=document.createElement('button');d.id='asbtn';d.type='button';d.textContent='ASSISTIR';
+ if(!d){d=document.createElement('button');d.id='asbtn';d.type='button';d.textContent='ENTRAR NA PARTIDA';
   d.style.cssText="position:fixed;left:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:100000;font:800 15px 'Rajdhani',Arial,sans-serif;letter-spacing:1.5px;padding:8px 14px;border-radius:4px 12px 4px 12px;border:0;background:linear-gradient(#ffd93b,#ff7a1a);color:#1a0f05;box-shadow:0 0 12px #ff7a1a99;display:none";
   d.onclick=async()=>{
    const c=(prompt('Codigo da sala para assistir:')||'').trim().toLowerCase();if(!c)return;
    if(!window.ARR_NET){say('Online indisponivel');return}
    try{await window.ARR_NET.connect(c);if(!MP.bus){say('Nao consegui entrar na sala');return}
-    MP.bus.state({as:1,jm});say('Na sala. Aguardando uma vaga...');
-    setTimeout(()=>{if(!MP.on&&!MP.arm)say('Ainda sem vaga: tente de novo mais tarde')},25000)}catch(e){say('Nao consegui entrar na sala')}};
+    MP.bus.state({as:1});say('Na sala. Aguardando uma vaga de espectador...')}catch(e){say('Nao consegui entrar na sala')}};
   document.body.appendChild(d)}
  return d}
 setInterval(()=>{try{const d=btn();d.style.display=(!MP.on&&!MP.arm&&typeof mode!=='undefined'&&mode!=='play')?'block':'none'}catch(e){}},500);
