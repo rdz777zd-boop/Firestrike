@@ -15,23 +15,7 @@ try{const q=new URLSearchParams(location.search).get('assistir');if(q==='1')loca
 if(!ON)return;
 const MP=window.MP;if(!MP)return;
 const say=t=>{try{soon(t)}catch(e){console.log('[assistir]',t)}};
-let LAST=null,SPEC=null,PLAY=null;const used={};
-
-/* todos: um bot vira jogador humano (entrada no meio da partida) */
-function applyJ(a){try{
- if(!MP.on||typeof G==='undefined'||!G||!G.f)return;
- const f=G.f[a.idx];if(!f||f.dead||f.isP)return;
- MP.slots[a.id]=a.idx;MP.pl[a.idx]=[a.n,a.c];
- f.name=a.n;f.bn=a.n;f.ch=a.c;f.hum=1;f.al=0;f.mx=1;f.mi=0
-}catch(e){console.warn('[assistir]',e)}}
-
-/* quem entrou como jogador: assume a posicao e a vida do bot, com 3s de protecao */
-function playTick(){
- const me=G.f[PLAY.idx];if(!me||G.p!==me||PLAY.k)return;
- const t=MP.bs[PLAY.idx];if(!t&&Date.now()-PLAY.t<4000)return;
- PLAY.k=1;
- if(t&&!t.d){me.x=t.x;me.y=t.y;if(t.hp>0)me.hp=t.hp;me.ar=t.ar||0}
- me.st='ground';me.jh=0;me.jv=0;me.vx=0;me.vy=0;me.dn=0;me.inv=Math.max(me.inv||0,3)}
+let LAST=null,SPEC=null;const used={};
 
 /* liga os ganchos em cada conexao nova */
 function wrap(b){
@@ -46,11 +30,18 @@ setInterval(()=>{try{
  if(!(MP.on&&MP.host&&LAST&&typeof G!=='undefined'&&G&&G.f))return;
  const sl=LAST.m.sl||{};
  for(const id in MP.pr){const o=MP.pr[id];if(!o||!o.as||sl[id]!=null||id===b.me())continue;
-  const idx=G.f.findIndex((f,i)=>f.dead&&!f.hum&&!f.isP&&!used[i]);if(idx<0)continue;
+  const jm=o.jm==='T'||o.jm==='C'?o.jm:'S',ht=G.p?G.p.tm:0;
+  const idx=G.f.findIndex((f,i)=>{if(f.hum||f.isP||used[i])return false;
+   if(jm==='S')return !!f.dead;
+   if(f.dead||f.dn>0)return false;
+   return jm==='T'?f.tm===ht:f.tm!==ht});
+  if(idx<0)continue;
   used[idx]=1;
-  const m2=Object.assign({},LAST.m,{sl:Object.assign({},sl,{[id]:idx}),pl:Object.assign({},LAST.m.pl,{[idx]:[String(o.n||'Espectador').slice(0,12),0]}),as:id});
+  const nm=String(o.n||'Jogador').slice(0,12),ch=+o.c||0;
+  const m2=Object.assign({},LAST.m,{sl:Object.assign({},sl,{[id]:idx}),pl:Object.assign({},LAST.m.pl,{[idx]:[nm,jm==='S'?0:ch]}),as:id,jm});
   LAST={m:m2};b.send(m2);setTimeout(()=>b.send(m2),500);setTimeout(()=>b.send(m2),1300);
-  console.log('[assistir] vaga',idx,'para',id)}
+  if(jm!=='S'){const a={t:'asj',id,idx,n:nm,c:ch};applyJ(a);b.send(a);setTimeout(()=>b.send(a),500);setTimeout(()=>b.send(a),1300)}
+  console.log('[assistir] vaga',idx,jm,'para',id)}
 }catch(e){console.warn('[assistir]',e)}},700);
 
 /* espectador: morre em silencio e segue os outros jogadores */
