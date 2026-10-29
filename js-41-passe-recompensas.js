@@ -114,10 +114,9 @@ function claim(k,n,quiet){
  if(s==='cl'){if(!quiet)toast('Ja resgatado');return false}
  if(s!=='ok'){if(!quiet)toast(k==='v'&&!own()&&lvl()>=n?'Exclusivo do Passe VIP':'Alcance o nivel '+n);if(!quiet)sfx(180,.12,'sawtooth',.04,-60);return false}
  if(r.sk&&window.SOMBRIA_IDX==null){if(!quiet)toast('M4A1 SOMBRIA indisponivel: atualize o jogo');return false}
- if(r.tj&&!window.PE_TJ){if(!quiet)toast('Traje indisponivel: atualize o jogo');return false}
  give(r);C0[k+n]=1;svCl(C0);flush();
  if(!quiet){sfx(700,.15,'triangle',.06,400);sfx(1000,.12,'triangle',.05,300);
-  toast(r.sk?'M4A1 SOMBRIA desbloqueada e equipada!':(r.it&&itObj(r.it)?itObj(r.it).n+' desbloqueado! ':'')+(r.c||r.g?'+ ':'')+(r.c?F(r.c)+' moedas ':'')+(r.g?F(r.g)+' gemas':''));render()}
+  toast(r.sk?'M4A1 SOMBRIA desbloqueada e equipada!':r.tj?'Traje SOBERANO DO ABISMO desbloqueado! Equipe em PERSONAGENS. ':(r.it&&itObj(r.it)?itObj(r.it).n+' desbloqueado! ':'')+(r.c||r.g?'+ ':'')+(r.c?F(r.c)+' moedas ':'')+(r.g?F(r.g)+' gemas':''));render()}
  return true}
 function pending(){var C0=cl(),n=0;for(var i=1;i<=NIV;i++){if(stOf('f',i,C0)==='ok')n++;if(VIP[i-1]&&stOf('v',i,C0)==='ok')n++}return n}
 function claimAll(){
