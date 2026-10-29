@@ -1736,6 +1736,21 @@ btn('kit',r=>{icon(X,'k',0,-2,r*.5,0);Tx(p.kt,r*.55,r*.55,r*.5,'#fff')},p.hl&&p.
 btn('ice',r=>{X.save();if(p.ic<=0)X.globalAlpha=.5;X.strokeStyle='#ffddbf';X.lineWidth=3.5;X.lineCap='round';for(let i=0;i<3;i++){const a=i/3*Math.PI+.3;X.beginPath();X.moveTo(Math.cos(a)*r*.52,Math.sin(a)*r*.52);X.lineTo(-Math.cos(a)*r*.52,-Math.sin(a)*r*.52);X.stroke()}X.restore();X.strokeStyle='#ffba7d';X.lineWidth=5;X.beginPath();X.arc(0,0,r+6,-1.5708,-1.5708+6.2832*(p.ic>=3?1:cl(p.ict/ICE.rc,0,1)));X.stroke();Tx(p.ic,r*.55,r*.55,r*.5,'#fff')},p.icd>0);
 btn('eye',r=>{X.strokeStyle='#fff';X.lineWidth=3;X.beginPath();X.ellipse(0,0,r*.65,r*.38,0,0,7);X.stroke();X.fillStyle='#fff';X.beginPath();X.arc(0,0,r*.2,0,7);X.fill()},fl.on);btn('ads',r=>{X.strokeStyle='#fff';X.lineWidth=4;X.beginPath();X.arc(0,0,r*.42,0,7);X.moveTo(-r*.7,0);X.lineTo(-r*.2,0);X.moveTo(r*.7,0);X.lineTo(r*.2,0);X.moveTo(0,-r*.7);X.lineTo(0,-r*.2);X.moveTo(0,r*.7);X.lineTo(0,r*.2);X.stroke()},ads);sgChips();btn('hop',r=>{X.fillStyle='#fff';X.beginPath();X.moveTo(0,-r*.55);X.lineTo(r*.6,r*.15);X.lineTo(-r*.6,r*.15);X.fill();X.fillRect(-r*.2,r*.1,r*.4,r*.4)},p.jh>0);if(!g.room)btn('sld',r=>{if(p.slc>0){Tx(Math.ceil(p.slc),0,0,r*.7,'#fff');return}X.strokeStyle='#fff';X.lineWidth=3;X.lineCap='round';X.beginPath();X.moveTo(-r*.55,-r*.12);X.lineTo(-r*.15,-r*.12);X.moveTo(-r*.65,r*.05);X.lineTo(-r*.25,r*.05);X.stroke();X.fillStyle='#fff';X.beginPath();X.roundRect(-r*.1,-r*.3,r*.6,r*.32,r*.12);X.fill();Tx('SLIDE',0,r*.62,r*.26,'#fff')},p.slc>0);try{pkBar(g,p)}catch(_){}if(g.pk)btn('pik',r=>{drawW(X,g.pk.id,r*1.1)},0);
 if(p.rt||nearDown(p))btn('rev',r=>{icon(X,'k',0,-r*.12,r*.42,0);Tx(p.rt?(5-p.rp).toFixed(1)+'s':'REVIVER',0,r*.55,r*.27,'#fff')},!!p.rt)}}
+/* ===== LOOT NO CHAO: barra embaixo com 3 slots (arma, municao, acessorio) quando ha arma dropada perto ===== */
+function pkBar(g,p){if(!g||g.room||p.dead||p.st!='ground'||p.dn>0)return;let w=null,a=null,s=null,bw=60,ba=60,bs=60;
+for(const q of g.items){if(Math.abs(q.x-p.x)>60||Math.abs(q.y-p.y)>60)continue;const d=dst(p,q);if(q.t=='w'&&d<bw){bw=d;w=q}else if(q.t=='a'&&d<ba){ba=d;a=q}else if(q.t=='s'&&d<bs){bs=d;s=q}}
+if(!w)return;const wp=WP[w.id],o0=p.ws[0],o1=p.ws[1];
+const upW=o0==null||o1==null||WR[w.id]>Math.min(WR[o0],WR[o1]),upS=!!s&&s.k>(p.sgk|0);
+const sz=46*U,gp=8*U,y=H-10*U-sz/2,x0=W/2-sz-gp;
+const slot=(i,draw,up,lb)=>{const x=x0+i*(sz+gp);X.save();X.translate(x,y);X.fillStyle='#000';X.strokeStyle='#8a8f98';X.lineWidth=2;X.beginPath();X.roundRect(-sz/2,-sz/2,sz,sz,5*U);X.fill();X.stroke();
+if(draw){X.save();X.translate(0,-4*U);draw();X.restore()}
+if(lb)Tx(lb,0,sz/2-7*U,8*U,'#fff');
+if(up){const r=6*U,ax=sz/2-9*U,ay=-sz/2+10*U;X.fillStyle='#2ee86b';X.strokeStyle='#000';X.lineWidth=1.5;X.beginPath();X.moveTo(ax,ay-r);X.lineTo(ax+r,ay+r*.3);X.lineTo(ax+r*.4,ay+r*.3);X.lineTo(ax+r*.4,ay+r);X.lineTo(ax-r*.4,ay+r);X.lineTo(ax-r*.4,ay+r*.3);X.lineTo(ax-r,ay+r*.3);X.closePath();X.fill();X.stroke()}
+X.restore()};
+Tx(wp.n,W/2,y-sz/2-9*U,12*U,'#fff');
+slot(0,()=>drawW(X,w.id,sz*.62),upW,null);
+slot(1,()=>icon(X,'a',0,0,sz*.2,AKC[wp.ak>=0?wp.ak:0]),0,a?'+'+a.n:''+(p.res[wp.ak>=0?wp.ak:0]|0));
+slot(2,s?()=>{const C=['#ff6b6b','#ff944d','#c07bff','#ffb43b'][s.k];X.strokeStyle=C;X.lineWidth=2.5;X.beginPath();X.arc(0,0,sz*.2,0,7);X.moveTo(-sz*.34,0);X.lineTo(-sz*.1,0);X.moveTo(sz*.1,0);X.lineTo(sz*.34,0);X.moveTo(0,-sz*.34);X.lineTo(0,-sz*.1);X.moveTo(0,sz*.1);X.lineTo(0,sz*.34);X.stroke()}:null,upS,s?['Ponto','2x','4x','Luneta'][s.k]:'')}
 let lt=performance.now();function loop(t){requestAnimationFrame(loop);if(QI&&t-qLast<QI-2)return;qLast=t;const dt=Math.min(QDT,Math.max(0,(t-lt)/1000))||.016;lt=t;gdt=dt;try{qMeter(t)}catch(_){}try{const pz_=(mode=='play'&&(HE.on||!$('set').classList.contains('hide')))||(pv&&mode!='play');if(G&&(mode=='play'||mode=='end')&&!pz_&&!G.vic)upd(dt);if(G&&G.kc&&G.kc.on&&!pz_&&!G.vic)kcStep(dt);const kv=G&&G.kc&&G.kc.on?kcApply():null;try{if(!pz_){render();window.rpCap&&window.rpCap()}}finally{if(kv)kcRestore(kv)}if(kv)kcBanner()}catch(err){console.error(err);X.setTransform(D,0,0,D,0,0);X.fillStyle='#fff';X.font='12px monospace';X.textAlign='left';X.fillText('Erro: '+err.message,10,H-10)}}
 
 /* botao X no cabecalho fixo dos paineis */
