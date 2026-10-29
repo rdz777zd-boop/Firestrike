@@ -58,6 +58,7 @@ function resetAll(){
  try{sessionStorage.clear()}catch(e){}
  addEventListener('pagehide',()=>{wipe();set('arr_rst',RST)},true);addEventListener('beforeunload',()=>{wipe();set('arr_rst',RST)},true);
  setTimeout(()=>location.reload(),60)}
-if(get('arr_rst')!==RST){resetAll();return}
+/* v2: o reset geral NAO roda mais (ele apagaria o progresso atual do aparelho ao ativar este arquivo) */
+if(get('arr_rst')!==RST)set('arr_rst',RST);
 setInterval(tick,300);
 })();
