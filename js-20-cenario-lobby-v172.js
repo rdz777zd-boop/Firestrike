@@ -69,7 +69,19 @@ function banLock(r,id){if(window.__banned)return;window.__banned=1;try{localStor
  const d=document.createElement('div');d.id='banov';d.style.cssText='position:fixed;inset:0;z-index:2147483000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;box-sizing:border-box;background:#0a0807;color:#fff;font-family:Trebuchet MS,Arial,sans-serif;text-align:center;touch-action:none;user-select:none';
  const h=document.createElement('div');h.textContent='VOCÊ FOI BANIDO';h.style.cssText='font:900 clamp(26px,7vw,44px) Trebuchet MS,Arial;color:#ff3b30;letter-spacing:2px';
  const p=document.createElement('div');p.textContent='Sua conta (ID '+(id||'?')+') foi banida pelo dono do jogo.'+(r&&r.r?' Motivo: '+r.r:'');p.style.cssText='font-size:15px;max-width:460px;line-height:1.5;opacity:.9';
- d.appendChild(h);d.appendChild(p);['pointerdown','touchstart','keydown','click'].forEach(t=>d.addEventListener(t,e=>{e.stopPropagation()},true));document.body.appendChild(d)}
+ const bw=document.createElement('div');bw.style.cssText='display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;justify-content:center';
+ const bs=document.createElement('button');bs.className='banbtn';bs.textContent='SUPORTE';bs.style.cssText='padding:12px 24px;border:none;border-radius:8px;background:#ff3b30;color:#fff;font:800 14px Trebuchet MS,Arial;letter-spacing:1px;cursor:pointer';
+ bs.onclick=e=>{e.stopPropagation();window.open('https://www.tiktok.com/@kkjsono','_blank')};
+ const be=document.createElement('button');be.className='banbtn';be.textContent='SAIR';be.style.cssText='padding:12px 24px;border:none;border-radius:8px;background:#2a2622;color:#fff;font:800 14px Trebuchet MS,Arial;letter-spacing:1px;cursor:pointer';
+ be.onclick=e=>{e.stopPropagation();
+  try{N().leave()}catch(e2){}try{N().lbClose()}catch(e2){}
+  try{d.remove()}catch(e2){}
+  try{hide('lo')}catch(e2){}
+  try{localStorage.removeItem('arr_sess')}catch(e2){}
+  user=null;window.ARR_USER=null;window.ARR_UID='';window.__banned=0;
+  try{show('au')}catch(e2){}};
+ bw.appendChild(bs);bw.appendChild(be);
+ d.appendChild(h);d.appendChild(p);d.appendChild(bw);['pointerdown','touchstart','keydown','click'].forEach(t=>d.addEventListener(t,e=>{if(e.target&&e.target.closest&&e.target.closest('.banbtn'))return;e.stopPropagation()},true));document.body.appendChild(d)}
 async function BL(){try{const G=await bnRead();if(!G)return;window.ARR_BANS=G;const me=String(window.ARR_UID||'');
  let dev='';try{dev=localStorage.getItem('arr_ban')||''}catch(e){}
  if(me&&me!==OWNER_ID&&G[me]){banLock(G[me],me);return}
