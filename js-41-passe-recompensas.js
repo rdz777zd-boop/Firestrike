@@ -52,21 +52,7 @@ var st=document.createElement('style');st.id='pr-css';st.textContent=
 '#pe .pqf.ok,#pe .pqv.ok{border-style:solid;border-color:var(--g2);box-shadow:0 0 calc(var(--s)*3) #f6d77a99;animation:pepl 1.6s ease-in-out infinite}'+
 '#pe .pqv.som{border-color:#9a4dff;background:radial-gradient(circle at 50% 40%,#3a1670,#0e0820 75%)}'+
 '#pe .pqall{margin-top:calc(var(--s)*1);width:100%;padding:calc(var(--s)*1.8) calc(var(--s)*2);border:2px solid #f8e39a;border-radius:calc(var(--s)*1.4);background:linear-gradient(#f9df8c,#e4b84e 55%,#c9962f);color:#2a1608;font:900 calc(var(--s)*4.6)/1 Rajdhani,Arial,sans-serif;letter-spacing:calc(var(--s)*.2)}'+
-'#pe .pqall[disabled]{background:#1d1635;border-color:#3b2f63;color:#8a82a6}'+
-/* layout dos cards: imagem em cima (ocupa o espaco que sobra), nome/valores no meio, barra embaixo */
-'#pe .rw{justify-content:flex-start;gap:calc(var(--s)*.6);padding:calc(var(--s)*4.8) calc(var(--s)*.8) calc(var(--s)*5.6)}'+
-'#pe .rw .rimg{flex:1 1 0;min-height:0;width:100%;display:flex;align-items:center;justify-content:center}'+
-'#pe .rw .rimg canvas{width:100%;height:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 0 calc(var(--s)*1) #9a4dff)}'+
-'#pe .rw .rt{flex:none;width:100%;display:flex;flex-direction:column;align-items:center;gap:calc(var(--s)*.4)}'+
-'#pe .rw .rt b{font-size:calc(var(--s)*3);line-height:1.05;text-align:center;word-break:break-word}'+
-'#pe .rw .rt u{font-size:calc(var(--s)*2.3);line-height:1;text-align:center}'+
-'#pe .rw .ra{display:flex;flex-wrap:wrap;justify-content:center;gap:calc(var(--s)*.2) calc(var(--s)*1);font:800 calc(var(--s)*3.2)/1.1 Rajdhani,Arial,sans-serif}'+
-'#pe .rw .ra span{display:flex;align-items:center;gap:calc(var(--s)*.4);color:#7fd6ff}'+
-'#pe .rw .ra span.k{color:#ffd45a}'+
-'#pe .rw .ra svg{width:calc(var(--s)*3.2);height:calc(var(--s)*3.2);flex:none}'+
-'#pe .rw .rt.only .ra{font-size:calc(var(--s)*4.6);flex-direction:column;align-items:center}'+
-'#pe .rw .rt.only .ra svg{width:calc(var(--s)*4.4);height:calc(var(--s)*4.4)}'+
-'#pe .rw .rb{padding:calc(var(--s)*1.2) 0;font-size:calc(var(--s)*3)}';
+'#pe .pqall[disabled]{background:#1d1635;border-color:#3b2f63;color:#8a82a6}';
 document.head.appendChild(st);
 
 /* ---------- dados ---------- */
@@ -113,6 +99,7 @@ function give(r){
  if(r.c){try{coins+=r.c;svD();var e=$$('coins');if(e)e.textContent=F(coins)}catch(x){}}
  if(r.g){try{gems+=r.g;svG();var g=$$('gemv');if(g)g.textContent=F(gems)}catch(x){}}
  if(r.sk)ensureSk(1);
+ if(r.tj)try{window.PE_TJ.give(r.tj)}catch(x){}
  if(r.it)giveIt(r.it)}
 function giveIt(it){
  try{var L=it.t==='sk'?OWN:it.t==='pq'?OWNP:OWNR;if(L.indexOf(it.i)<0){L.push(it.i);svD()}}catch(e){}}
