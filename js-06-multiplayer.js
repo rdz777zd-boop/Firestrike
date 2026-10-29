@@ -222,7 +222,9 @@ function view(){}
 function leave(){const b=MP.bus;if(b){try{b.state({s:'x'});b.leave()}catch(e){}}MP.bus=null;MP.pr={};MP.host=0;MP.on=0}
 async function connect(code){setMsg('Conectando...');leave();MP.code=code;view();let bus=null;
  try{bus=await roomBus(code)}catch(e){console.warn(e)}
- if(!bus){try{bus=await wsBus(code)}catch(e){console.warn(e)}}
+ if(!bus){try{bus=await wsBus(code)}catch(e){console.warn(e)}
+  /* sala publica cheia (o servidor recusa a 9a conexao): tenta as proximas salas em vez de cair no PeerJS e ficar sozinho */
+  if(!bus){const ri=ROOMS.indexOf(code);if(ri>=0)for(let j=ri+1;j<ROOMS.length&&!bus;j++){try{bus=await wsBus(ROOMS[j]);if(bus)MP.code=ROOMS[j]}catch(e){}}}}
  if(!bus){try{bus=await peerBus(code,1)}catch(e){try{bus=await peerBus(code,0)}catch(e2){setMsg('Online indisponivel aqui.');return}}}
  bus.cb={ev:onEv,st:onSt,join:onJoin,left:onLeft};MP.bus=bus;MP.t0=Date.now();MP.host=1;
  bus.state({s:'l',n:clean(PN),c:CH,j:MP.t0});setMsg('');view();
