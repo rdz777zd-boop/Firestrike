@@ -474,10 +474,7 @@ P2.innerHTML='<div class="bx2"><div class="hd"><h3>SALA \u2022 CONTRA SQUAD</h3>
 P2.oninput=e=>{if(e.target.id=='salaq'){SL().pq=e.target.value;plist()}};
 P2.onclick=e=>{const t=e.target.closest('[data-x],[data-n],[data-me],[data-add],[data-rm],[data-fill],[data-clr],[data-go],[data-pick],[data-back],[data-rand],[data-pf]');if(!t)return;const l=SL(),d=t.dataset;
 if(d.x){P2.classList.remove('on');return}
-if(d.bamt){BT.amt=d.bamt=='max'?Math.max(0,gems|0):+d.bamt}
-else if(d.brd){BT.rd=+d.brd}
-else if(d.bside!==undefined){BT.side=+d.bside}
-else if(d.back){l.pk=null}
+if(d.back){l.pk=null}
 else if(d.pf){l.pf=d.pf}
 else if(d.pick!==undefined){const x=PKR[+d.pick];if(x&&sc(l.pk)<SALA.n&&!used().has(x.n)){l[l.pk].push(x);soon(lbl(x)+' entrou na sala')}l.pk=null}
 else if(d.rand){const r=avail(l.pf,l.pq);if(r.length&&sc(l.pk)<SALA.n){const x=r[Math.random()*r.length|0];l[l.pk].push(x);soon(lbl(x)+' entrou na sala')}l.pk=null}
@@ -488,6 +485,7 @@ else if(d.rm){const k=d.rm[0],i=+d.rm.slice(1);l[k].splice(i,1)}
 else if(d.fill){for(const k of['A','B'])while(sc(k)<SALA.n){const r=avail('a','');if(!r.length)break;l[k].push(r[Math.random()*r.length|0])}}
 else if(d.clr){l.A=[];l.B=[]}
 else if(d.go){if(sc('A')<1||sc('B')<1){soon('Convide bots para as duas equipes');return}
+if(BL){betGo();return}
 l.go=1;l.lbl=sc('A')+'x'+sc('B');SALA.w=l.me=='S'?1:0;sv();TB=4;MS=sMS;AL=sAL;mref();P2.classList.remove('on');$('modp').classList.add('hide');startL();return}
 salaR()};
 const f0=finish2;finish2=function(){if(!(G&&G.sala&&G.cs))return f0.apply(this,arguments);const c=G.cs,w=c.sc[0]==c.sc[1]?-1:c.sc[0]>c.sc[1]?0:1,N=G.teams[0].m.length+'x'+G.teams[1].m.length,tt=' (treino \u2022 nada conta)';
