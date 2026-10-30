@@ -16,6 +16,8 @@ const DATA={
   st:[['MODO','Espectador'],['CÂMERA','Livre ou seguir'],['TROCAR','Tecla TAB'],['PRÊMIO','+1 vitória e XP']]},
  'HALLOWEEN CITY':{cat:'EVENTO • PvE',chips:['TIME DE 4','ONDAS DE ZUMBIS','EVENTO'],
   st:[['TIME','4 jogadores'],['TIPO','Sobrevivência PvE'],['CHEFE','Gigante a cada 5 ondas'],['LOJA','Gaste os doces']]},
+ 'SALA APOSTADA':{cat:'SALA \u2022 APOSTA',chips:['1x1 A 5x5','JOGUE OU ASSISTA','VALE GEMAS'],
+  st:[['TAMANHO','1x1 a 5x5'],['APOSTA','a partir de 10 gemas'],['MELHOR DE','1, 3 ou 5 rounds'],['PR\u00caMIO','O dobro da aposta']]},
  'SALA':{cat:'TREINO • SALA',chips:['1x1 A 5x5','JOGUE OU ASSISTA','NADA CONTA'],
   st:[['TAMANHO','1x1 a 5x5'],['EQUIPES','2 equipes de bots'],['ARMAS','5 armas'],['RANK','Nada conta']]},
  'MODO APOSTADO_OLD':{cat:'APOSTA • 1x1',chips:['1x1','VALE GEMAS','ALEATÓRIO OU FORMADO'],
