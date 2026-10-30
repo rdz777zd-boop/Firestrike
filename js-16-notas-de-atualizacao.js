@@ -4,6 +4,10 @@
    com v = número seguinte. Todo jogador recebe um aviso novo em AVISOS automaticamente.
    Tipos: NOVO, CORRIGIDO, MELHORADO, REMOVIDO. */
 var ARR_NOTAS=[
+ {v:162,d:'30/10/2026',t:'Músicas novas e ajustes do Contra Squad',i:[
+  ['NOVO','<b>Músicas diferentes no jogo.</b> O lobby agora tem 4 músicas que se alternam sozinhas, e as partidas têm trilha própria (Battle Royale, Contra Squad e Halloween City). A trilha da partida fica baixinha para não cobrir tiros e passos. Dá para desligar no botão de música dos ajustes.'],
+  ['CORRIGIDO','<b>Contra Squad e modos parecidos:</b> todo round começa com exatamente 500 moedas.'],
+  ['CORRIGIDO','<b>A SMG não vem mais de graça</b> na Sala: você começa só com a pistola e compra a SMG.']]},
  {v:161,d:'28/10/2026',t:'Contra Squad e Sala online com amigos',i:[
   ['CORRIGIDO','<b>Contra Squad com amigos agora \u00e9 na mesma partida.</b> Antes cada um entrava numa partida separada, s\u00f3 contra bots. Agora quem convidou e quem foi convidado jogam juntos: mesmo mapa, mesmos rounds, mesmo placar. O dono da equipe decide as fases (compra, luta, fim do round).'],
   ['CORRIGIDO','<b>Sala (2x2 ou mais) com amigos</b> tamb\u00e9m entra na mesma partida.'],
