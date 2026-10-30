@@ -439,6 +439,7 @@ function SALAUI(d){
  d.onclick=e=>{const t=e.target.closest('button');if(!t)return;const k=t.dataset;
   if(k.t!==undefined){STAB=+k.t;if(STAB==1)salaRq();draw();return}
   if(k.c){$('modp').classList.add('hide');salaOpen();window.ARR_SALA&&window.ARR_SALA();return}
+  if(k.w!==undefined){$('modp').classList.add('hide');salaOpen();return}
   if(k.r){salaRq();draw();return}
   if(k.j){$('modp').classList.add('hide');window.ARR_JOIN&&window.ARR_JOIN(k.j)}};
  window.ARR_RLU=()=>{if(STAB==1&&d.isConnected)draw()};
