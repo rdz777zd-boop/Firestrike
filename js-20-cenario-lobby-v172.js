@@ -285,7 +285,7 @@ $('au_l').onclick=()=>auth(0);$('au_r').onclick=()=>auth(1);$('au_gu').onclick=g
 $('au_p').onkeydown=e=>{if(e.key==='Enter')auth(AM)};$('au_n').onkeydown=e=>{if(e.key==='Enter')auth(1)};
 try{const se=$('set');if(se)new MutationObserver(()=>{if(!se.classList.contains('hide'))glRefresh()}).observe(se,{attributes:true,attributeFilter:['class']})}catch(e){}
 /* ---- busca + lobby (mapa) ---- */
-const TL=15000;
+const TL=35000;
 function msg(n,t){const d=document.createElement('div'),b=document.createElement('b');b.textContent=(n?String(n).slice(0,12)+': ':'');d.appendChild(b);d.appendChild(document.createTextNode(String(t).slice(0,120)));const g=$('llg');g.appendChild(d);while(g.children.length>5)g.firstChild.remove()}
 const sys=t=>msg('',t);
 const P={x:320,y:300,tx:null,ty:null,say:'',st:0},O={},B=[],K={};
@@ -301,7 +301,7 @@ if(L.rm){L.rm=0;hide('sb');if(window.MP.bus&&N().amHost()&&hum()>0)N().hostGo();
 $('play').onclick=window.startL;$('again').onclick=window.startL;
 const party=()=>/^p[a-z0-9]{3,7}$/.test((window.MP&&window.MP.code)||''),say=t=>{try{soon(t)}catch(e){nota(t)}},hum=()=>{const M=window.MP;return M.bus?Object.keys(M.pr).filter(k=>M.pr[k]&&M.pr[k].s==='l').length:0},nota=t=>{L.nt=t;L.ne=Date.now()+3000};
 function tm(){}
-function search(){if(L.s)return;L.rm=0;show('sb');$('sbp').style.display='';$('sbc').textContent='CANCELAR';const t0=Date.now(),D=8000;if(!party())joinRoom(0);
+function search(){if(L.s)return;L.rm=0;if(L.lob){if(!party())joinRoom(0);openLobby();return}show('sb');$('sbp').style.display='';$('sbc').textContent='CANCELAR';const t0=Date.now(),D=8000;if(!party())joinRoom(0);
  L.s=setInterval(()=>{const r=D-(Date.now()-t0);if(party()&&window.MP.bus&&Date.now()-(L.sbs||0)>=900){L.sbs=Date.now();try{window.MP.bus.send({t:'sb',on:1,r:Math.max(0,r),d:D})}catch(e){}}$('sbt').textContent=Date.now()<L.ne?L.nt:'BUSCANDO PARTIDA... '+Math.max(0,Math.ceil(r/1000))+'s';$('sbp').firstChild.style.width=Math.min(100,(Date.now()-t0)/D*100)+'%';tm();
   if(r<=0){stopS(1);if(L.lob)openLobby();else if(window.MP.bus&&N().amHost()&&hum()>0)N().hostGo();else{N().leave();orig()}}},200)}
 function stopS(k){clearInterval(L.s);L.s=0;hide('sb');if(party()&&window.MP.bus){try{window.MP.bus.send({t:'sb',on:0})}catch(e){}}if(!k&&!party())N().leave()}
