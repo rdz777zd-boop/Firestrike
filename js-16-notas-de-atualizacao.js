@@ -4,7 +4,10 @@
    com v = número seguinte. Todo jogador recebe um aviso novo em AVISOS automaticamente.
    Tipos: NOVO, CORRIGIDO, MELHORADO, REMOVIDO. */
 var ARR_NOTAS=[
- {v:162,d:'30/10/2026',t:'Músicas novas e ajustes do Contra Squad',i:[
+ {v:163,d:'30/10/2026',t:'Fuzis e snipers atiram bem mais longe',i:[
+  ['MELHORADO','<b>Alcance das balas bem maior.</b> Fuzis (AK-47, M4A1, SCAR, Famas, LMG e outros) alcançam 80% mais longe, e snipers (Sniper, DMR, AWM, Barrett, Besta) mais que o dobro, inclusive as versões Ouro. Pistolas, submetralhadoras, escopetas e explosivos não mudaram. Os bots também atiram de mais longe com essas armas.']]},
+ {v:162,d:'30/10/2026',t:'Músicas novas, gráficos melhores e ajustes do Contra Squad',i:[
+  ['MELHORADO','<b>Gráficos melhores.</b> Qualidade ALTA por padrão (quem já escolheu uma qualidade nos ajustes continua com a dele), cores mais vivas e uma vinheta suave nas bordas durante a partida. Se o celular não aguentar, a resolução baixa sozinha.'],
   ['NOVO','<b>Músicas diferentes no jogo.</b> O lobby agora tem 4 músicas que se alternam sozinhas, e as partidas têm trilha própria (Battle Royale, Contra Squad e Halloween City). A trilha da partida fica baixinha para não cobrir tiros e passos. Dá para desligar no botão de música dos ajustes.'],
   ['CORRIGIDO','<b>Contra Squad e modos parecidos:</b> todo round começa com exatamente 1000 moedas.'],
   ['CORRIGIDO','<b>A SMG não vem mais de graça</b> na Sala: você começa só com a pistola e compra a SMG.']]},
