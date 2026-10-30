@@ -285,7 +285,7 @@ $('au_l').onclick=()=>auth(0);$('au_r').onclick=()=>auth(1);$('au_gu').onclick=g
 $('au_p').onkeydown=e=>{if(e.key==='Enter')auth(AM)};$('au_n').onkeydown=e=>{if(e.key==='Enter')auth(1)};
 try{const se=$('set');if(se)new MutationObserver(()=>{if(!se.classList.contains('hide'))glRefresh()}).observe(se,{attributes:true,attributeFilter:['class']})}catch(e){}
 /* ---- busca + lobby (mapa) ---- */
-const TL=35000;
+const TL=15000;
 function msg(n,t){const d=document.createElement('div'),b=document.createElement('b');b.textContent=(n?String(n).slice(0,12)+': ':'');d.appendChild(b);d.appendChild(document.createTextNode(String(t).slice(0,120)));const g=$('llg');g.appendChild(d);while(g.children.length>5)g.firstChild.remove()}
 const sys=t=>msg('',t);
 const P={x:320,y:300,tx:null,ty:null,say:'',st:0},O={},B=[],K={};
@@ -368,7 +368,7 @@ $('swacc').onclick=()=>{const b=$('swacc');
 setInterval(()=>{if($('lo').classList.contains('hide'))return;const M=window.MP,n=N();
  if(M.arm||M.on){hide('lo');return}
  if(M.bus){const h=n.amHost();M.host=h?1:0;if(h&&!L.sd)L.sd=(Math.random()*2147483647)|0;if(h)window.ARR_LSD=L.sd|0;if(h&&Date.now()-L.ls>=1000){L.ls=Date.now();M.bus.send({t:'cd',r:Math.max(0,L.end-Date.now()),sd:L.sd|0})}
-  if(h&&L.end-Date.now()<=0&&!L.go){L.go=1;n.hostGo()}}else if(!L.go&&Date.now()-L.end>4000){L.go=1;try{n.leave()}catch(e){}hide('lo');if(orig)orig();return}
+  if(h&&L.end-Date.now()<=0&&!L.go){L.go=1;n.hostGo()}}
  draw()},500);
 setInterval(()=>{const M=window.MP;if(!$('lo').classList.contains('hide')&&M.bus)M.bus.send({t:'pos',x:P.x|0,y:P.y|0,n:user},true)},200);
 /* mapa */
