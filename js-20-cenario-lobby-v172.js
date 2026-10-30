@@ -301,7 +301,7 @@ if(L.rm){L.rm=0;hide('sb');if(window.MP.bus&&N().amHost()&&hum()>0)N().hostGo();
 $('play').onclick=window.startL;$('again').onclick=window.startL;
 const party=()=>/^p[a-z0-9]{3,7}$/.test((window.MP&&window.MP.code)||''),say=t=>{try{soon(t)}catch(e){nota(t)}},hum=()=>{const M=window.MP;return M.bus?Object.keys(M.pr).filter(k=>M.pr[k]&&M.pr[k].s==='l').length:0},nota=t=>{L.nt=t;L.ne=Date.now()+3000};
 function tm(){}
-function search(){if(L.s)return;L.rm=0;if(L.lob){if(!party())joinRoom(0);openLobby();return}show('sb');$('sbp').style.display='';$('sbc').textContent='CANCELAR';const t0=Date.now(),D=8000;if(!party())joinRoom(0);
+function search(){if(L.s)return;L.rm=0;show('sb');$('sbp').style.display='';$('sbc').textContent='CANCELAR';const t0=Date.now(),D=8000;if(!party())joinRoom(0);
  L.s=setInterval(()=>{const r=D-(Date.now()-t0);if(party()&&window.MP.bus&&Date.now()-(L.sbs||0)>=900){L.sbs=Date.now();try{window.MP.bus.send({t:'sb',on:1,r:Math.max(0,r),d:D})}catch(e){}}$('sbt').textContent=Date.now()<L.ne?L.nt:'BUSCANDO PARTIDA... '+Math.max(0,Math.ceil(r/1000))+'s';$('sbp').firstChild.style.width=Math.min(100,(Date.now()-t0)/D*100)+'%';tm();
   if(r<=0){stopS(1);if(L.lob)openLobby();else if(window.MP.bus&&N().amHost()&&hum()>0)N().hostGo();else{N().leave();orig()}}},200)}
 function stopS(k){clearInterval(L.s);L.s=0;hide('sb');if(party()&&window.MP.bus){try{window.MP.bus.send({t:'sb',on:0})}catch(e){}}if(!k&&!party())N().leave()}
@@ -368,7 +368,7 @@ $('swacc').onclick=()=>{const b=$('swacc');
 setInterval(()=>{if($('lo').classList.contains('hide'))return;const M=window.MP,n=N();
  if(M.arm||M.on){hide('lo');return}
  if(M.bus){const h=n.amHost();M.host=h?1:0;if(h&&!L.sd)L.sd=(Math.random()*2147483647)|0;if(h)window.ARR_LSD=L.sd|0;if(h&&Date.now()-L.ls>=1000){L.ls=Date.now();M.bus.send({t:'cd',r:Math.max(0,L.end-Date.now()),sd:L.sd|0})}
-  if(h&&L.end-Date.now()<=0&&!L.go){L.go=1;n.hostGo()}}
+  if(h&&L.end-Date.now()<=0&&!L.go){L.go=1;n.hostGo()}}else if(!L.go&&Date.now()-L.end>4000){L.go=1;try{n.leave()}catch(e){}hide('lo');if(orig)orig();return}
  draw()},500);
 setInterval(()=>{const M=window.MP;if(!$('lo').classList.contains('hide')&&M.bus)M.bus.send({t:'pos',x:P.x|0,y:P.y|0,n:user},true)},200);
 /* mapa */
