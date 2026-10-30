@@ -4,6 +4,11 @@
    com v = número seguinte. Todo jogador recebe um aviso novo em AVISOS automaticamente.
    Tipos: NOVO, CORRIGIDO, MELHORADO, REMOVIDO. */
 var ARR_NOTAS=[
+ {v:164,d:'30/10/2026',t:'Itens brilham no chão e nova queda de paraquedas',i:[
+  ['MELHORADO','<b>Itens no chão brilham</b> conforme a raridade: branco (comum), verde (incomum), azul (raro), roxo (épico) e dourado (lendário/armas douradas), com coluna de luz para os melhores. As caixas de quem foi abatido também brilham. A forma de pegar continua igual.'],
+  ['NOVO','<b>Mergulho no pulo do avião.</b> Empurre o direcional até o fim (ou segure Shift/Espaço no teclado) para MERGULHAR e cair bem mais rápido; solte para PLANAR e ir mais longe. O mergulho desacelera perto da altura de abrir o paraquedas.'],
+  ['NOVO','<b>Paraquedas refeito:</b> só aparece depois de aberto, com animação de abertura (saco, enche de ar, balança) e copa maior. Um painel no topo mostra a altura, se está em queda livre, mergulhando ou com o paraquedas aberto.'],
+  ['MELHORADO','<b>Queda livre com pose nova</b> (braços abertos e postura de mergulho), vento mais visível e câmera que abre um pouco o ângulo durante o mergulho.']]},
  {v:163,d:'30/10/2026',t:'Fuzis e snipers atiram bem mais longe',i:[
   ['MELHORADO','<b>Alcance das balas bem maior.</b> Fuzis (AK-47, M4A1, SCAR, Famas, LMG e outros) alcançam 80% mais longe, e snipers (Sniper, DMR, AWM, Barrett, Besta) mais que o dobro, inclusive as versões Ouro. Pistolas, submetralhadoras, escopetas e explosivos não mudaram. Os bots também atiram de mais longe com essas armas.']]},
  {v:162,d:'30/10/2026',t:'Músicas novas, gráficos melhores e ajustes do Contra Squad',i:[
