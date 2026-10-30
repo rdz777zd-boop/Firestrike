@@ -367,7 +367,7 @@ function csRound(){const g=G,c=g.cs;c.rd++;c.ph='buy';c.t=15;c.rt=150;c.msg='';
 g.b=[];g.kc=null;g.kcB=[];g.iw=[];g.ig=[];g.pt=[];g.tx=[];g.sp=[];g.fl=[];g.dg=[];g.cz=[];g.items=[];g.ta=2;g.alive=g.f.length;g.spec=null;
 g.teams.forEach((T,ti)=>{const sx=ti==0?AX0+300:AX0+AS-300;T.alive=T.m.length;T.m.forEach((o,k)=>{o.x=sx+((k&1)*110-55);o.y=CY+((k>>1)*110-55);o.ang=ti==0?0:Math.PI;
 o.lgh=0;o.lgT=0;o.pf=0;o.dead=0;o.dn=0;o.hp=MH;o.ar=0;o.hm=0;o.rt=null;o.rp=0;o.rvt=0;o.rpg=0;o.dk=null;o.hl=null;o.rl=0;o.cd=0;o.bq=null;o.st='ground';o.vx=0;o.vy=0;o.jh=0;o.jv=0;o.inv=0;o.sk2=0;o.hcd=0;o.dash=0;o.pois=0;o.bat=0;o.invis=0;o.rb=0;o.np=null;o.sc=0;o.nvF=0;o.mk=0;o.tg=null;o.pt=null;o.it=null;o.wp=null;o.xq=null;o.lvH=null;o.lvU=0;o.hlp=null;o.ast=null;o.astU=0;o.ls=null;o.lst=0;o.wt=0;o.fa=null;o.rdn=null;o.rk=0;o.bush=0;o.fl=0;o.rev=0;o.bd=0;o.kt=2;o.rtr=0;o.vs=null;
-o.mon=500;o.ws=[1,null];o.mg=[WP[1].mag,0];o.cur=0;o.res=o.isP?[120,40,120,30]:[0,0,0,0];
+o.mon=1000;o.ws=[1,null];o.mg=[WP[1].mag,0];o.cur=0;o.res=o.isP?[120,40,120,30]:[0,0,0,0];
 if(!o.isP)csBotBuy(o)})});
 if(!g.room){cyaw=g.p.ang;cpit=.25}ads=0;aA.on=0;js.on=0;cm.on=0;fl.on=0;
 if(!c.over&&!g.room){$('cs').classList.add('on');csRef()}if(c.rd>1)startS()}
