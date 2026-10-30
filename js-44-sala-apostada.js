@@ -179,6 +179,13 @@ function settle(){
 {const mb=$('menuBtn');if(mb)mb.addEventListener('click',()=>{
  try{const b=G&&G.sbet;if(b&&!b.paid){const m=pay(b,'L');say('Voc\u00ea saiu da partida: '+m)}}catch(e){}},true)}
 
+/* aba CRIAR do card: abre direto o lobby da sala (antes so selecionava a aba) */
+{const mp=$('modp');if(mp)mp.addEventListener('click',e=>{
+ const b=e.target.closest&&e.target.closest('.salacfg .stb button[data-t="0"]');if(!b)return;
+ e.stopPropagation();e.preventDefault();
+ mp.classList.add('hide');
+ try{window.salaOpen()}catch(x){console.error('[sala-apostada]',x);say('Erro ao abrir a sala')}},true)}
+
 /* fechou/recarregou o jogo no meio de uma aposta: conta como derrota */
 setTimeout(()=>{try{const o=JSON.parse(localStorage.getItem(OKEY)||'null');if(!o)return;localStorage.removeItem(OKEY);
  const H=hLoad();H.push({r:'L',a:o.stake,o:'Sala',t:Date.now(),s:1});hSave(H);say('Aposta anterior abandonada: -'+fmt(o.stake)+' gemas')}catch(e){}},2500);
