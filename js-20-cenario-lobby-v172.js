@@ -285,7 +285,7 @@ $('au_l').onclick=()=>auth(0);$('au_r').onclick=()=>auth(1);$('au_gu').onclick=g
 $('au_p').onkeydown=e=>{if(e.key==='Enter')auth(AM)};$('au_n').onkeydown=e=>{if(e.key==='Enter')auth(1)};
 try{const se=$('set');if(se)new MutationObserver(()=>{if(!se.classList.contains('hide'))glRefresh()}).observe(se,{attributes:true,attributeFilter:['class']})}catch(e){}
 /* ---- busca + lobby (mapa) ---- */
-const TL=35000;
+const TL=15000;
 function msg(n,t){const d=document.createElement('div'),b=document.createElement('b');b.textContent=(n?String(n).slice(0,12)+': ':'');d.appendChild(b);d.appendChild(document.createTextNode(String(t).slice(0,120)));const g=$('llg');g.appendChild(d);while(g.children.length>5)g.firstChild.remove()}
 const sys=t=>msg('',t);
 const P={x:320,y:300,tx:null,ty:null,say:'',st:0},O={},B=[],K={};
