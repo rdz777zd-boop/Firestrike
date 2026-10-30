@@ -1,2 +1,2 @@
 acao: ação, configurações, Ã© teste-linha-B
-fim
+fim ok
